@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacking Solutions | Advanced Cyber Security</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <nav class="navbar slideInDown" id="navbar">
+        <a href="#hero" class="logo-container">
+            <img src="https://cdn-icons-png.flaticon.com/512/9648/9648768.png" alt="Hacking Solutions Logo" class="nav-logo">
+            <div class="logo-text">HACKING <span class="accent-text">SOLUTIONS</span>.</div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#hero">Overview</a></li>
+            <li><a href="#services">Capabilities</a></li>
+            <li><a href="#contact" class="btn-solid-small">Request Audit</a></li>
+        </ul>
+    </nav>
+
+    <header id="hero" class="hero-section">
+        <div class="hero-content">
+            <h1 class="fade-in-up">NEXT-GEN <span class="accent-text">CYBER SECURITY</span></h1>
+            <div class="typing-container">
+                <p class="typing-text">SECURING DIGITAL ASSETS & AUTOMATING INTELLIGENCE.</p>
+            </div>
+            <p class="subtitle fade-in-up delay-1">Ethical Hacking | OSINT Data Mining | Advanced Python Automation</p>
+            <br>
+            <a href="#services" class="btn-solid fade-in-up delay-2">EXPLORE CAPABILITIES <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="grid-bg-light"></div>
+    </header>
+
+    <section id="services" class="services-section">
+        <div class="section-header reveal">
+            <h2 class="section-title">OUR <span class="accent-text">EXPERTISE</span></h2>
+            <p class="section-desc">Delivering military-grade security and intelligent automation for modern enterprises.</p>
+        </div>
+        
+        <div class="services-container">
+            <div class="service-card reveal">
+                <div class="icon-container">
+                    <i class="fa-solid fa-shield-halved accent-icon"></i>
+                </div>
+                <h3>VULNERABILITY AUDITS</h3>
+                <p class="service-desc">Comprehensive penetration testing and ethical hacking to identify and neutralize threats before they can be exploited.</p>
+                <a href="https://owasp.org/" target="_blank" class="card-link">Learn More <i class="fa-solid fa-chevron-right"></i></a>
+            </div>
+             <div class="service-card reveal delay-card-1">
+                <div class="icon-container">
+                    <i class="fa-solid fa-database accent-icon"></i>
+                </div>
+                <h3>OSINT DATA MINING</h3>
+                <p class="service-desc">Advanced Open-Source Intelligence gathering. We deploy Python crawlers to extract, analyze, and structure high-value public data.</p>
+                <a href="https://osintframework.com/" target="_blank" class="card-link">Deploy Systems <i class="fa-solid fa-chevron-right"></i></a>
+            </div>
+             <div class="service-card reveal delay-card-2">
+                <div class="icon-container">
+                    <i class="fa-brands fa-python accent-icon"></i>
+                </div>
+                <h3>PYTHON AUTOMATION</h3>
+                <p class="service-desc">Custom-built autonomous scripts and workflow automation to eliminate manual processes and accelerate business operations.</p>
+                <a href="https://automatetheboringstuff.com/" target="_blank" class="card-link">Automate Now <i class="fa-solid fa-chevron-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <div class="contact-container reveal">
+            
+            <div class="contact-info">
+                <h2>SECURE <span class="accent-text">COMMUNICATIONS</span></h2>
+                <p>Send a direct message to our lead cybersecurity consultant, Mirza Umer.</p>
+            </div>
+
+            <form action="https://formsubmit.co/umarasifmirza439@gmail.com" method="POST" class="cyber-form">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_subject" value="🚨 NEW CLIENT LEAD from Hacking Solutions!">
+                
+                <div class="input-group">
+                    <input type="text" name="Client Name" placeholder="Full Name or Alias" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" name="Email Address" placeholder="Email Address" required>
+                </div>
+                <div class="input-group">
+                    <textarea name="Message" rows="5" placeholder="Project Details or Audit Request..." required></textarea>
+                </div>
+                <button type="submit" class="btn-solid form-btn">TRANSMIT MESSAGE <i class="fa-solid fa-paper-plane"></i></button>
+            </form>
+
+            <div class="contact-info" style="margin-top: 3.5rem;">
+                <p>Or reach out directly via our encrypted channels:</p>
+                <div class="contact-details" style="margin-top: 1.5rem;">
+                    <div class="detail-item">
+                        <i class="fa-brands fa-whatsapp accent-icon-small"></i>
+                        <span>+31 970588448</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fa-solid fa-location-crosshairs accent-icon-small"></i>
+                        <span>Global Operations (Remote)</span>
+                    </div>
+                </div>
+                <br>
+                <a href="https://wa.me/31970588448" target="_blank" class="btn-solid">INITIATE CHAT <i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        // Navbar Shrink Effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll Reveal Animations
+        function reveal() {
+            var reveals = document.querySelectorAll('.reveal');
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 50; 
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+        window.addEventListener('scroll', reveal);
+        
+        // Timeout to ensure first section loads even if JS delays
+        setTimeout(reveal, 100);
+    </script>
+</body>
+</html>

@@ -460,3 +460,65 @@ body {
     .hero-content h1 { font-size: 2.1rem; }
     .hero-section { padding-top: 9rem !important; }
 }
+/* =========================================
+   📱 MOBILE RESPONSIVE HACK (SMARTPHONE FIX)
+   ========================================= */
+
+@media screen and (max-width: 768px) {
+    /* 1. Fix the Header & Title */
+    .hero-content h1 {
+        font-size: 2.2rem !important; /* Reduces massive text on mobile */
+        line-height: 1.2;
+    }
+    .typing-text {
+        font-size: 14px !important;
+    }
+    .subtitle {
+        font-size: 12px !important;
+    }
+
+    /* 2. Fix the 4 Blue Weapons (Stack them beautifully) */
+    .hero-content a.btn-solid {
+        display: block !important;
+        width: 85% !important;
+        margin: 15px auto !important;
+        text-align: center;
+    }
+
+    /* 3. Fix the Services/Cards Grid */
+    .services-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    .service-card {
+        width: 90% !important;
+        margin: 0 auto;
+    }
+
+    /* 4. Fix the Navbar & Logo */
+    .navbar {
+        padding: 15px 10px;
+        flex-direction: column;
+        text-align: center;
+    }
+    .nav-links {
+        margin-top: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+    .nav-links li a {
+        font-size: 14px;
+    }
+
+    /* 5. Fix the Contact Form & Screen Padding */
+    .contact-container {
+        width: 90% !important;
+        padding: 25px 15px !important;
+    }
+    body {
+        overflow-x: hidden; /* Prevents annoying horizontal scrolling */
+    }
+}

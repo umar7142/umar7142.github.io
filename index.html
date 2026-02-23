@@ -85,20 +85,17 @@
                 <p>Send a direct message to our lead cybersecurity consultant, Mirza Umer.</p>
             </div>
 
-            <form action="https://formsubmit.co/umarasifmirza439@gmail.com" method="POST" class="cyber-form">
-                <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_subject" value="🚨 NEW CLIENT LEAD from Hacking Solutions!">
-                
+            <form id="cyberForm" class="cyber-form">
                 <div class="input-group">
-                    <input type="text" name="Client Name" placeholder="Full Name or Alias" required>
+                    <input type="text" id="clientName" placeholder="Full Name or Alias" required>
                 </div>
                 <div class="input-group">
-                    <input type="email" name="Email Address" placeholder="Email Address" required>
+                    <input type="email" id="clientEmail" placeholder="Email Address" required>
                 </div>
                 <div class="input-group">
-                    <textarea name="Message" rows="5" placeholder="Project Details or Audit Request..." required></textarea>
+                    <textarea id="clientMessage" rows="5" placeholder="Project Details or Audit Request..." required></textarea>
                 </div>
-                <button type="submit" class="btn-solid form-btn">TRANSMIT MESSAGE <i class="fa-solid fa-paper-plane"></i></button>
+                <button type="submit" id="submitBtn" class="btn-solid form-btn">TRANSMIT MESSAGE <i class="fa-solid fa-paper-plane"></i></button>
             </form>
 
             <div class="contact-info" style="margin-top: 3.5rem;">
@@ -121,7 +118,7 @@
     </section>
 
     <script>
-        // Navbar Shrink Effect
+        // Navbar & Animations
         window.addEventListener('scroll', function() {
             const navbar = document.getElementById('navbar');
             if (window.scrollY > 50) {
@@ -131,7 +128,6 @@
             }
         });
 
-        // Scroll Reveal Animations
         function reveal() {
             var reveals = document.querySelectorAll('.reveal');
             for (var i = 0; i < reveals.length; i++) {
@@ -144,9 +140,61 @@
             }
         }
         window.addEventListener('scroll', reveal);
-        
-        // Timeout to ensure first section loads even if JS delays
         setTimeout(reveal, 100);
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDy07Y1jTioK57WQnULCfB1cZvlR_P3j8A",
+            authDomain: "hacking-solutions.firebaseapp.com",
+            projectId: "hacking-solutions",
+            storageBucket: "hacking-solutions.firebasestorage.app",
+            messagingSenderId: "1074731011147",
+            appId: "1:1074731011147:web:c27d725780fc9e0848d1ce"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.getElementById('cyberForm').addEventListener('submit', async (e) => {
+            e.preventDefault(); 
+            
+            const btn = document.getElementById('submitBtn');
+            const originalBtnText = btn.innerHTML;
+            btn.innerHTML = "TRANSMITTING TO SERVER... ⏳";
+            
+            try {
+                const name = document.getElementById('clientName').value;
+                const email = document.getElementById('clientEmail').value;
+                const msg = document.getElementById('clientMessage').value;
+
+                await addDoc(collection(db, "ClientLeads"), {
+                    name: name,
+                    email: email,
+                    message: msg,
+                    timestamp: serverTimestamp()
+                });
+
+                btn.innerHTML = "DATA SECURED IN VAULT! ✔️";
+                btn.style.backgroundColor = "#00ff00"; 
+                btn.style.color = "#000";
+                e.target.reset(); 
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalBtnText;
+                    btn.style.backgroundColor = ""; 
+                    btn.style.color = "";
+                }, 4000);
+
+            } catch (error) {
+                console.error("Firebase Error: ", error);
+                btn.innerHTML = "SYSTEM ERROR! ❌";
+                btn.style.backgroundColor = "#ff003c";
+            }
+        });
     </script>
 </body>
 </html>

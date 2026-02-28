@@ -3,32 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Radar | Free Version</title>
+    <title>Global Radar | Professional Version</title>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
-    <style>
-        body { 
-            margin: 0; padding: 0; 
-            background-color: #0b0f19; /* Dark Navy */
-            color: #00ff00; /* Neon Green */
-            font-family: 'Courier New', Courier, monospace; 
-        }
-        h1 { text-align: center; padding: 15px; margin: 0; border-bottom: 2px solid #00ff00; }
-        
-        /* Map ka dabba (Container) */
-        #map { 
-            height: 80vh; /* Screen ka 80% hissa map lega */
-            width: 95%; 
-            margin: 20px auto; 
-            border: 2px solid #00ff00; 
-            border-radius: 10px; 
-            box-shadow: 0 0 15px #00ff00;
-        }
-        
-        /* Jahaz ka icon (Emoji Style) */
-        .plane-icon { font-size: 28px; text-align: center; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -38,36 +17,7 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
-    <script>
-        // 🚨 MAIN JAVASCRIPT CODE 🚨
+    <script src="app.js"></script>
 
-        // 1. Map Start Karna: Humne center "London LHR" rakha hai aur zoom level 5 hai
-        var map = L.map('map').setView([51.4700, -0.4543], 5);
-
-        // 2. Map ki Skin (Dark Mode CartoDB tiles - Free & No API Key!)
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '© OpenStreetMap & CARTO',
-            maxZoom: 19
-        }).addTo(map);
-
-        // 3. Apna Custom Jahaz (Plane Emoji) banane ka function
-        var planeIcon = L.divIcon({
-            html: '✈️',
-            className: 'plane-icon',
-            iconSize: [30, 30],
-            iconAnchor: [15, 15] // Icon ko center mein rakhne ke liye
-        });
-
-        // 4. Map par Jahaz lagana! 
-        
-        // Jahaz 1: London LHR par khara hai
-        var flight1 = L.marker([51.4700, -0.4543], {icon: planeIcon}).addTo(map);
-        flight1.bindPopup('<b style="color:black;">Air Panjab 777</b><br style="color:black;">Status: Takeoff from London');
-
-        // Jahaz 2: America (New York JFK) ke paas hawa mein hai
-        var flight2 = L.marker([40.6413, -73.7781], {icon: planeIcon}).addTo(map);
-        flight2.bindPopup('<b style="color:black;">Air Panjab 787</b><br style="color:black;">Status: Landing in USA');
-
-    </script>
 </body>
 </html>

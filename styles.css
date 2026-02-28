@@ -1,530 +1,225 @@
-/* --- 1. Corporate Color Palette --- */
+/* ---------------------------------------------------
+   AEROTRACK ENTERPRISE - GLOBAL RADAR CSS
+--------------------------------------------------- */
+
 :root {
-    --bg-pure-white: #ffffff;
-    --bg-light-gray: #f8f9fa;
-    --text-dark: #111111;
-    --text-muted: #555555;
-    --accent-blue: #0056b3; 
-    --font-main: 'Montserrat', sans-serif;
-    --font-code: 'Roboto Mono', monospace;
-    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.08);
+    --bg-body: #0f172a;       /* Slate 900 - Dark Corporate Background */
+    --bg-panel: #1e293b;      /* Slate 800 - Panel Background */
+    --text-main: #f8fafc;     /* Slate 50 - Bright Text */
+    --text-muted: #94a3b8;    /* Slate 400 - Grey Text */
+    --accent-blue: #3b82f6;   /* Professional Aviation Blue */
+    --accent-green: #10b981;  /* Status Green */
+    --accent-red: #ef4444;    /* Status Red (Offline) */
+    --border-color: #334155;  /* Slate 700 - Soft Borders */
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background-color: var(--bg-pure-white);
-    color: var(--text-dark);
-    font-family: var(--font-main);
-    overflow-x: hidden;
-    line-height: 1.7;
-    scroll-behavior: smooth; 
-}
-
-/* --- 2. Animations --- */
-.fade-in-up {
-    animation: fadeInUpAnim 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-    opacity: 0;
-    transform: translateY(30px);
-}
-@keyframes fadeInUpAnim {
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.slideInDown {
-    animation: slideInDownAnim 0.6s ease-out forwards;
-    transform: translateY(-100%);
-}
-@keyframes slideInDownAnim {
-    to { transform: translateY(0); }
-}
-
-.delay-1 { animation-delay: 0.2s; }
-.delay-2 { animation-delay: 0.4s; }
-
-/* Typing Effect */
-.typing-container {
-    display: inline-block;
+/* Base Body Setup */
+body { 
+    margin: 0; 
+    padding: 0; 
+    background-color: var(--bg-body); 
+    color: var(--text-main); 
+    font-family: 'Inter', sans-serif; 
+    display: flex; 
+    flex-direction: column; 
+    height: 100vh; 
     overflow: hidden;
-    white-space: nowrap;
-    border-right: 3px solid var(--accent-blue);
-    animation: typing 3s steps(45, end) forwards, blinkCursor 0.8s step-end infinite;
-    width: 0;
-    margin-bottom: 1rem;
-}
-.typing-text {
-    font-family: var(--font-code);
-    font-size: 1.1rem;
-    color: var(--text-muted);
-    font-weight: 500;
-}
-@keyframes typing {
-    to { width: 100%; }
-}
-@keyframes blinkCursor {
-    from, to { border-color: transparent; }
-    50% { border-color: var(--accent-blue); }
 }
 
-/* --- 3. Navigation Bar (Logo Fixed) --- */
-.navbar {
-    display: flex;
+/* Top Navigation Header */
+header { 
+    display: flex; 
+    align-items: center; 
     justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem 6%;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    position: fixed;
-    width: 100%;
-    z-index: 100;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    transition: all 0.4s ease; /* Smooth Navbar Scroll Effect */
+    padding: 15px 30px; 
+    background-color: var(--bg-panel);
+    border-bottom: 1px solid var(--border-color); 
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+    z-index: 1000;
 }
 
-/* JS will add this class when scrolled */
-.navbar.scrolled {
-    padding: 1rem 6%;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+header h1 { 
+    margin: 0; 
+    font-size: 20px; 
+    font-weight: 700; 
+    color: var(--text-main); 
 }
 
-.logo-container {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: inherit;
+header h1 i { 
+    color: var(--accent-blue); 
+    margin-right: 10px; 
 }
 
-.nav-logo {
-    height: 40px;
-    width: auto;
-    margin-right: 12px;
+/* Server Status Indicators */
+.system-status { 
+    display: flex; 
+    gap: 20px; 
+    font-size: 13px; 
+    font-weight: 600; 
+    color: var(--text-muted); 
 }
 
-.logo-text {
-    font-family: var(--font-main);
-    font-size: 1.5rem;
-    font-weight: 900;
-    letter-spacing: -0.5px;
+.status-item { 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
 }
 
-.accent-text { color: var(--accent-blue); }
+.dot-green { color: var(--accent-green); font-size: 10px; }
+.dot-red { color: var(--accent-red); font-size: 10px; }
 
-.nav-links {
-    list-style: none;
-    display: flex;
-    align-items: center;
+/* Dashboard Layout */
+.dashboard-container { 
+    display: flex; 
+    flex: 1; 
+    padding: 20px; 
+    gap: 20px; 
 }
 
-.nav-links li a {
-    text-decoration: none;
+/* Left Sidebar (Analytics Panel) */
+.sidebar {
+    width: 320px; 
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border-color); 
+    border-radius: 12px;
+    padding: 20px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 20px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-title {
+    margin: 0; 
+    font-size: 14px; 
+    text-transform: uppercase; 
     color: var(--text-muted);
-    margin-left: 2.5rem;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: 0.3s;
+    font-weight: 700; 
+    letter-spacing: 1px; 
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
 }
 
-.nav-links li a:hover {
-    color: var(--accent-blue);
+/* Stats Cards (Airborne & Region) */
+.stat-grid { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 15px; 
 }
 
-.btn-solid-small {
-    padding: 0.6rem 1.4rem;
-    background: var(--text-dark);
-    color: var(--bg-pure-white) !important;
-    border-radius: 4px;
-    transition: 0.3s;
-}
-.btn-solid-small:hover {
-    background: var(--accent-blue);
-    box-shadow: 0 4px 15px rgba(0, 86, 179, 0.3);
+.stat-card { 
+    background-color: rgba(59, 130, 246, 0.1); 
+    border-left: 4px solid var(--accent-blue); 
+    padding: 15px; 
+    border-radius: 8px; 
 }
 
-/* --- 4. Hero Section --- */
-.hero-section {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    position: relative;
-    padding: 0 2rem;
-    background-color: var(--bg-light-gray);
+.stat-card h3 { 
+    margin: 0; 
+    font-size: 12px; 
+    color: var(--text-muted); 
+    font-weight: 600; 
 }
 
-.hero-content h1 {
-    font-size: 4.5rem;
-    font-weight: 900;
-    letter-spacing: -2px;
-    line-height: 1.1;
-    margin-bottom: 1rem;
+.stat-card p { 
+    margin: 5px 0 0 0; 
+    font-size: 22px; 
+    font-weight: 700; 
+    color: var(--text-main); 
 }
 
-.subtitle {
-    color: var(--text-muted);
-    font-size: 1.05rem;
-    font-weight: 500;
-    max-width: 600px;
-    margin: 0 auto 2.5rem auto;
+/* Live Traffic Feed List */
+.live-list { 
+    list-style: none; 
+    padding: 0; 
+    margin: 0; 
+    overflow-y: auto; 
+    flex: 1; 
 }
 
-.btn-solid {
-    display: inline-block;
-    padding: 1.2rem 2.5rem;
-    background: var(--accent-blue);
-    color: white;
-    text-decoration: none;
-    font-weight: 700;
-    border-radius: 4px;
-    letter-spacing: 1px;
-    transition: 0.3s;
-    font-size: 0.95rem;
-    box-shadow: 0 10px 20px rgba(0, 86, 179, 0.2);
-}
-
-.btn-solid:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 25px rgba(0, 86, 179, 0.3);
-    background: #004494;
-}
-
-.grid-bg-light {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-image: 
-        linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
-    background-size: 50px 50px;
-    z-index: -1;
-}
-
-/* --- 5. Services Section --- */
-.services-section {
-    padding: 8rem 8%;
-    background: var(--bg-pure-white);
-}
-
-.section-header {
-    text-align: center;
-    margin-bottom: 4rem;
-}
-
-.section-title {
-    font-size: 2.5rem;
-    font-weight: 900;
-}
-
-.section-desc {
-    color: var(--text-muted);
-    font-size: 1.1rem;
-    margin-top: 1rem;
-}
-
-.services-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2.5rem;
-}
-
-.service-card {
-    background: var(--bg-pure-white);
-    padding: 3.5rem 2.5rem;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 8px;
-    box-shadow: var(--shadow-soft);
-    transition: all 0.4s ease;
-    text-align: left;
-}
-
-.service-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-    border-color: rgba(0, 86, 179, 0.2);
-}
-
-.icon-container { margin-bottom: 2rem; }
-.accent-icon { font-size: 3rem; color: var(--accent-blue); }
-
-.service-card h3 {
-    font-size: 1.3rem;
-    font-weight: 800;
-    margin-bottom: 1rem;
-}
-
-.service-desc {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 2rem;
-}
-
-.card-link {
-    text-decoration: none;
-    color: var(--accent-blue);
-    font-weight: 700;
-    font-size: 0.9rem;
-    transition: 0.3s;
-}
-.card-link i { margin-left: 5px; font-size: 0.8rem; transition: 0.3s; }
-.card-link:hover { color: var(--text-dark); }
-.card-link:hover i { transform: translateX(5px); }
-
-/* --- 6. Contact Section --- */
-.contact-section {
-    padding: 6rem 8%;
-    background: var(--bg-light-gray);
-    display: flex;
-    justify-content: center;
-}
-
-.contact-container {
-    background: var(--bg-pure-white);
-    padding: 4rem;
-    border-radius: 10px;
-    box-shadow: var(--shadow-soft);
-    max-width: 800px;
-    width: 100%;
-    text-align: center;
-    border-top: 5px solid var(--accent-blue);
-}
-
-.contact-info h2 {
-    font-size: 2.2rem;
-    font-weight: 900;
-    margin-bottom: 1rem;
-}
-
-.contact-info p {
-    color: var(--text-muted);
-    margin-bottom: 2.5rem;
-    font-size: 1.05rem;
-}
-
-.contact-details {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    text-align: left;
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-.detail-item {
-    display: flex;
-    align-items: center;
-    font-size: 1.1rem;
-    font-family: var(--font-code);
-    color: var(--text-dark);
-    font-weight: 500;
-}
-
-.accent-icon-small {
-    color: var(--accent-blue);
-    font-size: 1.5rem;
-    margin-right: 1.5rem;
-    width: 30px;
-    text-align: center;
-}
-
-/* --- 7. JAVASCRIPT ANIMATION CLASSES --- */
-.reveal {
-    opacity: 0;
-    transform: translateY(50px);
-    transition: all 0.8s ease-in-out;
-}
-
-.reveal.active {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.delay-card-1 { transition-delay: 0.2s; }
-.delay-card-2 { transition-delay: 0.4s; }
-/* --- 8. Working Contact Form Styling --- */
-.cyber-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-top: 2rem;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.05);
-    padding-bottom: 3.5rem;
-}
-
-.input-group input,
-.input-group textarea {
-    width: 100%;
-    padding: 1.2rem;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 6px;
-    background: var(--bg-light-gray);
-    font-family: var(--font-main);
-    font-size: 1rem;
-    color: var(--text-dark);
-    transition: all 0.3s ease;
-}
-
-.input-group input:focus,
-.input-group textarea:focus {
-    outline: none;
-    border-color: var(--accent-blue);
-    box-shadow: 0 0 15px rgba(0, 86, 179, 0.15);
-    background: var(--bg-pure-white);
-}
-
-.form-btn {
-    width: 100%;
+.live-list li {
+    padding: 12px; 
+    background-color: var(--bg-body); 
+    border: 1px solid var(--border-color);
+    border-radius: 8px; 
+    margin-bottom: 10px; 
+    font-size: 13px; 
+    transition: all 0.2s ease; 
     cursor: pointer;
-    border: none;
-    text-align: center;
-    font-size: 1rem;
-    padding: 1.2rem;
-}
-/* =========================================
-   🚀 MOBILE RESPONSIVENESS (UPDATED FIX)
-   ========================================= */
-
-@media (max-width: 768px) {
-
-    /* 1. جنرل سیٹنگز */
-    html { font-size: 14px; }
-    section { padding: 4rem 6% !important; }
-
-    /* 2. نیویگیشن بار */
-    .navbar {
-        padding: 0.8rem 4%;
-        flex-wrap: wrap;
-        gap: 1rem;
-        justify-content: center;
-    }
-    .logo-container { margin-bottom: 0.5rem; }
-    .nav-links {
-        width: 100%;
-        justify-content: center;
-        gap: 1rem;
-    }
-    .nav-links li a {
-        margin-left: 0;
-        font-size: 0.9rem;
-        background: rgba(0, 86, 179, 0.1);
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-    }
-    .btn-solid-small {
-        background: rgba(0, 86, 179, 0.1);
-        color: var(--accent-blue) !important;
-        padding: 0.5rem 1rem;
-        font-weight: 600;
-    }
-
-    /* 3. 🚨 ہیرو سیکشن کا فکس (فالتو لمبائی اڑا دی) 🚨 */
-    .hero-section {
-        height: auto !important; /* لمبائی کو آٹو کیا */
-        min-height: 60vh; /* بس اتنی لمبائی جتنا کنٹینٹ ہے */
-        padding-top: 10rem !important; /* اوپر مینو بار کی جگہ چھوڑی */
-        padding-bottom: 3rem !important; /* نیچے سے فالتو جگہ ختم کی */
-    }
-    .hero-content h1 {
-        font-size: 2.5rem;
-        line-height: 1.2;
-    }
-    .subtitle {
-        font-size: 1rem;
-        max-width: 100%;
-    }
-    .btn-solid {
-        width: 100%;
-        text-align: center;
-        padding: 1rem;
-    }
-
-    /* 4. سروسز سیکشن */
-    .services-container {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-    .service-card { padding: 2rem 1.5rem; }
-
-    /* 5. کانٹیکٹ سیکشن */
-    .contact-container { padding: 2rem 1.5rem; }
-    .contact-info h2 { font-size: 1.8rem; }
 }
 
-/* بہت چھوٹی سکرینز کے لیے */
-@media (max-width: 480px) {
-    .logo-text { font-size: 1.2rem; }
-    .nav-logo { height: 30px; }
-    .hero-content h1 { font-size: 2.1rem; }
-    .hero-section { padding-top: 9rem !important; }
+.live-list li:hover { 
+    border-color: var(--accent-blue); 
 }
-/* =========================================
-   📱 MOBILE RESPONSIVE HACK (SMARTPHONE FIX V2)
-   ========================================= */
 
-@media screen and (max-width: 768px) {
-    /* 1. Fix the Logo & Brand Name (Make it smaller!) */
-    .logo-text {
-        font-size: 1.2rem !important; /* 👈 LOGO NAME CHOTA KAR DIYA */
-        white-space: normal;
-    }
-    .nav-logo {
-        width: 35px !important; /* Logo icon bhi chota */
-        height: 35px !important;
-    }
-    .navbar {
-        padding: 15px 5px;
-        flex-direction: column;
-        text-align: center;
-        gap: 10px;
-    }
+.live-list li .flight-id { 
+    color: var(--accent-blue); 
+    font-weight: 700; 
+    font-size: 14px;
+}
 
-    /* 2. Fix the Main Big Heading (Shrink it down!) */
-    .hero-content h1 {
-        font-size: 1.6rem !important; /* 👈 MAIN HEADING CHOTI HO GAYI */
-        line-height: 1.3;
-        margin-top: 20px;
-    }
-    .typing-text {
-        font-size: 12px !important;
-    }
-    .subtitle {
-        font-size: 11px !important;
-    }
+.live-list li .flight-route { 
+    color: var(--text-muted); 
+    margin-top: 4px; 
+    font-size: 12px;
+}
 
-    /* 3. Fix the 4 Blue Weapons (Perfect fit for phone screens) */
-    .hero-content a.btn-solid {
-        display: block !important;
-        width: 85% !important;
-        margin: 12px auto !important;
-        text-align: center;
-        font-size: 14px !important; /* Button ka text bhi adjust kiya */
-        padding: 12px 20px !important;
-    }
+/* Interactive Map Container */
+#map { 
+    flex: 1; 
+    border: 1px solid var(--border-color); 
+    border-radius: 12px; 
+    z-index: 1; 
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
 
-    /* 4. Fix the Services/Cards Grid */
-    .services-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-    }
-    .service-card {
-        width: 95% !important;
-        margin: 0 auto;
-    }
+/* ✈️ Real SVG Aircraft Vector Styling */
+.real-plane-icon svg { 
+    width: 32px; 
+    height: 32px; 
+    filter: drop-shadow(2px 5px 4px rgba(0,0,0,0.4)); 
+    transition: transform 1s ease-in-out; 
+}
 
-    /* 5. Fix the Contact Form */
-    .contact-container {
-        width: 95% !important;
-        padding: 20px 10px !important;
-    }
-    
-    /* Lock the screen width so it doesn't shake left/right */
-    body, html {
-        overflow-x: hidden; 
-        max-width: 100vw;
-    }
+/* Professional Map Popups */
+.leaflet-popup-content-wrapper { 
+    background-color: #ffffff; 
+    color: #1e293b; 
+    border-radius: 8px; 
+    font-family: 'Inter', sans-serif; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.leaflet-popup-tip { 
+    background-color: #ffffff; 
+}
+
+.popup-header { 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    border-bottom: 1px solid #e2e8f0; 
+    padding-bottom: 8px; 
+    margin-bottom: 8px; 
+}
+
+.popup-header i { 
+    color: #3b82f6; 
+    font-size: 18px; 
+}
+
+.popup-title { 
+    font-size: 16px; 
+    font-weight: 700; 
+    color: #0f172a;
+}
+
+.popup-info { 
+    margin: 4px 0; 
+    font-size: 13px; 
+    color: #475569; 
+}
+
+.popup-info b { 
+    color: #1e293b; 
 }

@@ -18,7 +18,6 @@
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
-        
         @keyframes radarSpin { 100% { transform: rotate(360deg); } }
 
         body { margin: 0; padding: 0; background-color: var(--bg-body); color: var(--text-main); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
@@ -106,7 +105,6 @@
         .form-group input, .form-group textarea { width: 100%; padding: 12px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 8px; color: #fff; font-family: 'Inter'; outline: none; box-sizing: border-box; }
         .form-group input:focus, .form-group textarea:focus { border-color: var(--accent-blue); }
         .submit-btn { background: var(--accent-blue); color: #fff; border: none; padding: 12px 30px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 10px; }
-        .submit-btn:hover { background: #2563eb; transform: translateY(-2px); }
 
         /* 📱 MOBILE RESPONSIVE */
         @media (max-width: 768px) {
@@ -319,33 +317,64 @@
             });
         });
 
-        // 🚨 PUBLIC APIS DIRECTLY IN BROWSER (NO VERCEL FOR NOW) 🚨
+        // 🚨 THE BYPASS ENGINE 🚨
         async function fetchRealLiveFlights() {
             try {
                 document.getElementById("api-status").className = "fa-solid fa-spinner fa-spin";
                 document.getElementById("api-status").style.color = "#f59e0b";
-                document.getElementById("api-text").innerText = "Scanning Global Radars...";
+                document.getElementById("api-text").innerText = "Connecting Radars...";
 
                 let lat = map.getCenter().lat.toFixed(2); 
                 let lng = map.getCenter().lng.toFixed(2);
                 let radius = 250;
                 
-                // 4 Best Public APIs (Race Condition: Jo pehle data dega wo jeetega)
-                const apiUrls = [
+                let apiData = null;
+                let activeServerName = "";
+
+                // STEP 1: Try Standard APIs (Shayad unhone block hata diya ho)
+                const primaryUrls = [
                     `https://api.airplanes.live/v2/point/${lat}/${lng}/${radius}`,
-                    `https://api.adsb.one/v2/point/${lat}/${lng}/${radius}`,
-                    `https://api.adsb.lol/v2/point/${lat}/${lng}/${radius}`,
                     `https://api.adsb.fi/v2/point/${lat}/${lng}/${radius}`
                 ];
 
-                const fetchPromises = apiUrls.map(url => fetch(url).then(res => {
-                    if (!res.ok) throw new Error('API Offline');
-                    return { res: res, source: url };
-                }));
+                for (let url of primaryUrls) {
+                    try {
+                        let res = await fetch(url);
+                        if (res.ok) {
+                            apiData = await res.json();
+                            activeServerName = new URL(url).hostname;
+                            break;
+                        }
+                    } catch (e) {}
+                }
 
-                const fastestResponse = await Promise.any(fetchPromises);
-                const apiData = await fastestResponse.res.json();
-                let activeServerName = new URL(fastestResponse.source).hostname;
+                // 🚨 STEP 2: THE OPENSKY BYPASS (AGAR BLOCK HO GAYA TOH YE CHALEGA) 🚨
+                if (!apiData || !apiData.ac) {
+                    console.log("Primary Blocked! Initiating OpenSky Bypass...");
+                    document.getElementById("api-text").innerText = "Bypassing Blocks...";
+                    
+                    let bounds = map.getBounds();
+                    // OpenSky API uses Bounding Box (South, West, North, East)
+                    let osUrl = `https://opensky-network.org/api/states/all?lamin=${bounds.getSouth()}&lomin=${bounds.getWest()}&lamax=${bounds.getNorth()}&lomax=${bounds.getEast()}`;
+                    
+                    let res = await fetch(osUrl);
+                    if (!res.ok) throw new Error("All Radars Down");
+                    
+                    let osData = await res.json();
+                    apiData = { ac: [] }; 
+                    activeServerName = "OpenSky Network (Bypass)";
+                    
+                    if (osData.states) {
+                        osData.states.forEach(f => {
+                            apiData.ac.push({
+                                hex: f[0], flight: f[1], r: f[2], lon: f[5], lat: f[6], 
+                                alt_baro: f[7] ? Math.round(f[7] * 3.28084) : 0, 
+                                gs: f[9] ? Math.round(f[9] * 1.94384) : 0, 
+                                track: f[10], desc: (f[17] === 2 || f[17] === 3) ? "Private" : "Commercial"
+                            });
+                        });
+                    }
+                }
 
                 let flights = apiData.ac || [];
 
@@ -356,6 +385,7 @@
 
                 flights.forEach(flight => {
                     let hexCode = flight.hex; 
+                    // Protect against null coordinates
                     if(!flight.lat || !flight.lon) return;
 
                     let isPrivate = false;
@@ -423,15 +453,15 @@
 
             } catch (error) {
                 console.error(error);
-                document.getElementById("api-text").innerText = "Reconnecting Radars...";
-                document.getElementById("dot-anim").style.background = "#f59e0b"; 
+                document.getElementById("api-text").innerText = "Blocked! Retrying...";
+                document.getElementById("dot-anim").style.background = "#ef4444"; 
             }
         }
 
         map.on('moveend', fetchRealLiveFlights);
         fetchRealLiveFlights();
         
-        // 20 Second Refresh 
+        // Refresh 20 seconds
         setInterval(fetchRealLiveFlights, 20000); 
 
     </script>

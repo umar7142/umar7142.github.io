@@ -3,198 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacking Solutions | Advanced Cyber Security</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <title>Global Radar | Free Version</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        body { 
+            margin: 0; padding: 0; 
+            background-color: #0b0f19; /* Dark Navy */
+            color: #00ff00; /* Neon Green */
+            font-family: 'Courier New', Courier, monospace; 
+        }
+        h1 { text-align: center; padding: 15px; margin: 0; border-bottom: 2px solid #00ff00; }
+        
+        /* Map ka dabba (Container) */
+        #map { 
+            height: 80vh; /* Screen ka 80% hissa map lega */
+            width: 95%; 
+            margin: 20px auto; 
+            border: 2px solid #00ff00; 
+            border-radius: 10px; 
+            box-shadow: 0 0 15px #00ff00;
+        }
+        
+        /* Jahaz ka icon (Emoji Style) */
+        .plane-icon { font-size: 28px; text-align: center; }
+    </style>
 </head>
 <body>
 
-    <nav class="navbar slideInDown" id="navbar">
-        <a href="#hero" class="logo-container">
-            <img src="https://cdn-icons-png.flaticon.com/512/9648/9648768.png" alt="Hacking Solutions Logo" class="nav-logo">
-            <div class="logo-text">HACKING <span class="accent-text">SOLUTIONS</span>.</div>
-        </a>
-        <ul class="nav-links">
-            <li><a href="#hero">Overview</a></li>
-            <li><a href="#services">Capabilities</a></li>
-            <li><a href="#contact" class="btn-solid-small">Request Audit</a></li>
-        </ul>
-    </nav>
+    <h1>🛰️ GLOBAL RADAR COMMAND CENTER</h1>
+    
+    <div id="map"></div>
 
-    <header id="hero" class="hero-section">
-        <div class="hero-content">
-            <h1 class="fade-in-up">NEXT-GEN <span class="accent-text">CYBER SECURITY</span></h1>
-            <div class="typing-container">
-                <p class="typing-text">SECURING DIGITAL ASSETS & AUTOMATING INTELLIGENCE.</p>
-            </div>
-            <p class="subtitle fade-in-up delay-1">Ethical Hacking | OSINT Data Mining | Advanced Python Automation</p>
-            <br>
-            
-            <a href="#services" class="btn-solid fade-in-up delay-2">EXPLORE CAPABILITIES <i class="fa-solid fa-arrow-right"></i></a>
-            
-            <a href="webapp.html" class="btn-solid fade-in-up delay-2" style="margin-left: 15px; margin-top: 10px;">OPEN CYBER VAULT 🦇</a>
-            
-            <a href="game.html" class="btn-solid fade-in-up delay-2" style="margin-left: 15px; margin-top: 10px;">PLAY CYBER BREACH 🚨</a>
-            
-            <a href="email.html" class="btn-solid fade-in-up delay-2" style="margin-left: 15px; margin-top: 10px;">OSINT TARGET FINDER 🌐</a>
-            
-        </div>
-        <div class="grid-bg-light"></div>
-    </header>
-
-    <section id="services" class="services-section">
-        <div class="section-header reveal">
-            <h2 class="section-title">OUR <span class="accent-text">EXPERTISE</span></h2>
-            <p class="section-desc">Delivering military-grade security and intelligent automation for modern enterprises.</p>
-        </div>
-        
-        <div class="services-container">
-            <div class="service-card reveal">
-                <div class="icon-container">
-                    <i class="fa-solid fa-shield-halved accent-icon"></i>
-                </div>
-                <h3>VULNERABILITY AUDITS</h3>
-                <p class="service-desc">Comprehensive penetration testing and ethical hacking to identify and neutralize threats before they can be exploited.</p>
-                <a href="https://owasp.org/" target="_blank" class="card-link">Learn More <i class="fa-solid fa-chevron-right"></i></a>
-            </div>
-             <div class="service-card reveal delay-card-1">
-                <div class="icon-container">
-                    <i class="fa-solid fa-database accent-icon"></i>
-                </div>
-                <h3>OSINT DATA MINING</h3>
-                <p class="service-desc">Advanced Open-Source Intelligence gathering. We deploy Python crawlers to extract, analyze, and structure high-value public data.</p>
-                <a href="https://osintframework.com/" target="_blank" class="card-link">Deploy Systems <i class="fa-solid fa-chevron-right"></i></a>
-            </div>
-             <div class="service-card reveal delay-card-2">
-                <div class="icon-container">
-                    <i class="fa-brands fa-python accent-icon"></i>
-                </div>
-                <h3>PYTHON AUTOMATION</h3>
-                <p class="service-desc">Custom-built autonomous scripts and workflow automation to eliminate manual processes and accelerate business operations.</p>
-                <a href="https://automatetheboringstuff.com/" target="_blank" class="card-link">Automate Now <i class="fa-solid fa-chevron-right"></i></a>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="contact-section">
-        <div class="contact-container reveal">
-            
-            <div class="contact-info">
-                <h2>SECURE <span class="accent-text">COMMUNICATIONS</span></h2>
-                <p>Send a direct message to our lead cybersecurity consultant, Mirza Umer.</p>
-            </div>
-
-            <form id="cyberForm" class="cyber-form">
-                <div class="input-group">
-                    <input type="text" id="clientName" placeholder="Full Name or Alias" required>
-                </div>
-                <div class="input-group">
-                    <input type="email" id="clientEmail" placeholder="Email Address" required>
-                </div>
-                <div class="input-group">
-                    <textarea id="clientMessage" rows="5" placeholder="Project Details or Audit Request..." required></textarea>
-                </div>
-                <button type="submit" id="submitBtn" class="btn-solid form-btn">TRANSMIT MESSAGE <i class="fa-solid fa-paper-plane"></i></button>
-            </form>
-
-            <div class="contact-info" style="margin-top: 3.5rem;">
-                <p>Or reach out directly via our encrypted channels:</p>
-                <div class="contact-details" style="margin-top: 1.5rem;">
-                    <div class="detail-item">
-                        <i class="fa-brands fa-whatsapp accent-icon-small"></i>
-                        <span>+31 970588448</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fa-solid fa-location-crosshairs accent-icon-small"></i>
-                        <span>Global Operations (Remote)</span>
-                    </div>
-                </div>
-                <br>
-                <a href="https://wa.me/31970588448" target="_blank" class="btn-solid">INITIATE CHAT <i class="fa-brands fa-whatsapp"></i></a>
-            </div>
-
-        </div>
-    </section>
-
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
     <script>
-        // Navbar & Animations
-        window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
+        // 🚨 MAIN JAVASCRIPT CODE 🚨
+
+        // 1. Map Start Karna: Humne center "London LHR" rakha hai aur zoom level 5 hai
+        var map = L.map('map').setView([51.4700, -0.4543], 5);
+
+        // 2. Map ki Skin (Dark Mode CartoDB tiles - Free & No API Key!)
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '© OpenStreetMap & CARTO',
+            maxZoom: 19
+        }).addTo(map);
+
+        // 3. Apna Custom Jahaz (Plane Emoji) banane ka function
+        var planeIcon = L.divIcon({
+            html: '✈️',
+            className: 'plane-icon',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15] // Icon ko center mein rakhne ke liye
         });
 
-        function reveal() {
-            var reveals = document.querySelectorAll('.reveal');
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 50; 
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add('active');
-                }
-            }
-        }
-        window.addEventListener('scroll', reveal);
-        setTimeout(reveal, 100);
-    </script>
+        // 4. Map par Jahaz lagana! 
+        
+        // Jahaz 1: London LHR par khara hai
+        var flight1 = L.marker([51.4700, -0.4543], {icon: planeIcon}).addTo(map);
+        flight1.bindPopup('<b style="color:black;">Air Panjab 777</b><br style="color:black;">Status: Takeoff from London');
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        // Jahaz 2: America (New York JFK) ke paas hawa mein hai
+        var flight2 = L.marker([40.6413, -73.7781], {icon: planeIcon}).addTo(map);
+        flight2.bindPopup('<b style="color:black;">Air Panjab 787</b><br style="color:black;">Status: Landing in USA');
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDy07Y1jTioK57WQnULCfB1cZvlR_P3j8A",
-            authDomain: "hacking-solutions.firebaseapp.com",
-            projectId: "hacking-solutions",
-            storageBucket: "hacking-solutions.firebasestorage.app",
-            messagingSenderId: "1074731011147",
-            appId: "1:1074731011147:web:c27d725780fc9e0848d1ce"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        document.getElementById('cyberForm').addEventListener('submit', async (e) => {
-            e.preventDefault(); 
-            
-            const btn = document.getElementById('submitBtn');
-            const originalBtnText = btn.innerHTML;
-            btn.innerHTML = "TRANSMITTING TO SERVER... ⏳";
-            
-            try {
-                const name = document.getElementById('clientName').value;
-                const email = document.getElementById('clientEmail').value;
-                const msg = document.getElementById('clientMessage').value;
-
-                await addDoc(collection(db, "ClientLeads"), {
-                    name: name,
-                    email: email,
-                    message: msg,
-                    timestamp: serverTimestamp()
-                });
-
-                btn.innerHTML = "DATA SECURED IN VAULT! ✔️";
-                btn.style.backgroundColor = "#00ff00"; 
-                btn.style.color = "#000";
-                e.target.reset(); 
-                
-                setTimeout(() => {
-                    btn.innerHTML = originalBtnText;
-                    btn.style.backgroundColor = ""; 
-                    btn.style.color = "";
-                }, 4000);
-
-            } catch (error) {
-                console.error("Firebase Error: ", error);
-                btn.innerHTML = "SYSTEM ERROR! ❌";
-                btn.style.backgroundColor = "#ff003c";
-            }
-        });
     </script>
 </body>
 </html>

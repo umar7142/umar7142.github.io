@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AeroTrack | Global Enterprise Radar</title>
+    <title>AeroTrack | OSINT Hacker Radar</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
     <style>
@@ -56,6 +57,7 @@
 
         #map { flex: 1; border: 1px solid var(--border-color); border-radius: 12px; z-index: 1; background: #0b1120;}
         
+        /* 🚨 Fix for ugly black box outline on map click */
         .leaflet-marker-icon, .leaflet-marker-icon:focus { outline: none !important; border: none !important; background: transparent !important; }
         .real-plane-icon svg { width: 30px; height: 30px; filter: drop-shadow(2px 5px 4px rgba(0,0,0,0.6)); transition: transform 0.5s linear; }
 
@@ -113,12 +115,14 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
     <script>
+        // 1. Map Initialization (Centered on Dubai)
         var map = L.map('map').setView([25.0, 55.0], 5); 
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
         
         var planeLayer = L.layerGroup().addTo(map);
         var trailLayer = L.layerGroup().addTo(map); 
 
+        // 2. SVG Plane Design
         const svgPath = "M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z";
 
         function getPlaneIcon(headingAngle, color) {
@@ -129,6 +133,7 @@
             });
         }
 
+        // 3. Mini Hacker Dictionary for Airlines
         const airlinesDb = {
             "UAE": "Emirates", "QTR": "Qatar Airways", "BAW": "British Airways", "THY": "Turkish Airlines",
             "AAL": "American Airlines", "DAL": "Delta Air Lines", "UAL": "United Airlines", "PGT": "Pegasus Airlines",
@@ -149,6 +154,7 @@
 
         let activeMarkers = {};
 
+        // 4. Search Bar Engine
         document.getElementById('flight-search').addEventListener('input', function(e) {
             let searchTerm = e.target.value.toLowerCase();
             let listItems = document.querySelectorAll('#flight-feed li');
@@ -157,19 +163,21 @@
             });
         });
 
+        // 5. THE MAIN ENGINE (Airplanes.live API - No Rate Limits!)
         async function fetchRealLiveFlights() {
             try {
+                // Set UI to Loading State
                 document.getElementById("api-status").className = "fa-solid fa-spinner fa-spin";
                 document.getElementById("api-status").style.color = "#f59e0b";
                 document.getElementById("api-text").innerText = "Scanning Asmaan...";
 
-                // 🚨 NAYI API (ADSB.LOL) 🚨
-                // Yeh automatically tere map ke center ke aas paas ke 250 Nautical Miles ke jahaz uthayega!
+                // Get Current Map View Center
                 let lat = map.getCenter().lat.toFixed(2);
                 let lng = map.getCenter().lng.toFixed(2);
-                let radius = 250; // 250 NM (~460 KMs)
+                let radius = 250; // Scan 250 Nautical Miles around the screen
 
-                const response = await fetch(`https://api.adsb.lol/v2/lat/${lat}/lon/${lng}/dist/${radius}`);
+                // Fetch from New API
+                const response = await fetch(`https://api.airplanes.live/v2/lat/${lat}/lon/${lng}/dist/${radius}`);
                 if (!response.ok) throw new Error("API Down");
                 
                 const data = await response.json();
@@ -180,26 +188,25 @@
                 let commCount = 0; let privCount = 0;
                 let currentHexCodes = new Set(); 
 
-                // ADSB.lol ki list "data.ac" mein hoti hai
+                // Process up to 300 flights at a time
                 let flights = data.ac || [];
-                let visibleFlights = flights.slice(0, 300); // 300 tak limit rakhi taake browser crash na ho
+                let visibleFlights = flights.slice(0, 300); 
 
                 visibleFlights.forEach(flight => {
                     let hexCode = flight.hex; 
                     currentHexCodes.add(hexCode);
 
-                    // ADSB.lol data formats:
                     let callsign = flight.flight ? flight.flight.trim() : "UNKNOWN";
-                    let country = flight.r || "N/A"; // Registration ya Country
+                    let country = flight.r || "N/A"; 
                     let lat = flight.lat;
                     let lng = flight.lon;
-                    let alt = (flight.alt_baro === "ground" || !flight.alt_baro) ? 0 : flight.alt_baro; // Already in feet!
-                    let speed = flight.gs ? Math.round(flight.gs * 1.852) : 0; // Knots to km/h
+                    let alt = (flight.alt_baro === "ground" || !flight.alt_baro) ? 0 : flight.alt_baro; 
+                    let speed = flight.gs ? Math.round(flight.gs * 1.852) : 0; 
                     let heading = flight.track || 0;
                     
-                    // Asli Private Jet Tracker Hack (ADSB lol se)
+                    // Detect Private Jets automatically
                     let isPrivate = false;
-                    if (!flight.flight || flight.desc && (flight.desc.includes("Cessna") || flight.desc.includes("Gulfstream") || flight.desc.includes("Bombardier") || flight.desc.includes("Falcon"))) {
+                    if (!flight.flight || (flight.desc && (flight.desc.includes("Cessna") || flight.desc.includes("Gulfstream") || flight.desc.includes("Bombardier") || flight.desc.includes("Falcon")))) {
                         isPrivate = true;
                     }
 
@@ -207,11 +214,11 @@
                     let typeTag = isPrivate ? '<span class="tag vip" style="background:#fef3c7; color:#b45309;">VIP / PRIVATE</span>' : '<span class="tag" style="background:#e2e8f0; color:#0f172a;">COMMERCIAL</span>';
                     let iconClass = isPrivate ? "private-icon" : "";
                     
-                    // Nayi API baz-auqaat khud airline ka naam bhejti hai (ownOp)
                     let airlineName = flight.ownOp ? flight.ownOp : resolveAirline(callsign, isPrivate);
 
                     if(isPrivate) privCount++; else commCount++;
 
+                    // Popup UI
                     let popupHTML = `
                         <div class="popup-header"><i class="fa-solid fa-plane ${iconClass}"></i><div class="popup-title">${callsign}</div></div>
                         <div style="margin-bottom: 10px;">${typeTag}</div>
@@ -222,12 +229,14 @@
                         <div class="popup-info"><b>Aircraft:</b> <span style="font-family: monospace;">${flight.desc || 'Unknown'}</span></div>
                     `;
 
-                    // Trail (Lakir) Logic
+                    // 🚨 TRAILS (Lakir) AND MARKER CREATION 🚨
                     if(activeMarkers[hexCode]) {
+                        // Update existing plane
                         activeMarkers[hexCode].marker.setLatLng([lat, lng]);
                         activeMarkers[hexCode].marker.setIcon(getPlaneIcon(heading, planeColor));
                         activeMarkers[hexCode].marker.setPopupContent(popupHTML);
                         
+                        // Add line history
                         activeMarkers[hexCode].trailHistory.push([lat, lng]);
                         if(activeMarkers[hexCode].trailHistory.length > 50) {
                             activeMarkers[hexCode].trailHistory.shift(); 
@@ -235,10 +244,12 @@
                         activeMarkers[hexCode].trailLine.setLatLngs(activeMarkers[hexCode].trailHistory);
 
                     } else {
+                        // Create new plane
                         let marker = L.marker([lat, lng], { icon: getPlaneIcon(heading, planeColor) });
                         marker.bindPopup(popupHTML);
                         planeLayer.addLayer(marker);
                         
+                        // Create Trail
                         let trailLine = L.polyline([[lat, lng]], {
                             color: planeColor, weight: 4, opacity: 0.8, dashArray: '5, 5'
                         }).addTo(trailLayer);
@@ -246,6 +257,7 @@
                         activeMarkers[hexCode] = { marker: marker, trailHistory: [[lat, lng]], trailLine: trailLine };
                     }
 
+                    // Add to Sidebar
                     let sidebarIdClass = isPrivate ? "flight-id private" : "flight-id";
                     let listItem = document.createElement('li');
                     
@@ -263,6 +275,7 @@
                     feedContainer.appendChild(listItem);
                 });
 
+                // Clean up planes that left the area
                 for (let hex in activeMarkers) {
                     if (!currentHexCodes.has(hex)) {
                         planeLayer.removeLayer(activeMarkers[hex].marker);
@@ -274,9 +287,10 @@
                 document.getElementById('comm-count').innerText = commCount;
                 document.getElementById('priv-count').innerText = privCount;
                 
+                // System OK
                 document.getElementById("api-status").className = "fa-solid fa-circle";
                 document.getElementById("api-status").style.color = "#10b981";
-                document.getElementById("api-text").innerText = "ADSB Active";
+                document.getElementById("api-text").innerText = "Airplanes.live Active";
                 document.getElementById("api-text").style.color = "#94a3b8";
 
             } catch (error) {
@@ -288,12 +302,12 @@
             }
         }
 
-        // Map move hone par API call lagayega
+        // Fetch when Map is Moved!
         map.on('moveend', function() {
             fetchRealLiveFlights();
         });
 
-        // 10 Second ka fast refresh! 
+        // Initialize and setup interval (10 seconds for smooth trails!)
         fetchRealLiveFlights();
         setInterval(fetchRealLiveFlights, 10000); 
 

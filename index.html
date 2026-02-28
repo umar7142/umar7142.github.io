@@ -26,12 +26,10 @@
         .dot-green { color: var(--accent-green); font-size: 10px; }
         .dot-red { color: var(--accent-red); font-size: 10px; }
 
-        /* 🚨 SCROLL FIX: Added overflow hidden here */
         .dashboard-container { display: flex; flex: 1; padding: 20px; gap: 20px; overflow: hidden; }
 
-        /* 🚨 SCROLL FIX: Added overflow hidden here to keep list inside */
         .sidebar { width: 320px; background-color: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); overflow: hidden; }
-        .sidebar-title { margin: 0; font-size: 14px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; flex-shrink: 0; }
+        .sidebar-title { margin: 0; font-size: 14px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; flex-shrink: 0; display: flex; justify-content: space-between; align-items: center;}
 
         .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; flex-shrink: 0; }
         .stat-card { background-color: rgba(59, 130, 246, 0.1); border-left: 4px solid var(--accent-blue); padding: 15px; border-radius: 8px; }
@@ -39,7 +37,13 @@
         .stat-card h3 { margin: 0; font-size: 12px; color: var(--text-muted); font-weight: 600; }
         .stat-card p { margin: 5px 0 0 0; font-size: 22px; font-weight: 700; color: var(--text-main); }
 
-        /* 🚨 SCROLL FIX: Added custom scrollbar */
+        /* 🚨 VIP SEARCH BAR CSS 🚨 */
+        .search-box { display: flex; align-items: center; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 15px; margin-bottom: -5px; flex-shrink: 0;}
+        .search-box i { color: var(--text-muted); margin-right: 10px; font-size: 14px; }
+        .search-box input { background: transparent; border: none; color: var(--text-main); font-family: 'Inter', sans-serif; font-size: 13px; width: 100%; outline: none; }
+        .search-box input::placeholder { color: var(--text-muted); }
+        .search-box input:focus { color: var(--accent-blue); }
+
         .live-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex: 1; padding-right: 5px; }
         .live-list::-webkit-scrollbar { width: 6px; }
         .live-list::-webkit-scrollbar-track { background: var(--bg-panel); border-radius: 4px; }
@@ -53,10 +57,10 @@
         .live-list li .flight-route { color: var(--text-muted); margin-top: 4px; font-size: 12px;}
         .live-list li .airline-name { color: var(--text-main); font-size: 11px; font-weight: bold; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 5px;}
 
-        #map { flex: 1; border: 1px solid var(--border-color); border-radius: 12px; z-index: 1; }
-        .real-plane-icon svg { width: 30px; height: 30px; filter: drop-shadow(2px 5px 4px rgba(0,0,0,0.4)); transition: transform 0.5s linear; }
+        #map { flex: 1; border: 1px solid var(--border-color); border-radius: 12px; z-index: 1; background: #0b1120;}
+        .real-plane-icon svg { width: 30px; height: 30px; filter: drop-shadow(2px 5px 4px rgba(0,0,0,0.6)); transition: transform 0.5s linear; }
 
-        .leaflet-popup-content-wrapper { background-color: #ffffff; color: #1e293b; border-radius: 8px; font-family: 'Inter', sans-serif; min-width: 200px; }
+        .leaflet-popup-content-wrapper { background-color: #ffffff; color: #1e293b; border-radius: 8px; font-family: 'Inter', sans-serif; min-width: 200px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
         .leaflet-popup-tip { background-color: #ffffff; }
         .popup-header { display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 8px; }
         .popup-header i { color: #3b82f6; font-size: 18px; }
@@ -73,7 +77,7 @@
     <header>
         <h1><i class="fa-solid fa-plane-departure"></i> AEROTRACK <span style="font-weight: 400; color: var(--text-muted); font-size: 16px;">| Global Enterprise Radar</span></h1>
         <div class="system-status">
-            <div class="status-item"><i class="fa-solid fa-circle dot-green" id="api-status"></i> API Sensor</div>
+            <div class="status-item"><i class="fa-solid fa-circle dot-green" id="api-status"></i> API Sensor Active</div>
         </div>
     </header>
 
@@ -87,12 +91,20 @@
                     <p id="comm-count">0</p>
                 </div>
                 <div class="stat-card private-stats">
-                    <h3>Private / VIP Jets</h3>
+                    <h3>Private / VIP</h3>
                     <p id="priv-count">0</p>
                 </div>
             </div>
             
-            <h2 class="sidebar-title" style="margin-top: 10px;"><i class="fa-solid fa-satellite-dish" style="margin-right: 8px;"></i> Radar Feed</h2>
+            <h2 class="sidebar-title" style="margin-top: 5px;">
+                <span><i class="fa-solid fa-satellite-dish" style="margin-right: 8px;"></i> Radar Feed</span>
+            </h2>
+
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="flight-search" placeholder="Search Airline or Flight No...">
+            </div>
+
             <ul class="live-list" id="flight-feed"></ul>
         </div>
 
@@ -103,8 +115,12 @@
     
     <script>
         var map = L.map('map').setView([45.0, 10.0], 4);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+        
+        // Darker Map style to make Trails (Lakir) pop out better!
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
+        
         var planeLayer = L.layerGroup().addTo(map);
+        var trailLayer = L.layerGroup().addTo(map); // 🚨 Lakir (Trails) rakhne ke liye naya layer 🚨
 
         const svgPath = "M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z";
 
@@ -116,26 +132,41 @@
             });
         }
 
-        // 🚨 MINI AIRLINE DATABASE (Hacker Dictionary) 🚨
+        // 🚨 HUGE AIRLINE DATABASE EXPANSION 🚨
         const airlinesDb = {
             "UAE": "Emirates", "QTR": "Qatar Airways", "BAW": "British Airways", "THY": "Turkish Airlines",
             "AAL": "American Airlines", "DAL": "Delta Air Lines", "UAL": "United Airlines", "PGT": "Pegasus Airlines",
-            "DLH": "Lufthansa", "AFR": "Air France", "KLM": "KLM", "SIA": "Singapore Airlines", "TVF": "Transavia",
-            "CPA": "Cathay Pacific", "AIC": "Air India", "IGO": "IndiGo", "SEJ": "SpiceJet", "PIA": "Pakistan Int. Airlines",
-            "ABY": "Air Arabia", "RYR": "Ryanair", "EZY": "easyJet", "SWA": "Southwest Airlines",
+            "DLH": "Lufthansa", "AFR": "Air France", "KLM": "KLM Royal Dutch", "SIA": "Singapore Airlines", "TVF": "Transavia",
+            "CPA": "Cathay Pacific", "AIC": "Air India", "IGO": "IndiGo", "SEJ": "SpiceJet", 
+            "PIA": "Pakistan Int. Airlines", "ABQ": "Airblue", "SEP": "SereneAir", "FJU": "FlyJinnah",
+            "SVA": "Saudia", "ETD": "Etihad Airways", "FDB": "flydubai", "ABY": "Air Arabia",
+            "RYR": "Ryanair", "EZY": "easyJet", "SWA": "Southwest Airlines", "WZZ": "Wizz Air",
             "ANA": "All Nippon Airways", "JAL": "Japan Airlines", "ACA": "Air Canada", "VIR": "Virgin Atlantic"
         };
 
         function resolveAirline(callsign, isPrivate) {
             if (isPrivate) return "Private Aircraft / VIP";
             if (!callsign || callsign.length < 3) return "Commercial Flight";
-            
-            // Extract first 3 letters (ICAO Code)
             let code = callsign.substring(0, 3).toUpperCase();
             return airlinesDb[code] || "Commercial Flight";
         }
 
         let activeMarkers = {};
+
+        // 🚨 LIVE SEARCH LOGIC 🚨
+        document.getElementById('flight-search').addEventListener('input', function(e) {
+            let searchTerm = e.target.value.toLowerCase();
+            let listItems = document.querySelectorAll('#flight-feed li');
+            
+            listItems.forEach(li => {
+                let flightText = li.innerText.toLowerCase();
+                if(flightText.includes(searchTerm)) {
+                    li.style.display = 'block';
+                } else {
+                    li.style.display = 'none';
+                }
+            });
+        });
 
         async function fetchRealLiveFlights() {
             try {
@@ -144,9 +175,12 @@
                 
                 const data = await response.json();
                 const feedContainer = document.getElementById('flight-feed');
+                
+                // Keep current search term active
+                let currentSearch = document.getElementById('flight-search').value.toLowerCase();
+                
                 feedContainer.innerHTML = ''; 
-
-                const liveFlights = data.states.slice(0, 200); 
+                const liveFlights = data.states.slice(0, 250); // Increased to 250
                 
                 let commCount = 0;
                 let privCount = 0;
@@ -169,13 +203,10 @@
                         let planeColor = isPrivate ? "#f59e0b" : "#3b82f6"; 
                         let typeTag = isPrivate ? '<span class="tag vip" style="background:#fef3c7; color:#b45309;">VIP / PRIVATE</span>' : '<span class="tag" style="background:#e2e8f0; color:#0f172a;">COMMERCIAL</span>';
                         let iconClass = isPrivate ? "private-icon" : "";
-                        
-                        // 🚨 Get Airline Name
                         let airlineName = resolveAirline(callsign, isPrivate);
 
                         if(isPrivate) privCount++; else commCount++;
 
-                        // Add Airline Name to Popup
                         let popupHTML = `
                             <div class="popup-header"><i class="fa-solid fa-plane ${iconClass}"></i><div class="popup-title">${callsign}</div></div>
                             <div style="margin-bottom: 10px;">${typeTag}</div>
@@ -186,41 +217,72 @@
                             <div class="popup-info"><b>Hex Code:</b> <span style="font-family: monospace;">${hexCode.toUpperCase()}</span></div>
                         `;
 
+                        // 🚨 JHAZ KI LAKIR (TRAIL) LOGIC 🚨
                         if(activeMarkers[hexCode]) {
-                            activeMarkers[hexCode].setLatLng([lat, lng]);
-                            activeMarkers[hexCode].setIcon(getPlaneIcon(heading, planeColor));
-                            activeMarkers[hexCode].setPopupContent(popupHTML);
+                            // Plane already exists, UPDATE it
+                            activeMarkers[hexCode].marker.setLatLng([lat, lng]);
+                            activeMarkers[hexCode].marker.setIcon(getPlaneIcon(heading, planeColor));
+                            activeMarkers[hexCode].marker.setPopupContent(popupHTML);
+                            
+                            // Lakir ko update karo (Add new location to history)
+                            activeMarkers[hexCode].trailHistory.push([lat, lng]);
+                            // Sirf pichle 15 points save rakho taake map slow na ho
+                            if(activeMarkers[hexCode].trailHistory.length > 15) {
+                                activeMarkers[hexCode].trailHistory.shift(); 
+                            }
+                            // Line ko map par draw karo
+                            activeMarkers[hexCode].trailLine.setLatLngs(activeMarkers[hexCode].trailHistory);
+
                         } else {
+                            // NEW Plane Detected
                             let marker = L.marker([lat, lng], { icon: getPlaneIcon(heading, planeColor) });
                             marker.bindPopup(popupHTML);
                             planeLayer.addLayer(marker);
-                            activeMarkers[hexCode] = marker;
+                            
+                            // Lakir start karo (Dotted line)
+                            let trailLine = L.polyline([[lat, lng]], {
+                                color: planeColor, weight: 3, opacity: 0.5, dashArray: '5, 5'
+                            }).addTo(trailLayer);
+
+                            // Object mein marker aur uski lakir dono save karo
+                            activeMarkers[hexCode] = { 
+                                marker: marker, 
+                                trailHistory: [[lat, lng]], 
+                                trailLine: trailLine 
+                            };
                         }
 
+                        // Add to Sidebar Feed
                         let sidebarIdClass = isPrivate ? "flight-id private" : "flight-id";
                         let listItem = document.createElement('li');
                         
-                        // Add Airline Name to Sidebar Feed
+                        // Check if it matches search term
+                        let listText = `${callsign} ${airlineName} ${country}`.toLowerCase();
+                        if(currentSearch !== "" && !listText.includes(currentSearch)) {
+                            listItem.style.display = 'none';
+                        }
+
                         listItem.innerHTML = `
                             <div class="${sidebarIdClass}"><i class="fa-solid fa-plane" style="font-size:12px; margin-right:5px;"></i> ${callsign}</div>
                             <div class="airline-name">${airlineName}</div>
                             <div class="flight-route">${country} | ${speed} km/h</div>
                         `;
-                        listItem.onclick = () => { map.flyTo([lat, lng], 8); activeMarkers[hexCode].openPopup(); };
+                        listItem.onclick = () => { map.flyTo([lat, lng], 8); activeMarkers[hexCode].marker.openPopup(); };
                         feedContainer.appendChild(listItem);
                     }
                 });
 
+                // Remove planes that went offline (and their trails)
                 for (let hex in activeMarkers) {
                     if (!currentHexCodes.has(hex)) {
-                        planeLayer.removeLayer(activeMarkers[hex]);
+                        planeLayer.removeLayer(activeMarkers[hex].marker);
+                        trailLayer.removeLayer(activeMarkers[hex].trailLine); // Lakir bhi mitao
                         delete activeMarkers[hex];
                     }
                 }
 
                 document.getElementById('comm-count').innerText = commCount;
                 document.getElementById('priv-count').innerText = privCount;
-                
                 document.getElementById("api-status").className = "fa-solid fa-circle dot-green";
                 document.getElementById("api-status").style.color = "#10b981";
 
@@ -228,13 +290,11 @@
                 console.error("System Offline: ", error);
                 document.getElementById("api-status").className = "fa-solid fa-circle dot-red";
                 document.getElementById("api-status").style.color = "#ef4444";
-                document.getElementById('comm-count').innerText = "BLOCKED";
-                document.getElementById('priv-count').innerText = "BLOCKED";
             }
         }
 
         fetchRealLiveFlights();
-        setInterval(fetchRealLiveFlights, 20000);
+        setInterval(fetchRealLiveFlights, 15000); // 15 Seconds refresh
 
     </script>
 </body>

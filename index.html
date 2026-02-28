@@ -3,21 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Radar | Professional Version</title>
+    <title>Global Radar | Pro Enterprise Edition</title>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --neon-green: #00ff00;
+            --panel-bg: #111827;
+            --text-light: #e2e8f0;
+        }
+
+        body { 
+            margin: 0; 
+            padding: 0; 
+            background-color: var(--bg-color); 
+            color: var(--neon-green); 
+            font-family: 'Courier New', Courier, monospace; 
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Top Header */
+        header { 
+            text-align: center; 
+            padding: 15px; 
+            background-color: var(--panel-bg);
+            border-bottom: 2px solid var(--neon-green); 
+            box-shadow: 0 4px 10px rgba(0, 255, 0, 0.2);
+            z-index: 1000;
+        }
+        
+        header h1 { margin: 0; font-size: 24px; letter-spacing: 2px; }
+
+        /* Main Dashboard Layout (Sidebar + Map) */
+        .dashboard-container {
+            display: flex;
+            flex: 1;
+            padding: 15px;
+            gap: 15px;
+        }
+
+        /* Left Sidebar (Control Panel) */
+        .sidebar {
+            width: 300px;
+            background-color: var(--panel-bg);
+            border: 1px solid var(--neon-green);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.1);
+        }
+
+        .stat-box {
+            border-left: 4px solid var(--neon-green);
+            padding-left: 15px;
+            background: rgba(0, 255, 0, 0.05);
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .stat-box h3 { margin: 0; color: white; font-size: 14px; text-transform: uppercase; }
+        .stat-box p { margin: 5px 0 0 0; font-size: 24px; font-weight: bold; }
+
+        .live-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            color: white;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .live-list li {
+            padding: 10px;
+            border-bottom: 1px solid rgba(0, 255, 0, 0.2);
+            font-size: 13px;
+        }
+        .live-list li span { color: var(--neon-green); font-weight: bold; }
+
+        /* Map Container */
+        #map { 
+            flex: 1; 
+            border: 2px solid var(--neon-green); 
+            border-radius: 8px; 
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+            background-color: #aad3df; /* Light sea color before map loads */
+        }
+
+        /* ✈️ REAL SVG AIRCRAFT ICON CSS */
+        .real-plane-icon svg {
+            width: 35px;
+            height: 35px;
+            filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.5)); /* Real shadow for depth */
+            transition: transform 0.5s ease; /* Smooth rotation */
+        }
+
+        /* Custom Popup Styling */
+        .leaflet-popup-content-wrapper {
+            background-color: #111827;
+            color: white;
+            border: 1px solid #00ff00;
+            border-radius: 4px;
+        }
+        .leaflet-popup-tip { background-color: #00ff00; }
+        .popup-title { color: #00ff00; font-size: 16px; font-weight: bold; margin-bottom: 5px; border-bottom: 1px solid #333; padding-bottom: 3px;}
+        .popup-info { margin: 2px 0; font-size: 13px; font-family: sans-serif; }
+    </style>
 </head>
 <body>
 
-    <h1>🛰️ GLOBAL RADAR COMMAND CENTER</h1>
-    
-    <div id="map"></div>
+    <header>
+        <h1>🛰️ AIR PANJAB | GLOBAL FLIGHT TRACKING NETWORK</h1>
+    </header>
+
+    <div class="dashboard-container">
+        
+        <div class="sidebar">
+            <h2 style="margin-top:0; font-size: 18px; border-bottom: 1px solid #00ff00; padding-bottom: 10px;">HQ SYSTEM STATUS</h2>
+            
+            <div class="stat-box">
+                <h3>Active Fleet</h3>
+                <p id="fleet-count">Loading...</p>
+            </div>
+            
+            <div class="stat-box">
+                <h3>System Network</h3>
+                <p style="color: #00ff00;">🟢 SECURE (SSL)</p>
+            </div>
+            
+            <h3 style="color: white; font-size: 15px; margin-top: 10px;">Live Flights Feed</h3>
+            <ul class="live-list" id="flight-feed">
+                </ul>
+        </div>
+
+        <div id="map"></div>
+    </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
-    <script src="app.js"></script>
+    <script>
+        // 1. Initialize Map (Centered between UK and USA)
+        var map = L.map('map').setView([45.0, -35.0], 4);
 
+        // 2. Light Map (OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 19
+        }).addTo(map);
+
+        // 3. 🚨 THE REAL SVG AIRCRAFT (No more Emojis!) 🚨
+        // Hum inline SVG code use kar rahe hain taake image kabhi break na ho!
+        const svgPlaneCode = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path fill="#0b0f19" stroke="#00ff00" stroke-width="15" d="M256 0c-17.7 0-32 14.3-32 32V149.5L25.4 348.1c-15.6 15.6-25.4 36.8-25.4 58.9v37.4c0 14.9 15.6 24.6 29.8 18.4l194.2-84.9v103.4l-52.9 39.7c-9.2 6.9-14.9 17.6-14.9 28.9v35.8c0 10.9 11.2 18.1 21.4 13.9L256 464l78.4 31.4c10.2 4.1 21.4-3.1 21.4-13.9V446.7c0-11.3-5.7-22-14.9-28.9L288 378.1V274.7l194.2 84.9c14.2 6.2 29.8-3.5 29.8-18.4V307c0-22.1-9.8-43.3-25.4-58.9L288 149.5V32c0-17.7-14.3-32-32-32z"/>
+            </svg>
+        `;
+
+        // Function to create a rotated plane icon
+        function getPlaneIcon(headingAngle) {
+            return L.divIcon({
+                html: `<div style="transform: rotate(${headingAngle}deg);">${svgPlaneCode}</div>`,
+                className: 'real-plane-icon',
+                iconSize: [35, 35],
+                iconAnchor: [17, 17],
+                popupAnchor: [0, -17]
+            });
+        }
+
+        // 4. Fake Live Database (Future mein yahan Firebase aayega)
+        const liveFlights = [
+            { id: "AP-777", model: "Boeing 777-300ER", route: "London (LHR) -> New York (JFK)", lat: 51.0, lng: -15.0, heading: -100, speed: 905, alt: "35,000 ft" },
+            { id: "AP-787", model: "Boeing 787-8", route: "London (LHR) -> Toronto (YYZ)", lat: 53.0, lng: -25.0, heading: -95, speed: 890, alt: "38,000 ft" },
+            { id: "AP-737", model: "Boeing 737-800", route: "Dubai (DXB) -> London (LHR)", lat: 48.0, lng: 5.0, heading: -45, speed: 840, alt: "32,000 ft" },
+            { id: "AP-DC9", model: "McDonnell Douglas DC-9", route: "Miami (MIA) -> Chicago (ORD)", lat: 35.0, lng: -85.0, heading: 0, speed: 780, alt: "28,000 ft" }
+        ];
+
+        // 5. Update Sidebar Count
+        document.getElementById('fleet-count').innerText = liveFlights.length + " Jets Airborne";
+
+        // 6. Plotting the Flights on Map
+        const feedContainer = document.getElementById('flight-feed');
+
+        liveFlights.forEach(flight => {
+            // Put Marker on Map with exact rotation (heading)
+            let marker = L.marker([flight.lat, flight.lng], { icon: getPlaneIcon(flight.heading) }).addTo(map);
+            
+            // Pro Popup Design
+            let popupContent = `
+                <div class="popup-title">✈️ ${flight.id}</div>
+                <div class="popup-info"><b>Model:</b> ${flight.model}</div>
+                <div class="popup-info"><b>Route:</b> ${flight.route}</div>
+                <div class="popup-info"><b>Speed:</b> ${flight.speed} km/h</div>
+                <div class="popup-info"><b>Altitude:</b> ${flight.alt}</div>
+            `;
+            marker.bindPopup(popupContent);
+
+            // Add to Sidebar Feed
+            feedContainer.innerHTML += `
+                <li>
+                    <span>${flight.id}</span><br>
+                    ${flight.route}<br>
+                    <i>Spd: ${flight.speed} km/h</i>
+                </li>
+            `;
+        });
+    </script>
 </body>
 </html>

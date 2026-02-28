@@ -319,64 +319,32 @@
             });
         });
 
+        // 🚨 UMER ASIF VERCEL API CONNECTION 🚨
         async function fetchRealLiveFlights() {
             try {
                 document.getElementById("api-status").className = "fa-solid fa-spinner fa-spin";
                 document.getElementById("api-status").style.color = "#f59e0b";
-                document.getElementById("api-text").innerText = "Scanning Asmaan...";
+                document.getElementById("api-text").innerText = "Scanning Vercel Cloud...";
 
-                let lat = map.getCenter().lat.toFixed(2); let lng = map.getCenter().lng.toFixed(2);
-                let bounds = map.getBounds();
+                let lat = map.getCenter().lat.toFixed(2); 
+                let lng = map.getCenter().lng.toFixed(2);
                 
-                // 🚨 LALA BHAI LOAD BALANCER 🚨
-                // 4 Servers ki list. Har dafa random server ko hit karega taake block na ho!
-                let apiUrls = [
-                    `https://api.airplanes.live/v2/point/${lat}/${lng}/250`, 
-                    `https://api.adsb.one/v2/point/${lat}/${lng}/250`,
-                    `https://api.adsb.lol/v2/point/${lat}/${lng}/250`,
-                    `https://api.adsb.fi/v2/point/${lat}/${lng}/250`
-                ];
+                // 🌐 TERA VERCEL LINK YAHAN HAI 🌐
+                let myApiUrl = `https://aerotrack-api.vercel.app/live-radar?lat=${lat}&lng=${lng}`;
+
+                let response = await fetch(myApiUrl);
+                if (!response.ok) throw new Error("Cloud Server Offline");
                 
-                // Randomize array to prevent spamming one server
-                apiUrls.sort(() => Math.random() - 0.5);
+                let apiData = await response.json();
+                if (!apiData.success) throw new Error(apiData.error);
 
-                let data = null;
-                let activeServerName = "";
-
-                // Try servers one by one
-                for(let url of apiUrls) {
-                    try {
-                        let res = await fetch(url);
-                        if (res.ok) { data = await res.json(); activeServerName = new URL(url).hostname; break; }
-                    } catch (e) {}
-                }
-
-                // Fallback to OpenSky ONLY if all ADSB servers are dead
-                if (!data || !data.ac) {
-                    let osUrl = `https://opensky-network.org/api/states/all?lamin=${bounds.getSouth()}&lomin=${bounds.getWest()}&lamax=${bounds.getNorth()}&lomax=${bounds.getEast()}`;
-                    let res = await fetch(osUrl);
-                    if (res.ok) {
-                        let osData = await res.json();
-                        data = { ac: [] }; 
-                        activeServerName = "opensky-network.org (Backup)";
-                        if (osData.states) {
-                            osData.states.forEach(f => {
-                                data.ac.push({
-                                    hex: f[0], flight: f[1], r: f[2], lon: f[5], lat: f[6], 
-                                    alt_baro: f[7] ? Math.round(f[7] * 3.28084) : 0, 
-                                    gs: f[9] ? Math.round(f[9] * 1.94384) : 0, 
-                                    track: f[10], desc: (f[17] === 2 || f[17] === 3) ? "Private" : "Commercial"
-                                });
-                            });
-                        }
-                    } else { throw new Error("ALL NETWORKS DOWN"); }
-                }
+                let flights = apiData.flights || [];
+                let activeServerName = `Umer Asif Cloud (${apiData.provider})`;
 
                 const feedContainer = document.getElementById('flight-feed');
                 feedContainer.innerHTML = ''; 
                 let commCount = 0; let privCount = 0;
                 let currentHexCodes = new Set(); 
-                let flights = (data.ac || []).slice(0, 300); 
 
                 flights.forEach(flight => {
                     let hexCode = flight.hex; 
@@ -446,7 +414,8 @@
                 if(window.saveStatsToDatabase) { window.saveStatsToDatabase(commCount, privCount); }
 
             } catch (error) {
-                document.getElementById("api-text").innerText = "Reconnecting...";
+                console.error(error);
+                document.getElementById("api-text").innerText = "Reconnecting to Cloud...";
                 document.getElementById("dot-anim").style.background = "#f59e0b"; 
             }
         }
@@ -454,7 +423,7 @@
         map.on('moveend', fetchRealLiveFlights);
         fetchRealLiveFlights();
         
-        // 🚨 INTERVAL BARHA KAR 20 SECONDS KAR DIYA TA K BLOCK NA HO 🚨
+        // 20 Second Refresh (To keep Vercel happy)
         setInterval(fetchRealLiveFlights, 20000); 
 
     </script>

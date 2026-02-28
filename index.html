@@ -162,23 +162,23 @@
                 document.getElementById("api-status").className = "fa-solid fa-spinner fa-spin";
                 document.getElementById("api-status").style.color = "#f59e0b";
                 document.getElementById("api-text").innerText = "Connecting...";
+                document.getElementById("api-text").style.color = "#94a3b8";
 
                 let lat = map.getCenter().lat.toFixed(2);
                 let lng = map.getCenter().lng.toFixed(2);
                 let radius = 250; 
 
                 // 🚨 LALA BHAI KA NAYA INVINCIBLE API HACK 🚨
-                // Dunya ke 3 sabse baday unfiltered radars ab line mein khade hain!
                 const apiServers = [
-                    `https://api.airplanes.live/v2/point/${lat}/${lng}/${radius}`, // Server 1
-                    `https://api.adsb.fi/v2/point/${lat}/${lng}/${radius}`,        // Server 2 (Backup)
-                    `https://api.adsb.lol/v2/point/${lat}/${lng}/${radius}`        // Server 3 (Backup)
+                    `https://api.airplanes.live/v2/point/${lat}/${lng}/${radius}`, 
+                    `https://api.adsb.fi/v2/point/${lat}/${lng}/${radius}`,        
+                    `https://api.adsb.lol/v2/point/${lat}/${lng}/${radius}`        
                 ];
 
                 let response = null;
                 let activeServerName = "";
 
-                // Ek ek karke check karega. Jo server chala, wahin se data utha lega!
+                // Ek ek karke check karega.
                 for (let url of apiServers) {
                     try {
                         let res = await fetch(url);
@@ -192,7 +192,14 @@
                     }
                 }
 
-                if (!response) throw new Error("Saare Servers Offline Hain!");
+                // 🚨 GHOST RADAR HACK: Agar APIs down hain toh map blank NAHI hoga!
+                if (!response) {
+                    document.getElementById("api-status").className = "fa-solid fa-triangle-exclamation";
+                    document.getElementById("api-status").style.color = "#f59e0b"; // Yellow Warning
+                    document.getElementById("api-text").innerText = "Reconnecting...";
+                    document.getElementById("api-text").style.color = "#f59e0b";
+                    return; // Map ko clear kiye bina wapas mud jao!
+                }
                 
                 const data = await response.json();
                 const feedContainer = document.getElementById('flight-feed');
@@ -291,18 +298,13 @@
                 document.getElementById('comm-count').innerText = commCount;
                 document.getElementById('priv-count').innerText = privCount;
                 
-                // Server ka naam screen par dikhayega
                 document.getElementById("api-status").className = "fa-solid fa-circle";
                 document.getElementById("api-status").style.color = "#10b981";
                 document.getElementById("api-text").innerText = activeServerName;
-                document.getElementById("api-text").style.color = "#94a3b8";
+                document.getElementById("api-text").style.color = "#10b981";
 
             } catch (error) {
-                console.error("System Offline: ", error);
-                document.getElementById("api-status").className = "fa-solid fa-circle";
-                document.getElementById("api-status").style.color = "#ef4444";
-                document.getElementById("api-text").innerText = "All APIs Offline";
-                document.getElementById("api-text").style.color = "#ef4444";
+                console.error("Critical Error: ", error);
             }
         }
 
@@ -311,7 +313,8 @@
         });
 
         fetchRealLiveFlights();
-        setInterval(fetchRealLiveFlights, 10000); 
+        // 🚨 Interval ko 15 second kar diya taake API gussa na kare 🚨
+        setInterval(fetchRealLiveFlights, 15000); 
 
     </script>
 </body>

@@ -21,7 +21,7 @@
 
         body { margin: 0; padding: 0; background-color: var(--bg-body); color: var(--text-main); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-        /* 🔝 TOP NAVIGATION (NEW) */
+        /* 🔝 TOP NAVIGATION */
         header { display: flex; align-items: center; justify-content: space-between; padding: 15px 30px; background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1000; }
         header h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
         header h1 i { color: var(--accent-blue); margin-right: 8px; }
@@ -38,7 +38,7 @@
         .view-section { display: none; flex: 1; overflow: hidden; animation: fadeIn 0.4s ease-out forwards; }
         .view-section.active { display: flex; }
 
-        /* --- 🌍 RADAR VIEW (EXISTING) --- */
+        /* --- 🌍 RADAR VIEW --- */
         #radar-view { padding: 20px; gap: 20px; }
         .sidebar { width: 340px; background-color: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); overflow: hidden; flex-shrink: 0; }
         .sidebar-title { margin: 0; font-size: 13px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; display: flex; justify-content: space-between; align-items: center;}
@@ -81,13 +81,14 @@
         .tag { background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: bold; color: #0f172a; }
         .tag.vip { background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; }
 
-        /* --- ✈️ AIRLINES VIEW --- */
+        /* --- ✈️ AIRLINES VIEW (WITH LOGOS) --- */
         #airlines-view { padding: 30px; overflow-y: auto; display: none; flex-direction: column; align-items: center; }
         .page-title { font-size: 28px; font-weight: 700; margin-bottom: 20px; color: #fff; text-align: center; }
         .airlines-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; width: 100%; max-width: 1000px; }
         .airline-card { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; text-align: center; transition: 0.3s; cursor: pointer; }
         .airline-card:hover { transform: translateY(-5px); border-color: var(--accent-blue); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .airline-card i { font-size: 30px; color: var(--accent-blue); margin-bottom: 10px; }
+        /* 🚨 CSS FOR REAL LOGOS 🚨 */
+        .airline-logo { width: 100px; height: 50px; object-fit: contain; margin-bottom: 10px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
         .airline-card h3 { margin: 0 0 5px 0; font-size: 16px; color: var(--text-main); }
         .airline-card p { margin: 0; font-size: 12px; color: var(--text-muted); font-family: monospace; background: var(--bg-body); padding: 4px; border-radius: 4px; }
 
@@ -109,7 +110,7 @@
             header { flex-direction: column; padding: 15px; gap: 15px; }
             .nav-tabs { width: 100%; justify-content: center; flex-wrap: wrap; gap: 5px; }
             .nav-tab { flex: 1; text-align: center; font-size: 12px; padding: 10px 5px; }
-            .system-status { display: none; } /* Hide status on mobile to save space */
+            .system-status { display: none; } 
             
             #radar-view { flex-direction: column; padding: 10px; overflow-y: auto; }
             #map { height: 50vh; width: 100%; flex: none; border-radius: 8px; }
@@ -134,6 +135,7 @@
         <div class="system-status">
             <div class="live-dot" id="dot-anim"></div>
             <span id="api-text">Initializing Engine...</span>
+            <span id="db-status" style="margin-left: 15px; color: #ef4444;"><i class="fa-solid fa-database"></i> DB Offline</span>
         </div>
     </header>
 
@@ -195,48 +197,88 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    
-    <script>
-        /* ----------------------------------------------------
-           TAB NAVIGATION LOGIC (SPA ENGINE)
-        ---------------------------------------------------- */
-        function switchTab(tabId) {
-            // Hide all views & remove active class from tabs
-            document.querySelectorAll('.view-section').forEach(view => view.style.display = 'none');
-            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
-            
-            // Show selected view & activate tab
-            document.getElementById(`${tabId}-view`).style.display = 'flex';
-            event.currentTarget.classList.add('active');
 
-            // Fix map rendering bug when unhiding the map
-            if(tabId === 'radar') {
-                setTimeout(() => { map.invalidateSize(); }, 100);
-            }
-        }
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
-        /* ----------------------------------------------------
-           THE AIRLINE DATABASE & GENERATOR
-        ---------------------------------------------------- */
-        const airlinesDb = {
-            "UAE": "Emirates", "QTR": "Qatar Airways", "BAW": "British Airways", "THY": "Turkish Airlines",
-            "AAL": "American Airlines", "DAL": "Delta Air Lines", "UAL": "United Airlines", "PGT": "Pegasus Airlines",
-            "DLH": "Lufthansa", "AFR": "Air France", "KLM": "KLM Royal Dutch", "SIA": "Singapore Airlines", "TVF": "Transavia",
-            "CPA": "Cathay Pacific", "AIC": "Air India", "IGO": "IndiGo", "SEJ": "SpiceJet", 
-            "PIA": "Pakistan Int. Airlines", "ABQ": "Airblue", "SEP": "SereneAir", "FJU": "FlyJinnah",
-            "SVA": "Saudia", "ETD": "Etihad Airways", "FDB": "flydubai", "ABY": "Air Arabia",
-            "RYR": "Ryanair", "EZY": "easyJet", "SWA": "Southwest Airlines", "WZZ": "Wizz Air",
-            "ANA": "All Nippon Airways", "JAL": "Japan Airlines", "ACA": "Air Canada", "VIR": "Virgin Atlantic"
+        // 🔥 Ustad Ji: Yahan apni asli Firebase keys daalna
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "your-project.firebaseapp.com",
+            databaseURL: "https://your-project-default-rtdb.firebaseio.com",
+            projectId: "your-project",
         };
 
-        // Inject Airlines into the UI Grid
+        try {
+            const app = initializeApp(firebaseConfig);
+            const db = getDatabase(app);
+            
+            // Header me Green dot show karo DB zinda hone par
+            document.getElementById("db-status").style.color = "#10b981";
+            document.getElementById("db-status").innerHTML = `<i class="fa-solid fa-database"></i> DB Syncing`;
+
+            // Ek global function bana rahe hain taake main radar isko access kar sake
+            window.saveStatsToDatabase = function(commercial, vip) {
+                if (commercial > 0 || vip > 0) {
+                    push(ref(db, 'AeroTrack_Analytics'), {
+                        timestamp: new Date().toISOString(),
+                        commercial_flights: commercial,
+                        vip_flights: vip
+                    });
+                }
+            };
+        } catch (error) {
+            console.warn("Firebase is not setup yet.");
+            window.saveStatsToDatabase = function() {}; // Fallback agar DB na ho
+        }
+    </script>
+    
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.view-section').forEach(view => view.style.display = 'none');
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(`${tabId}-view`).style.display = 'flex';
+            event.currentTarget.classList.add('active');
+            if(tabId === 'radar') { setTimeout(() => { map.invalidateSize(); }, 100); }
+        }
+
+        /* 🚨 NEW AIRLINE DATABASE WITH IATA CODES FOR LOGOS 🚨 */
+        const airlinesDb = {
+            "UAE": { name: "Emirates", iata: "EK" },
+            "QTR": { name: "Qatar Airways", iata: "QR" },
+            "BAW": { name: "British Airways", iata: "BA" },
+            "THY": { name: "Turkish Airlines", iata: "TK" },
+            "AAL": { name: "American Airlines", iata: "AA" },
+            "DAL": { name: "Delta Air Lines", iata: "DL" },
+            "UAL": { name: "United Airlines", iata: "UA" },
+            "PGT": { name: "Pegasus Airlines", iata: "PC" },
+            "DLH": { name: "Lufthansa", iata: "LH" },
+            "AFR": { name: "Air France", iata: "AF" },
+            "KLM": { name: "KLM Royal Dutch", iata: "KL" },
+            "SIA": { name: "Singapore Airlines", iata: "SQ" },
+            "PIA": { name: "Pakistan Int. Airlines", iata: "PK" },
+            "ABQ": { name: "Airblue", iata: "PA" },
+            "SEP": { name: "SereneAir", iata: "ER" },
+            "FJU": { name: "FlyJinnah", iata: "9P" },
+            "SVA": { name: "Saudia", iata: "SV" },
+            "ETD": { name: "Etihad Airways", iata: "EY" },
+            "FDB": { name: "flydubai", iata: "FZ" },
+            "RYR": { name: "Ryanair", iata: "FR" },
+            "EZY": { name: "easyJet", iata: "U2" },
+            "SWA": { name: "Southwest Airlines", iata: "WN" }
+        };
+
+        // LOOP TO GENERATE REAL LOGOS IN AIRLINES TAB
         const gridContainer = document.getElementById('airlines-container');
-        for (const [code, name] of Object.entries(airlinesDb)) {
+        for (const [icao, data] of Object.entries(airlinesDb)) {
+            // Fetching High-Res logos directly via Kiwi API
+            let logoUrl = `https://images.kiwi.com/airlines/128/${data.iata}.png`;
             gridContainer.innerHTML += `
                 <div class="airline-card">
-                    <i class="fa-solid fa-plane-departure"></i>
-                    <h3>${name}</h3>
-                    <p>ICAO: ${code}</p>
+                    <img src="${logoUrl}" class="airline-logo" onerror="this.style.display='none'">
+                    <h3>${data.name}</h3>
+                    <p>ICAO: ${icao} | IATA: ${data.iata}</p>
                 </div>
             `;
         }
@@ -245,12 +287,9 @@
             if (isPrivate) return "Private Aircraft / VIP";
             if (!callsign || callsign.length < 3) return "Unknown Flight";
             let code = callsign.substring(0, 3).toUpperCase();
-            return airlinesDb[code] || "Commercial Flight";
+            return airlinesDb[code] ? airlinesDb[code].name : "Commercial Flight";
         }
 
-        /* ----------------------------------------------------
-           RADAR CORE LOGIC (MAP, FILTERS, FAST API)
-        ---------------------------------------------------- */
         var map = L.map('map').setView([25.0, 55.0], 5); 
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
         
@@ -260,17 +299,12 @@
         const svgPath = "M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z";
 
         function getPlaneIcon(headingAngle, color) {
-            return L.divIcon({
-                html: `<div style="transform: rotate(${headingAngle}deg);"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="${svgPath}" fill="${color}" stroke="#ffffff" stroke-width="1.5"/></svg></div>`,
-                className: 'real-plane-icon',
-                iconSize: [30, 30], iconAnchor: [15, 15], popupAnchor: [0, -15]
-            });
+            return L.divIcon({ html: `<div style="transform: rotate(${headingAngle}deg);"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="${svgPath}" fill="${color}" stroke="#ffffff" stroke-width="1.5"/></svg></div>`, className: 'real-plane-icon', iconSize: [30, 30], iconAnchor: [15, 15], popupAnchor: [0, -15] });
         }
 
         let activeMarkers = {};
         let currentFilter = 'all'; 
 
-        // Filter Buttons
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -280,117 +314,80 @@
             });
         });
 
-        // Search Bar
         document.getElementById('flight-search').addEventListener('input', function(e) {
             let searchTerm = e.target.value.toLowerCase();
-            let listItems = document.querySelectorAll('#flight-feed li');
-            listItems.forEach(li => {
+            document.querySelectorAll('#flight-feed li').forEach(li => {
                 li.style.display = li.innerText.toLowerCase().includes(searchTerm) ? 'block' : 'none';
             });
         });
 
-        // 🚨 THE API RACING ENGINE (ULTRA FAST) 🚨
         async function fetchRealLiveFlights() {
             try {
-                let lat = map.getCenter().lat.toFixed(2);
-                let lng = map.getCenter().lng.toFixed(2);
-                let radius = 250; 
+                document.getElementById("api-status").className = "fa-solid fa-spinner fa-spin";
+                document.getElementById("api-status").style.color = "#f59e0b";
+                document.getElementById("api-text").innerText = "Scanning Asmaan...";
 
+                let lat = map.getCenter().lat.toFixed(2); let lng = map.getCenter().lng.toFixed(2);
+                
                 const apiUrls = [
-                    `https://api.airplanes.live/v2/point/${lat}/${lng}/${radius}`, 
-                    `https://api.adsb.fi/v2/point/${lat}/${lng}/${radius}`,        
-                    `https://api.adsb.lol/v2/point/${lat}/${lng}/${radius}`        
+                    `https://api.airplanes.live/v2/point/${lat}/${lng}/250`, 
+                    `https://api.adsb.fi/v2/point/${lat}/${lng}/250`,        
+                    `https://api.adsb.lol/v2/point/${lat}/${lng}/250`        
                 ];
 
-                // Create an array of fetch promises that throw error if NOT ok
-                const fetchPromises = apiUrls.map(url => 
-                    fetch(url).then(res => {
-                        if (!res.ok) throw new Error('API down');
-                        return { res: res, source: url };
-                    })
-                );
-
-                // 🔥 Promise.any: Races all 3 APIs! Whichever responds FIRST in milliseconds wins!
+                const fetchPromises = apiUrls.map(url => fetch(url).then(res => { if (!res.ok) throw new Error(); return { res: res, source: url }; }));
                 const fastestResponse = await Promise.any(fetchPromises);
                 const data = await fastestResponse.res.json();
                 let activeServerName = new URL(fastestResponse.source).hostname;
-
-                const feedContainer = document.getElementById('flight-feed');
-                let currentSearch = document.getElementById('flight-search').value.toLowerCase();
                 
+                const feedContainer = document.getElementById('flight-feed');
                 feedContainer.innerHTML = ''; 
                 let commCount = 0; let privCount = 0;
                 let currentHexCodes = new Set(); 
+                let flights = (data.ac || []).slice(0, 300); 
 
-                let flights = data.ac || [];
-                let visibleFlights = flights.slice(0, 300); 
-
-                visibleFlights.forEach(flight => {
+                flights.forEach(flight => {
                     let hexCode = flight.hex; 
-                    let callsign = flight.flight ? flight.flight.trim() : "UNKNOWN";
-                    let country = flight.r || "N/A"; 
-                    let lat = flight.lat;
-                    let lng = flight.lon;
-                    let alt = (flight.alt_baro === "ground" || !flight.alt_baro) ? 0 : flight.alt_baro; 
-                    let speed = flight.gs ? Math.round(flight.gs * 1.852) : 0; 
-                    let heading = flight.track || 0;
+                    let isPrivate = (!flight.flight || (flight.desc && (flight.desc.includes("Cessna") || flight.desc.includes("Gulfstream") || flight.desc.includes("Bombardier") || flight.desc.includes("Falcon"))));
                     
-                    let isPrivate = false;
-                    if (!flight.flight || (flight.desc && (flight.desc.includes("Cessna") || flight.desc.includes("Gulfstream") || flight.desc.includes("Bombardier") || flight.desc.includes("Falcon")))) {
-                        isPrivate = true;
-                    }
-
                     if (currentFilter === 'commercial' && isPrivate) return; 
                     if (currentFilter === 'vip' && !isPrivate) return; 
 
                     currentHexCodes.add(hexCode);
+                    if(isPrivate) privCount++; else commCount++;
 
+                    let callsign = flight.flight ? flight.flight.trim() : "UNKNOWN";
+                    let country = flight.r || "N/A"; 
+                    let speed = flight.gs ? Math.round(flight.gs * 1.852) : 0; 
+                    let alt = (flight.alt_baro === "ground" || !flight.alt_baro) ? 0 : flight.alt_baro; 
+                    let airlineName = flight.ownOp ? flight.ownOp : resolveAirline(callsign, isPrivate);
                     let planeColor = isPrivate ? "#f59e0b" : "#3b82f6"; 
                     let typeTag = isPrivate ? '<span class="tag vip">VIP / PRIVATE</span>' : '<span class="tag">COMMERCIAL</span>';
                     let iconClass = isPrivate ? "private-icon" : "";
-                    let airlineName = flight.ownOp ? flight.ownOp : resolveAirline(callsign, isPrivate);
 
-                    if(isPrivate) privCount++; else commCount++;
-
-                    let popupHTML = `
-                        <div class="popup-header"><i class="fa-solid fa-plane ${iconClass}"></i><div class="popup-title">${callsign}</div></div>
-                        <div style="margin-bottom: 10px;">${typeTag}</div>
-                        <div class="popup-info"><b>Airline:</b> <span>${airlineName}</span></div>
-                        <div class="popup-info"><b>Origin:</b> <span>${country}</span></div>
-                        <div class="popup-info"><b>Speed:</b> <span>${speed} km/h</span></div>
-                        <div class="popup-info"><b>Altitude:</b> <span>${alt} ft</span></div>
-                        <div class="popup-info"><b>Aircraft:</b> <span style="font-family: monospace;">${flight.desc || 'Unknown'}</span></div>
-                    `;
+                    let popupHTML = `<div class="popup-header"><i class="fa-solid fa-plane ${iconClass}"></i><div class="popup-title">${callsign}</div></div><div style="margin-bottom: 10px;">${typeTag}</div><div class="popup-info"><b>Airline:</b> ${airlineName}</div><div class="popup-info"><b>Origin:</b> ${country}</div><div class="popup-info"><b>Speed:</b> ${speed} km/h</div><div class="popup-info"><b>Altitude:</b> ${alt} ft</div>`;
 
                     if(activeMarkers[hexCode]) {
-                        activeMarkers[hexCode].marker.setLatLng([lat, lng]);
-                        activeMarkers[hexCode].marker.setIcon(getPlaneIcon(heading, planeColor));
+                        activeMarkers[hexCode].marker.setLatLng([flight.lat, flight.lon]);
+                        activeMarkers[hexCode].marker.setIcon(getPlaneIcon(flight.track||0, planeColor));
                         activeMarkers[hexCode].marker.setPopupContent(popupHTML);
-                        
-                        activeMarkers[hexCode].trailHistory.push([lat, lng]);
-                        if(activeMarkers[hexCode].trailHistory.length > 40) { activeMarkers[hexCode].trailHistory.shift(); }
+                        activeMarkers[hexCode].trailHistory.push([flight.lat, flight.lon]);
+                        if(activeMarkers[hexCode].trailHistory.length > 40) activeMarkers[hexCode].trailHistory.shift();
                         activeMarkers[hexCode].trailLine.setLatLngs(activeMarkers[hexCode].trailHistory);
                     } else {
-                        let marker = L.marker([lat, lng], { icon: getPlaneIcon(heading, planeColor) });
-                        marker.bindPopup(popupHTML);
+                        let marker = L.marker([flight.lat, flight.lon], { icon: getPlaneIcon(flight.track||0, planeColor) }).bindPopup(popupHTML);
                         planeLayer.addLayer(marker);
-                        
-                        let trailLine = L.polyline([[lat, lng]], { color: planeColor, weight: 3, opacity: 0.6, dashArray: '5, 5' }).addTo(trailLayer);
-                        activeMarkers[hexCode] = { marker: marker, trailHistory: [[lat, lng]], trailLine: trailLine };
+                        let trailLine = L.polyline([[flight.lat, flight.lon]], { color: planeColor, weight: 3, opacity: 0.6, dashArray: '5, 5' }).addTo(trailLayer);
+                        activeMarkers[hexCode] = { marker: marker, trailHistory: [[flight.lat, flight.lon]], trailLine: trailLine };
                     }
 
                     let sidebarIdClass = isPrivate ? "flight-id private" : "flight-id";
                     let listItem = document.createElement('li');
-                    
                     let listText = `${callsign} ${airlineName} ${country}`.toLowerCase();
-                    if(currentSearch !== "" && !listText.includes(currentSearch)) { listItem.style.display = 'none'; }
+                    if(document.getElementById('flight-search').value !== "" && !listText.includes(document.getElementById('flight-search').value.toLowerCase())) { listItem.style.display = 'none'; }
 
-                    listItem.innerHTML = `
-                        <div class="${sidebarIdClass}"><i class="fa-solid fa-plane" style="font-size:12px; margin-right:5px;"></i> ${callsign}</div>
-                        <div class="airline-name">${airlineName}</div>
-                        <div class="flight-route">${country} | ${speed} km/h</div>
-                    `;
-                    listItem.onclick = () => { map.flyTo([lat, lng], 8); activeMarkers[hexCode].marker.openPopup(); };
+                    listItem.innerHTML = `<div class="${sidebarIdClass}"><i class="fa-solid fa-plane" style="font-size:12px; margin-right:5px;"></i> ${callsign}</div><div class="airline-name">${airlineName}</div><div class="flight-route">${country} | ${speed} km/h</div>`;
+                    listItem.onclick = () => { map.flyTo([flight.lat, flight.lon], 8); activeMarkers[hexCode].marker.openPopup(); };
                     feedContainer.appendChild(listItem);
                 });
 
@@ -405,18 +402,24 @@
                 document.getElementById('comm-count').innerText = commCount;
                 document.getElementById('priv-count').innerText = privCount;
                 document.getElementById("api-text").innerText = activeServerName;
-                document.getElementById("dot-anim").style.background = "#10b981"; // Green
+                document.getElementById("dot-anim").style.background = "#10b981"; 
+                document.getElementById("api-status").className = "fa-solid fa-circle";
+                document.getElementById("api-status").style.color = "#10b981";
+
+                // 🚨 DATABASE DATA PUSH 🚨
+                if(window.saveStatsToDatabase) {
+                    window.saveStatsToDatabase(commCount, privCount);
+                }
 
             } catch (error) {
-                // If ALL APIs fail
                 document.getElementById("api-text").innerText = "Reconnecting...";
-                document.getElementById("dot-anim").style.background = "#f59e0b"; // Yellow
+                document.getElementById("dot-anim").style.background = "#f59e0b"; 
             }
         }
 
-        map.on('moveend', function() { fetchRealLiveFlights(); });
+        map.on('moveend', fetchRealLiveFlights);
         fetchRealLiveFlights();
-        setInterval(fetchRealLiveFlights, 12000); // 12 seconds for smooth but safe polling
+        setInterval(fetchRealLiveFlights, 12000); 
 
     </script>
 </body>

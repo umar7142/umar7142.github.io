@@ -319,27 +319,35 @@
             });
         });
 
-        // 🚨 UMER ASIF VERCEL API CONNECTION 🚨
+        // 🚨 PUBLIC APIS DIRECTLY IN BROWSER (NO VERCEL FOR NOW) 🚨
         async function fetchRealLiveFlights() {
             try {
                 document.getElementById("api-status").className = "fa-solid fa-spinner fa-spin";
                 document.getElementById("api-status").style.color = "#f59e0b";
-                document.getElementById("api-text").innerText = "Scanning Vercel Cloud...";
+                document.getElementById("api-text").innerText = "Scanning Global Radars...";
 
                 let lat = map.getCenter().lat.toFixed(2); 
                 let lng = map.getCenter().lng.toFixed(2);
+                let radius = 250;
                 
-                // 🌐 TERA VERCEL LINK YAHAN HAI 🌐
-                let myApiUrl = `https://aerotrack-api.vercel.app/live-radar?lat=${lat}&lng=${lng}`;
+                // 4 Best Public APIs (Race Condition: Jo pehle data dega wo jeetega)
+                const apiUrls = [
+                    `https://api.airplanes.live/v2/point/${lat}/${lng}/${radius}`,
+                    `https://api.adsb.one/v2/point/${lat}/${lng}/${radius}`,
+                    `https://api.adsb.lol/v2/point/${lat}/${lng}/${radius}`,
+                    `https://api.adsb.fi/v2/point/${lat}/${lng}/${radius}`
+                ];
 
-                let response = await fetch(myApiUrl);
-                if (!response.ok) throw new Error("Cloud Server Offline");
-                
-                let apiData = await response.json();
-                if (!apiData.success) throw new Error(apiData.error);
+                const fetchPromises = apiUrls.map(url => fetch(url).then(res => {
+                    if (!res.ok) throw new Error('API Offline');
+                    return { res: res, source: url };
+                }));
 
-                let flights = apiData.flights || [];
-                let activeServerName = `Umer Asif Cloud (${apiData.provider})`;
+                const fastestResponse = await Promise.any(fetchPromises);
+                const apiData = await fastestResponse.res.json();
+                let activeServerName = new URL(fastestResponse.source).hostname;
+
+                let flights = apiData.ac || [];
 
                 const feedContainer = document.getElementById('flight-feed');
                 feedContainer.innerHTML = ''; 
@@ -415,7 +423,7 @@
 
             } catch (error) {
                 console.error(error);
-                document.getElementById("api-text").innerText = "Reconnecting to Cloud...";
+                document.getElementById("api-text").innerText = "Reconnecting Radars...";
                 document.getElementById("dot-anim").style.background = "#f59e0b"; 
             }
         }
@@ -423,7 +431,7 @@
         map.on('moveend', fetchRealLiveFlights);
         fetchRealLiveFlights();
         
-        // 20 Second Refresh (To keep Vercel happy)
+        // 20 Second Refresh 
         setInterval(fetchRealLiveFlights, 20000); 
 
     </script>

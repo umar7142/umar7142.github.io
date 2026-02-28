@@ -19,7 +19,6 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
         
-        /* 🚨 CUSTOM LOGO ANIMATION 🚨 */
         @keyframes radarSpin { 100% { transform: rotate(360deg); } }
 
         body { margin: 0; padding: 0; background-color: var(--bg-body); color: var(--text-main); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
@@ -211,11 +210,10 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
-        // TERA ORIGINAL FIREBASE CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyDy07Y1jTioK57WQnULCfB1cZvlR_P3j8A",
             authDomain: "hacking-solutions.firebaseapp.com",
-            databaseURL: "https://hacking-solutions-default-rtdb.firebaseio.com", // Lazmi for Realtime DB
+            databaseURL: "https://hacking-solutions-default-rtdb.firebaseio.com",
             projectId: "hacking-solutions",
             storageBucket: "hacking-solutions.firebasestorage.app",
             messagingSenderId: "1074731011147",
@@ -225,46 +223,26 @@
         try {
             const app = initializeApp(firebaseConfig);
             const db = getDatabase(app);
-            
-            // UI Status Update
             document.getElementById("db-status").style.color = "#10b981";
             document.getElementById("db-status").innerHTML = `<i class="fa-solid fa-database"></i> DB Connected`;
-
-            // Function 1: Background Analytics Pushing (Map Stats)
+            
             window.saveStatsToDatabase = function(commercial, vip) {
-                if (commercial > 0 || vip > 0) { 
-                    push(ref(db, 'AeroTrack_Analytics'), { 
-                        timestamp: new Date().toISOString(), 
-                        commercial_flights: commercial, 
-                        vip_flights: vip 
-                    }); 
-                }
+                if (commercial > 0 || vip > 0) { push(ref(db, 'AeroTrack_Analytics'), { timestamp: new Date().toISOString(), commercial_flights: commercial, vip_flights: vip }); }
             };
 
-            // Function 2: Contact Form Firebase Sync
             window.submitContactForm = async function(event) {
                 event.preventDefault();
                 const btnText = document.getElementById('submit-text');
                 btnText.innerText = "Transmitting...";
-
                 const name = document.getElementById('contact-name').value;
                 const email = document.getElementById('contact-email').value;
                 const msg = document.getElementById('contact-msg').value;
 
                 try {
-                    // Send to Firebase 'Messages' Folder
-                    await push(ref(db, 'Client_Messages'), {
-                        name: name,
-                        email: email,
-                        message: msg,
-                        timestamp: new Date().toISOString()
-                    });
-                    
+                    await push(ref(db, 'Client_Messages'), { name: name, email: email, message: msg, timestamp: new Date().toISOString() });
                     alert("Message successfully sent to Umer Asif's Database!");
                     document.getElementById('contact-form').reset();
-                } catch(error) {
-                    alert("Error: " + error.message);
-                }
+                } catch(error) { alert("Error: " + error.message); }
                 btnText.innerText = "Send Message";
             };
 
@@ -350,14 +328,22 @@
                 let lat = map.getCenter().lat.toFixed(2); let lng = map.getCenter().lng.toFixed(2);
                 let bounds = map.getBounds();
                 
-                const apiUrls = [
+                // 🚨 LALA BHAI LOAD BALANCER 🚨
+                // 4 Servers ki list. Har dafa random server ko hit karega taake block na ho!
+                let apiUrls = [
                     `https://api.airplanes.live/v2/point/${lat}/${lng}/250`, 
-                    `https://api.adsb.one/v2/point/${lat}/${lng}/250`
+                    `https://api.adsb.one/v2/point/${lat}/${lng}/250`,
+                    `https://api.adsb.lol/v2/point/${lat}/${lng}/250`,
+                    `https://api.adsb.fi/v2/point/${lat}/${lng}/250`
                 ];
+                
+                // Randomize array to prevent spamming one server
+                apiUrls.sort(() => Math.random() - 0.5);
 
                 let data = null;
                 let activeServerName = "";
 
+                // Try servers one by one
                 for(let url of apiUrls) {
                     try {
                         let res = await fetch(url);
@@ -365,6 +351,7 @@
                     } catch (e) {}
                 }
 
+                // Fallback to OpenSky ONLY if all ADSB servers are dead
                 if (!data || !data.ac) {
                     let osUrl = `https://opensky-network.org/api/states/all?lamin=${bounds.getSouth()}&lomin=${bounds.getWest()}&lamax=${bounds.getNorth()}&lomax=${bounds.getEast()}`;
                     let res = await fetch(osUrl);
@@ -466,7 +453,9 @@
 
         map.on('moveend', fetchRealLiveFlights);
         fetchRealLiveFlights();
-        setInterval(fetchRealLiveFlights, 12000); 
+        
+        // 🚨 INTERVAL BARHA KAR 20 SECONDS KAR DIYA TA K BLOCK NA HO 🚨
+        setInterval(fetchRealLiveFlights, 20000); 
 
     </script>
 </body>

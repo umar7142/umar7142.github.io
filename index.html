@@ -26,16 +26,24 @@
 
         .dashboard-container { display: flex; flex: 1; padding: 20px; gap: 20px; overflow: hidden; }
 
-        .sidebar { width: 320px; background-color: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); overflow: hidden; }
-        .sidebar-title { margin: 0; font-size: 14px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; flex-shrink: 0; display: flex; justify-content: space-between; align-items: center;}
+        .sidebar { width: 340px; background-color: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); overflow: hidden; flex-shrink: 0; }
+        .sidebar-title { margin: 0; font-size: 14px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; flex-shrink: 0; display: flex; justify-content: space-between; align-items: center;}
 
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; flex-shrink: 0; }
-        .stat-card { background-color: rgba(59, 130, 246, 0.1); border-left: 4px solid var(--accent-blue); padding: 15px; border-radius: 8px; }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex-shrink: 0; }
+        .stat-card { background-color: rgba(59, 130, 246, 0.1); border-left: 4px solid var(--accent-blue); padding: 12px; border-radius: 8px; }
         .stat-card.private-stats { background-color: rgba(245, 158, 11, 0.1); border-left-color: var(--accent-gold); }
-        .stat-card h3 { margin: 0; font-size: 12px; color: var(--text-muted); font-weight: 600; }
-        .stat-card p { margin: 5px 0 0 0; font-size: 22px; font-weight: 700; color: var(--text-main); }
+        .stat-card h3 { margin: 0; font-size: 11px; color: var(--text-muted); font-weight: 600; }
+        .stat-card p { margin: 5px 0 0 0; font-size: 20px; font-weight: 700; color: var(--text-main); }
 
-        .search-box { display: flex; align-items: center; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 15px; margin-bottom: -5px; flex-shrink: 0;}
+        /* 🚨 VIP FILTER BUTTONS CSS 🚨 */
+        .filter-buttons { display: flex; gap: 8px; flex-shrink: 0; margin-top: 5px; margin-bottom: 5px;}
+        .filter-btn { flex: 1; background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-muted); padding: 8px 5px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; transition: 0.3s; font-family: 'Inter', sans-serif; text-transform: uppercase; }
+        .filter-btn:hover { border-color: var(--text-muted); color: var(--text-main); }
+        .filter-btn.active[data-filter="all"] { background: #475569; color: #fff; border-color: #475569; }
+        .filter-btn.active[data-filter="commercial"] { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); }
+        .filter-btn.active[data-filter="vip"] { background: var(--accent-gold); color: #000; border-color: var(--accent-gold); }
+
+        .search-box { display: flex; align-items: center; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 15px; flex-shrink: 0;}
         .search-box i { color: var(--text-muted); margin-right: 10px; font-size: 14px; }
         .search-box input { background: transparent; border: none; color: var(--text-main); font-family: 'Inter', sans-serif; font-size: 13px; width: 100%; outline: none; }
         .search-box input::placeholder { color: var(--text-muted); }
@@ -45,8 +53,6 @@
         .live-list::-webkit-scrollbar { width: 6px; }
         .live-list::-webkit-scrollbar-track { background: var(--bg-panel); border-radius: 4px; }
         .live-list::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
-        .live-list::-webkit-scrollbar-thumb:hover { background: var(--accent-blue); }
-
         .live-list li { padding: 12px; background-color: var(--bg-body); border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 10px; font-size: 13px; transition: all 0.2s ease; cursor: pointer; }
         .live-list li:hover { border-color: var(--accent-blue); transform: translateX(5px); }
         .live-list li .flight-id { color: var(--accent-blue); font-weight: 700; font-size: 14px;}
@@ -69,21 +75,31 @@
         .popup-info b { color: #1e293b; }
         .tag { background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: bold; color: #0f172a; }
         .tag.vip { background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; }
+
+        /* 📱 MOBILE RESPONSIVE HACK (For Phone View) 📱 */
+        @media (max-width: 768px) {
+            body { overflow-y: auto; height: auto; display: block; }
+            header { flex-direction: column; gap: 10px; text-align: center; padding: 12px; }
+            .dashboard-container { flex-direction: column; padding: 10px; gap: 15px; display: block; }
+            #map { height: 50vh; width: 100%; margin-bottom: 15px; }
+            .sidebar { width: 100%; padding: 15px; box-sizing: border-box; display: block; }
+            .live-list { max-height: 400px; overflow-y: auto; display: block; }
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <h1><i class="fa-solid fa-plane-departure"></i> AEROTRACK <span style="font-weight: 400; color: var(--text-muted); font-size: 16px;">| OSINT Hacker Radar</span></h1>
+        <h1><i class="fa-solid fa-plane-departure"></i> AEROTRACK <span style="font-weight: 400; color: var(--text-muted); font-size: 16px;">| OSINT Radar</span></h1>
         <div class="system-status">
             <div class="status-item"><i class="fa-solid fa-circle" id="api-status" style="color:#10b981; font-size:10px;"></i> <span id="api-text">Connecting...</span></div>
         </div>
     </header>
 
     <div class="dashboard-container">
+        
         <div class="sidebar">
             <h2 class="sidebar-title"><i class="fa-solid fa-chart-line" style="margin-right: 8px;"></i> Area Analytics</h2>
-            
             <div class="stat-grid">
                 <div class="stat-card">
                     <h3>Commercial Jets</h3>
@@ -95,9 +111,11 @@
                 </div>
             </div>
             
-            <h2 class="sidebar-title" style="margin-top: 5px;">
-                <span><i class="fa-solid fa-satellite-dish" style="margin-right: 8px;"></i> Radar Feed</span>
-            </h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All Flights</button>
+                <button class="filter-btn" data-filter="commercial">Commercial</button>
+                <button class="filter-btn" data-filter="vip">VIP Jets</button>
+            </div>
 
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
@@ -148,7 +166,20 @@
         }
 
         let activeMarkers = {};
+        
+        // 🚨 FILTER BUTTON LOGIC 🚨
+        let currentFilter = 'all'; 
 
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentFilter = e.target.getAttribute('data-filter');
+                fetchRealLiveFlights(); // Filter update hote hi map refresh!
+            });
+        });
+
+        // Search Bar Logic
         document.getElementById('flight-search').addEventListener('input', function(e) {
             let searchTerm = e.target.value.toLowerCase();
             let listItems = document.querySelectorAll('#flight-feed li');
@@ -168,7 +199,7 @@
                 let lng = map.getCenter().lng.toFixed(2);
                 let radius = 250; 
 
-                // 🚨 LALA BHAI KA NAYA INVINCIBLE API HACK 🚨
+                // 🚨 3 BULLETPROOF API SERVERS 🚨
                 const apiServers = [
                     `https://api.airplanes.live/v2/point/${lat}/${lng}/${radius}`, 
                     `https://api.adsb.fi/v2/point/${lat}/${lng}/${radius}`,        
@@ -178,7 +209,6 @@
                 let response = null;
                 let activeServerName = "";
 
-                // Ek ek karke check karega.
                 for (let url of apiServers) {
                     try {
                         let res = await fetch(url);
@@ -187,18 +217,16 @@
                             activeServerName = new URL(url).hostname; 
                             break; 
                         }
-                    } catch (err) {
-                        console.warn(url + " down hai, agle server par ja raha hoon...");
-                    }
+                    } catch (err) {}
                 }
 
-                // 🚨 GHOST RADAR HACK: Agar APIs down hain toh map blank NAHI hoga!
+                // GHOST RADAR (No Blank Screen)
                 if (!response) {
                     document.getElementById("api-status").className = "fa-solid fa-triangle-exclamation";
-                    document.getElementById("api-status").style.color = "#f59e0b"; // Yellow Warning
+                    document.getElementById("api-status").style.color = "#f59e0b";
                     document.getElementById("api-text").innerText = "Reconnecting...";
                     document.getElementById("api-text").style.color = "#f59e0b";
-                    return; // Map ko clear kiye bina wapas mud jao!
+                    return; 
                 }
                 
                 const data = await response.json();
@@ -214,7 +242,6 @@
 
                 visibleFlights.forEach(flight => {
                     let hexCode = flight.hex; 
-                    currentHexCodes.add(hexCode);
 
                     let callsign = flight.flight ? flight.flight.trim() : "UNKNOWN";
                     let country = flight.r || "N/A"; 
@@ -228,6 +255,12 @@
                     if (!flight.flight || (flight.desc && (flight.desc.includes("Cessna") || flight.desc.includes("Gulfstream") || flight.desc.includes("Bombardier") || flight.desc.includes("Falcon")))) {
                         isPrivate = true;
                     }
+
+                    // 🚨 APPLY CATEGORY FILTERS HERE 🚨
+                    if (currentFilter === 'commercial' && isPrivate) return; 
+                    if (currentFilter === 'vip' && !isPrivate) return; 
+
+                    currentHexCodes.add(hexCode); // Agar filter pass kiya toh aage jane do
 
                     let planeColor = isPrivate ? "#f59e0b" : "#3b82f6"; 
                     let typeTag = isPrivate ? '<span class="tag vip" style="background:#fef3c7; color:#b45309;">VIP / PRIVATE</span>' : '<span class="tag" style="background:#e2e8f0; color:#0f172a;">COMMERCIAL</span>';
@@ -287,6 +320,7 @@
                     feedContainer.appendChild(listItem);
                 });
 
+                // Remove planes that didn't pass the filter or left the area
                 for (let hex in activeMarkers) {
                     if (!currentHexCodes.has(hex)) {
                         planeLayer.removeLayer(activeMarkers[hex].marker);
@@ -313,7 +347,6 @@
         });
 
         fetchRealLiveFlights();
-        // 🚨 Interval ko 15 second kar diya taake API gussa na kare 🚨
         setInterval(fetchRealLiveFlights, 15000); 
 
     </script>

@@ -2,135 +2,255 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AeroTrack | OSINT Hacker Radar</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
     <style>
+        /* 🎨 THEME & ANIMATIONS */
         :root {
             --bg-body: #0f172a; --bg-panel: #1e293b; --text-main: #f8fafc; --text-muted: #94a3b8;
             --accent-blue: #3b82f6; --accent-gold: #f59e0b; --accent-green: #10b981; --accent-red: #ef4444; --border-color: #334155;
         }
 
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+
         body { margin: 0; padding: 0; background-color: var(--bg-body); color: var(--text-main); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-        header { display: flex; align-items: center; justify-content: space-between; padding: 15px 30px; background-color: var(--bg-panel); border-bottom: 1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); z-index: 1000; }
-        header h1 { margin: 0; font-size: 20px; font-weight: 700; }
-        header h1 i { color: var(--accent-blue); margin-right: 10px; }
+        /* 🔝 TOP NAVIGATION (NEW) */
+        header { display: flex; align-items: center; justify-content: space-between; padding: 15px 30px; background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1000; }
+        header h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+        header h1 i { color: var(--accent-blue); margin-right: 8px; }
+        
+        .nav-tabs { display: flex; gap: 20px; }
+        .nav-tab { background: transparent; border: none; color: var(--text-muted); font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.3s; padding: 8px 15px; border-radius: 8px; font-family: 'Inter', sans-serif; }
+        .nav-tab:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
+        .nav-tab.active { color: var(--accent-blue); background: rgba(59, 130, 246, 0.1); }
 
-        .system-status { display: flex; gap: 20px; font-size: 13px; font-weight: 600; color: var(--text-muted); }
-        .status-item { display: flex; align-items: center; gap: 8px; }
+        .system-status { display: flex; gap: 15px; font-size: 13px; font-weight: 600; color: var(--text-muted); align-items: center; }
+        .live-dot { border-radius: 50%; width: 10px; height: 10px; display: inline-block; background: var(--accent-green); animation: pulse 2s infinite; }
 
-        .dashboard-container { display: flex; flex: 1; padding: 20px; gap: 20px; overflow: hidden; }
+        /* 🗂️ VIEWS CONTROLLER */
+        .view-section { display: none; flex: 1; overflow: hidden; animation: fadeIn 0.4s ease-out forwards; }
+        .view-section.active { display: flex; }
 
+        /* --- 🌍 RADAR VIEW (EXISTING) --- */
+        #radar-view { padding: 20px; gap: 20px; }
         .sidebar { width: 340px; background-color: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); overflow: hidden; flex-shrink: 0; }
-        .sidebar-title { margin: 0; font-size: 14px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; flex-shrink: 0; display: flex; justify-content: space-between; align-items: center;}
-
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex-shrink: 0; }
-        .stat-card { background-color: rgba(59, 130, 246, 0.1); border-left: 4px solid var(--accent-blue); padding: 12px; border-radius: 8px; }
-        .stat-card.private-stats { background-color: rgba(245, 158, 11, 0.1); border-left-color: var(--accent-gold); }
-        .stat-card h3 { margin: 0; font-size: 11px; color: var(--text-muted); font-weight: 600; }
+        .sidebar-title { margin: 0; font-size: 13px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; display: flex; justify-content: space-between; align-items: center;}
+        
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .stat-card { background-color: rgba(59, 130, 246, 0.05); border-left: 3px solid var(--accent-blue); padding: 12px; border-radius: 8px; transition: 0.3s; }
+        .stat-card:hover { transform: translateY(-3px); background-color: rgba(59, 130, 246, 0.1); }
+        .stat-card.private-stats { background-color: rgba(245, 158, 11, 0.05); border-left-color: var(--accent-gold); }
+        .stat-card h3 { margin: 0; font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
         .stat-card p { margin: 5px 0 0 0; font-size: 20px; font-weight: 700; color: var(--text-main); }
 
-        /* 🚨 VIP FILTER BUTTONS CSS 🚨 */
-        .filter-buttons { display: flex; gap: 8px; flex-shrink: 0; margin-top: 5px; margin-bottom: 5px;}
-        .filter-btn { flex: 1; background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-muted); padding: 8px 5px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; transition: 0.3s; font-family: 'Inter', sans-serif; text-transform: uppercase; }
+        .filter-buttons { display: flex; gap: 8px; }
+        .filter-btn { flex: 1; background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-muted); padding: 10px 5px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
         .filter-btn:hover { border-color: var(--text-muted); color: var(--text-main); }
         .filter-btn.active[data-filter="all"] { background: #475569; color: #fff; border-color: #475569; }
         .filter-btn.active[data-filter="commercial"] { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); }
         .filter-btn.active[data-filter="vip"] { background: var(--accent-gold); color: #000; border-color: var(--accent-gold); }
 
-        .search-box { display: flex; align-items: center; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 15px; flex-shrink: 0;}
-        .search-box i { color: var(--text-muted); margin-right: 10px; font-size: 14px; }
-        .search-box input { background: transparent; border: none; color: var(--text-main); font-family: 'Inter', sans-serif; font-size: 13px; width: 100%; outline: none; }
-        .search-box input::placeholder { color: var(--text-muted); }
-        .search-box input:focus { color: var(--accent-blue); }
+        .search-box { display: flex; align-items: center; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 15px; transition: 0.3s; }
+        .search-box:focus-within { border-color: var(--accent-blue); box-shadow: 0 0 0 3px rgba(59,130,246,0.2); }
+        .search-box input { background: transparent; border: none; color: var(--text-main); font-size: 13px; width: 100%; outline: none; margin-left: 10px; }
 
         .live-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex: 1; padding-right: 5px; }
-        .live-list::-webkit-scrollbar { width: 6px; }
-        .live-list::-webkit-scrollbar-track { background: var(--bg-panel); border-radius: 4px; }
+        .live-list::-webkit-scrollbar { width: 5px; }
+        .live-list::-webkit-scrollbar-track { background: transparent; }
         .live-list::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
-        .live-list li { padding: 12px; background-color: var(--bg-body); border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 10px; font-size: 13px; transition: all 0.2s ease; cursor: pointer; }
+        .live-list li { padding: 12px; background-color: var(--bg-body); border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 10px; font-size: 13px; transition: 0.2s; cursor: pointer; }
         .live-list li:hover { border-color: var(--accent-blue); transform: translateX(5px); }
         .live-list li .flight-id { color: var(--accent-blue); font-weight: 700; font-size: 14px;}
         .live-list li .flight-id.private { color: var(--accent-gold); }
-        .live-list li .flight-route { color: var(--text-muted); margin-top: 4px; font-size: 12px;}
-        .live-list li .airline-name { color: var(--text-main); font-size: 11px; font-weight: bold; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 5px;}
 
-        #map { flex: 1; border: 1px solid var(--border-color); border-radius: 12px; z-index: 1; background: #0b1120;}
-        
+        #map { flex: 1; border: 1px solid var(--border-color); border-radius: 12px; z-index: 1; background: #0b1120; }
         .leaflet-marker-icon, .leaflet-marker-icon:focus { outline: none !important; border: none !important; background: transparent !important; }
         .real-plane-icon svg { width: 30px; height: 30px; filter: drop-shadow(2px 5px 4px rgba(0,0,0,0.6)); transition: transform 0.5s linear; }
-
-        .leaflet-popup-content-wrapper { background-color: #ffffff; color: #1e293b; border-radius: 8px; font-family: 'Inter', sans-serif; min-width: 200px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .leaflet-popup-content-wrapper { background-color: #ffffff; color: #1e293b; border-radius: 8px; font-family: 'Inter', sans-serif; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
         .leaflet-popup-tip { background-color: #ffffff; }
         .popup-header { display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 8px; }
         .popup-header i { color: #3b82f6; font-size: 18px; }
         .popup-header i.private-icon { color: #f59e0b; }
-        .popup-title { font-size: 16px; font-weight: 700; }
-        .popup-info { margin: 6px 0; font-size: 13px; color: #475569; display: flex; justify-content: space-between;}
-        .popup-info b { color: #1e293b; }
         .tag { background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: bold; color: #0f172a; }
         .tag.vip { background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; }
 
-        /* 📱 MOBILE RESPONSIVE HACK (For Phone View) 📱 */
+        /* --- ✈️ AIRLINES VIEW --- */
+        #airlines-view { padding: 30px; overflow-y: auto; display: none; flex-direction: column; align-items: center; }
+        .page-title { font-size: 28px; font-weight: 700; margin-bottom: 20px; color: #fff; text-align: center; }
+        .airlines-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; width: 100%; max-width: 1000px; }
+        .airline-card { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; text-align: center; transition: 0.3s; cursor: pointer; }
+        .airline-card:hover { transform: translateY(-5px); border-color: var(--accent-blue); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .airline-card i { font-size: 30px; color: var(--accent-blue); margin-bottom: 10px; }
+        .airline-card h3 { margin: 0 0 5px 0; font-size: 16px; color: var(--text-main); }
+        .airline-card p { margin: 0; font-size: 12px; color: var(--text-muted); font-family: monospace; background: var(--bg-body); padding: 4px; border-radius: 4px; }
+
+        /* --- 👤 ABOUT & CONTACT VIEWS --- */
+        .content-box { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 40px; max-width: 600px; width: 100%; margin: 40px auto; text-align: center; }
+        .content-box img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--accent-blue); margin-bottom: 20px; }
+        .content-box h2 { margin: 0 0 10px 0; font-size: 24px; color: #fff; }
+        .content-box p { color: var(--text-muted); font-size: 15px; line-height: 1.6; }
+        
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 13px; color: var(--text-muted); }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 8px; color: #fff; font-family: 'Inter'; outline: none; box-sizing: border-box; }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--accent-blue); }
+        .submit-btn { background: var(--accent-blue); color: #fff; border: none; padding: 12px 30px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 10px; }
+        .submit-btn:hover { background: #2563eb; transform: translateY(-2px); }
+
+        /* 📱 MOBILE RESPONSIVE */
         @media (max-width: 768px) {
-            body { overflow-y: auto; height: auto; display: block; }
-            header { flex-direction: column; gap: 10px; text-align: center; padding: 12px; }
-            .dashboard-container { flex-direction: column; padding: 10px; gap: 15px; display: block; }
-            #map { height: 50vh; width: 100%; margin-bottom: 15px; }
-            .sidebar { width: 100%; padding: 15px; box-sizing: border-box; display: block; }
-            .live-list { max-height: 400px; overflow-y: auto; display: block; }
+            header { flex-direction: column; padding: 15px; gap: 15px; }
+            .nav-tabs { width: 100%; justify-content: center; flex-wrap: wrap; gap: 5px; }
+            .nav-tab { flex: 1; text-align: center; font-size: 12px; padding: 10px 5px; }
+            .system-status { display: none; } /* Hide status on mobile to save space */
+            
+            #radar-view { flex-direction: column; padding: 10px; overflow-y: auto; }
+            #map { height: 50vh; width: 100%; flex: none; border-radius: 8px; }
+            .sidebar { width: 100%; flex: none; height: auto; padding: 15px; box-sizing: border-box; }
+            .live-list { height: 350px; }
+            .filter-buttons { flex-wrap: wrap; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1><i class="fa-solid fa-plane-departure"></i> AEROTRACK <span style="font-weight: 400; color: var(--text-muted); font-size: 16px;">| OSINT Radar</span></h1>
+        <h1><i class="fa-solid fa-plane-radar"></i> AEROTRACK <span style="font-weight: 400; color: var(--text-muted); font-size: 16px;">| OSINT</span></h1>
+        
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('radar')"><i class="fa-solid fa-satellite-dish"></i> Live Radar</button>
+            <button class="nav-tab" onclick="switchTab('airlines')"><i class="fa-solid fa-plane-tail"></i> Airlines</button>
+            <button class="nav-tab" onclick="switchTab('about')"><i class="fa-solid fa-user-astronaut"></i> About</button>
+            <button class="nav-tab" onclick="switchTab('contact')"><i class="fa-solid fa-envelope"></i> Contact</button>
+        </div>
+
         <div class="system-status">
-            <div class="status-item"><i class="fa-solid fa-circle" id="api-status" style="color:#10b981; font-size:10px;"></i> <span id="api-text">Connecting...</span></div>
+            <div class="live-dot" id="dot-anim"></div>
+            <span id="api-text">Initializing Engine...</span>
         </div>
     </header>
 
-    <div class="dashboard-container">
-        
+    <div id="radar-view" class="view-section active">
         <div class="sidebar">
-            <h2 class="sidebar-title"><i class="fa-solid fa-chart-line" style="margin-right: 8px;"></i> Area Analytics</h2>
+            <h2 class="sidebar-title"><i class="fa-solid fa-chart-pie"></i> Area Analytics</h2>
             <div class="stat-grid">
-                <div class="stat-card">
-                    <h3>Commercial Jets</h3>
-                    <p id="comm-count">0</p>
-                </div>
-                <div class="stat-card private-stats">
-                    <h3>Private / VIP</h3>
-                    <p id="priv-count">0</p>
-                </div>
+                <div class="stat-card"><h3>Commercial</h3><p id="comm-count">0</p></div>
+                <div class="stat-card private-stats"><h3>VIP Jets</h3><p id="priv-count">0</p></div>
             </div>
             
+            <h2 class="sidebar-title" style="margin-top: 5px;"><i class="fa-solid fa-filter"></i> Filters</h2>
             <div class="filter-buttons">
-                <button class="filter-btn active" data-filter="all">All Flights</button>
-                <button class="filter-btn" data-filter="commercial">Commercial</button>
-                <button class="filter-btn" data-filter="vip">VIP Jets</button>
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="commercial">Airlines</button>
+                <button class="filter-btn" data-filter="vip">VIP Only</button>
             </div>
 
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="flight-search" placeholder="Search Airline or Flight No...">
+                <input type="text" id="flight-search" placeholder="Search Callsign / Airline...">
             </div>
 
             <ul class="live-list" id="flight-feed"></ul>
         </div>
-
         <div id="map"></div>
+    </div>
+
+    <div id="airlines-view" class="view-section" style="display: none; padding-top: 40px;">
+        <div class="page-title">Supported Airlines Database</div>
+        <div class="airlines-grid" id="airlines-container">
+            </div>
+    </div>
+
+    <div id="about-view" class="view-section" style="display: none;">
+        <div class="content-box">
+            <img src="https://ui-avatars.com/api/?name=Ustad+Ji&background=3b82f6&color=fff&size=128" alt="Developer">
+            <h2>Ustad Ji</h2>
+            <p style="color: var(--accent-blue); font-weight: 600; margin-top: -5px;">Tech CEO & Full-Stack Developer</p>
+            <p>Welcome to AeroTrack OSINT Radar. This platform was engineered to provide real-time, unfiltered global aviation tracking. Using a combination of multiple live ADS-B APIs, WebGL map rendering, and custom CSS engines, this project represents the pinnacle of modern web development and data visualization.</p>
+            <div style="margin-top: 20px; display: flex; gap: 15px; justify-content: center;">
+                <a href="#" style="color: #fff; font-size: 24px;"><i class="fa-brands fa-github"></i></a>
+                <a href="#" style="color: #fff; font-size: 24px;"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact-view" class="view-section" style="display: none;">
+        <div class="content-box">
+            <h2>Get in Touch</h2>
+            <p>Interested in purchasing this API engine or hiring me for a project? Send a transmission below.</p>
+            <form onsubmit="event.preventDefault(); alert('Transmission Sent to Server!');">
+                <div class="form-group"><label>Your Identity</label><input type="text" placeholder="John Doe" required></div>
+                <div class="form-group"><label>Email Frequency</label><input type="email" placeholder="john@company.com" required></div>
+                <div class="form-group"><label>Transmission Message</label><textarea rows="4" placeholder="Let's build something..." required></textarea></div>
+                <button type="submit" class="submit-btn"><i class="fa-solid fa-paper-plane" style="margin-right: 8px;"></i> Send Message</button>
+            </form>
+        </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
     <script>
+        /* ----------------------------------------------------
+           TAB NAVIGATION LOGIC (SPA ENGINE)
+        ---------------------------------------------------- */
+        function switchTab(tabId) {
+            // Hide all views & remove active class from tabs
+            document.querySelectorAll('.view-section').forEach(view => view.style.display = 'none');
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected view & activate tab
+            document.getElementById(`${tabId}-view`).style.display = 'flex';
+            event.currentTarget.classList.add('active');
+
+            // Fix map rendering bug when unhiding the map
+            if(tabId === 'radar') {
+                setTimeout(() => { map.invalidateSize(); }, 100);
+            }
+        }
+
+        /* ----------------------------------------------------
+           THE AIRLINE DATABASE & GENERATOR
+        ---------------------------------------------------- */
+        const airlinesDb = {
+            "UAE": "Emirates", "QTR": "Qatar Airways", "BAW": "British Airways", "THY": "Turkish Airlines",
+            "AAL": "American Airlines", "DAL": "Delta Air Lines", "UAL": "United Airlines", "PGT": "Pegasus Airlines",
+            "DLH": "Lufthansa", "AFR": "Air France", "KLM": "KLM Royal Dutch", "SIA": "Singapore Airlines", "TVF": "Transavia",
+            "CPA": "Cathay Pacific", "AIC": "Air India", "IGO": "IndiGo", "SEJ": "SpiceJet", 
+            "PIA": "Pakistan Int. Airlines", "ABQ": "Airblue", "SEP": "SereneAir", "FJU": "FlyJinnah",
+            "SVA": "Saudia", "ETD": "Etihad Airways", "FDB": "flydubai", "ABY": "Air Arabia",
+            "RYR": "Ryanair", "EZY": "easyJet", "SWA": "Southwest Airlines", "WZZ": "Wizz Air",
+            "ANA": "All Nippon Airways", "JAL": "Japan Airlines", "ACA": "Air Canada", "VIR": "Virgin Atlantic"
+        };
+
+        // Inject Airlines into the UI Grid
+        const gridContainer = document.getElementById('airlines-container');
+        for (const [code, name] of Object.entries(airlinesDb)) {
+            gridContainer.innerHTML += `
+                <div class="airline-card">
+                    <i class="fa-solid fa-plane-departure"></i>
+                    <h3>${name}</h3>
+                    <p>ICAO: ${code}</p>
+                </div>
+            `;
+        }
+
+        function resolveAirline(callsign, isPrivate) {
+            if (isPrivate) return "Private Aircraft / VIP";
+            if (!callsign || callsign.length < 3) return "Unknown Flight";
+            let code = callsign.substring(0, 3).toUpperCase();
+            return airlinesDb[code] || "Commercial Flight";
+        }
+
+        /* ----------------------------------------------------
+           RADAR CORE LOGIC (MAP, FILTERS, FAST API)
+        ---------------------------------------------------- */
         var map = L.map('map').setView([25.0, 55.0], 5); 
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
         
@@ -147,39 +267,20 @@
             });
         }
 
-        const airlinesDb = {
-            "UAE": "Emirates", "QTR": "Qatar Airways", "BAW": "British Airways", "THY": "Turkish Airlines",
-            "AAL": "American Airlines", "DAL": "Delta Air Lines", "UAL": "United Airlines", "PGT": "Pegasus Airlines",
-            "DLH": "Lufthansa", "AFR": "Air France", "KLM": "KLM Royal Dutch", "SIA": "Singapore Airlines", "TVF": "Transavia",
-            "CPA": "Cathay Pacific", "AIC": "Air India", "IGO": "IndiGo", "SEJ": "SpiceJet", 
-            "PIA": "Pakistan Int. Airlines", "ABQ": "Airblue", "SEP": "SereneAir", "FJU": "FlyJinnah",
-            "SVA": "Saudia", "ETD": "Etihad Airways", "FDB": "flydubai", "ABY": "Air Arabia",
-            "RYR": "Ryanair", "EZY": "easyJet", "SWA": "Southwest Airlines", "WZZ": "Wizz Air",
-            "ANA": "All Nippon Airways", "JAL": "Japan Airlines", "ACA": "Air Canada", "VIR": "Virgin Atlantic"
-        };
-
-        function resolveAirline(callsign, isPrivate) {
-            if (isPrivate) return "Private Aircraft / VIP";
-            if (!callsign || callsign.length < 3) return "Unknown Flight";
-            let code = callsign.substring(0, 3).toUpperCase();
-            return airlinesDb[code] || "Commercial Flight";
-        }
-
         let activeMarkers = {};
-        
-        // 🚨 FILTER BUTTON LOGIC 🚨
         let currentFilter = 'all'; 
 
+        // Filter Buttons
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                 e.target.classList.add('active');
                 currentFilter = e.target.getAttribute('data-filter');
-                fetchRealLiveFlights(); // Filter update hote hi map refresh!
+                fetchRealLiveFlights(); 
             });
         });
 
-        // Search Bar Logic
+        // Search Bar
         document.getElementById('flight-search').addEventListener('input', function(e) {
             let searchTerm = e.target.value.toLowerCase();
             let listItems = document.querySelectorAll('#flight-feed li');
@@ -188,48 +289,32 @@
             });
         });
 
+        // 🚨 THE API RACING ENGINE (ULTRA FAST) 🚨
         async function fetchRealLiveFlights() {
             try {
-                document.getElementById("api-status").className = "fa-solid fa-spinner fa-spin";
-                document.getElementById("api-status").style.color = "#f59e0b";
-                document.getElementById("api-text").innerText = "Connecting...";
-                document.getElementById("api-text").style.color = "#94a3b8";
-
                 let lat = map.getCenter().lat.toFixed(2);
                 let lng = map.getCenter().lng.toFixed(2);
                 let radius = 250; 
 
-                // 🚨 3 BULLETPROOF API SERVERS 🚨
-                const apiServers = [
+                const apiUrls = [
                     `https://api.airplanes.live/v2/point/${lat}/${lng}/${radius}`, 
                     `https://api.adsb.fi/v2/point/${lat}/${lng}/${radius}`,        
                     `https://api.adsb.lol/v2/point/${lat}/${lng}/${radius}`        
                 ];
 
-                let response = null;
-                let activeServerName = "";
+                // Create an array of fetch promises that throw error if NOT ok
+                const fetchPromises = apiUrls.map(url => 
+                    fetch(url).then(res => {
+                        if (!res.ok) throw new Error('API down');
+                        return { res: res, source: url };
+                    })
+                );
 
-                for (let url of apiServers) {
-                    try {
-                        let res = await fetch(url);
-                        if (res.ok) {
-                            response = res;
-                            activeServerName = new URL(url).hostname; 
-                            break; 
-                        }
-                    } catch (err) {}
-                }
+                // 🔥 Promise.any: Races all 3 APIs! Whichever responds FIRST in milliseconds wins!
+                const fastestResponse = await Promise.any(fetchPromises);
+                const data = await fastestResponse.res.json();
+                let activeServerName = new URL(fastestResponse.source).hostname;
 
-                // GHOST RADAR (No Blank Screen)
-                if (!response) {
-                    document.getElementById("api-status").className = "fa-solid fa-triangle-exclamation";
-                    document.getElementById("api-status").style.color = "#f59e0b";
-                    document.getElementById("api-text").innerText = "Reconnecting...";
-                    document.getElementById("api-text").style.color = "#f59e0b";
-                    return; 
-                }
-                
-                const data = await response.json();
                 const feedContainer = document.getElementById('flight-feed');
                 let currentSearch = document.getElementById('flight-search').value.toLowerCase();
                 
@@ -242,7 +327,6 @@
 
                 visibleFlights.forEach(flight => {
                     let hexCode = flight.hex; 
-
                     let callsign = flight.flight ? flight.flight.trim() : "UNKNOWN";
                     let country = flight.r || "N/A"; 
                     let lat = flight.lat;
@@ -256,16 +340,14 @@
                         isPrivate = true;
                     }
 
-                    // 🚨 APPLY CATEGORY FILTERS HERE 🚨
                     if (currentFilter === 'commercial' && isPrivate) return; 
                     if (currentFilter === 'vip' && !isPrivate) return; 
 
-                    currentHexCodes.add(hexCode); // Agar filter pass kiya toh aage jane do
+                    currentHexCodes.add(hexCode);
 
                     let planeColor = isPrivate ? "#f59e0b" : "#3b82f6"; 
-                    let typeTag = isPrivate ? '<span class="tag vip" style="background:#fef3c7; color:#b45309;">VIP / PRIVATE</span>' : '<span class="tag" style="background:#e2e8f0; color:#0f172a;">COMMERCIAL</span>';
+                    let typeTag = isPrivate ? '<span class="tag vip">VIP / PRIVATE</span>' : '<span class="tag">COMMERCIAL</span>';
                     let iconClass = isPrivate ? "private-icon" : "";
-                    
                     let airlineName = flight.ownOp ? flight.ownOp : resolveAirline(callsign, isPrivate);
 
                     if(isPrivate) privCount++; else commCount++;
@@ -286,20 +368,14 @@
                         activeMarkers[hexCode].marker.setPopupContent(popupHTML);
                         
                         activeMarkers[hexCode].trailHistory.push([lat, lng]);
-                        if(activeMarkers[hexCode].trailHistory.length > 50) {
-                            activeMarkers[hexCode].trailHistory.shift(); 
-                        }
+                        if(activeMarkers[hexCode].trailHistory.length > 40) { activeMarkers[hexCode].trailHistory.shift(); }
                         activeMarkers[hexCode].trailLine.setLatLngs(activeMarkers[hexCode].trailHistory);
-
                     } else {
                         let marker = L.marker([lat, lng], { icon: getPlaneIcon(heading, planeColor) });
                         marker.bindPopup(popupHTML);
                         planeLayer.addLayer(marker);
                         
-                        let trailLine = L.polyline([[lat, lng]], {
-                            color: planeColor, weight: 4, opacity: 0.8, dashArray: '5, 5'
-                        }).addTo(trailLayer);
-
+                        let trailLine = L.polyline([[lat, lng]], { color: planeColor, weight: 3, opacity: 0.6, dashArray: '5, 5' }).addTo(trailLayer);
                         activeMarkers[hexCode] = { marker: marker, trailHistory: [[lat, lng]], trailLine: trailLine };
                     }
 
@@ -307,9 +383,7 @@
                     let listItem = document.createElement('li');
                     
                     let listText = `${callsign} ${airlineName} ${country}`.toLowerCase();
-                    if(currentSearch !== "" && !listText.includes(currentSearch)) {
-                        listItem.style.display = 'none';
-                    }
+                    if(currentSearch !== "" && !listText.includes(currentSearch)) { listItem.style.display = 'none'; }
 
                     listItem.innerHTML = `
                         <div class="${sidebarIdClass}"><i class="fa-solid fa-plane" style="font-size:12px; margin-right:5px;"></i> ${callsign}</div>
@@ -320,7 +394,6 @@
                     feedContainer.appendChild(listItem);
                 });
 
-                // Remove planes that didn't pass the filter or left the area
                 for (let hex in activeMarkers) {
                     if (!currentHexCodes.has(hex)) {
                         planeLayer.removeLayer(activeMarkers[hex].marker);
@@ -331,23 +404,19 @@
 
                 document.getElementById('comm-count').innerText = commCount;
                 document.getElementById('priv-count').innerText = privCount;
-                
-                document.getElementById("api-status").className = "fa-solid fa-circle";
-                document.getElementById("api-status").style.color = "#10b981";
                 document.getElementById("api-text").innerText = activeServerName;
-                document.getElementById("api-text").style.color = "#10b981";
+                document.getElementById("dot-anim").style.background = "#10b981"; // Green
 
             } catch (error) {
-                console.error("Critical Error: ", error);
+                // If ALL APIs fail
+                document.getElementById("api-text").innerText = "Reconnecting...";
+                document.getElementById("dot-anim").style.background = "#f59e0b"; // Yellow
             }
         }
 
-        map.on('moveend', function() {
-            fetchRealLiveFlights();
-        });
-
+        map.on('moveend', function() { fetchRealLiveFlights(); });
         fetchRealLiveFlights();
-        setInterval(fetchRealLiveFlights, 15000); 
+        setInterval(fetchRealLiveFlights, 12000); // 12 seconds for smooth but safe polling
 
     </script>
 </body>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AeroTrack | Umer Asif OSINT</title>
+    <title>RailTrack | Umer Asif OSINT</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -18,7 +18,6 @@
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
-        @keyframes radarSpin { 100% { transform: rotate(360deg); } }
 
         body { margin: 0; padding: 0; background-color: var(--bg-body); color: var(--text-main); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
@@ -26,9 +25,8 @@
         header { display: flex; align-items: center; justify-content: space-between; padding: 12px 30px; background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1000; }
         
         .brand-container { display: flex; align-items: center; gap: 12px; }
-        .custom-logo { width: 36px; height: 36px; position: relative; }
-        .custom-logo svg { width: 100%; height: 100%; }
-        .radar-sweep { transform-origin: 50% 50%; animation: radarSpin 4s linear infinite; }
+        .custom-logo { width: 36px; height: 36px; position: relative; display: flex; align-items: center; justify-content: center; background: rgba(59,130,246,0.1); border-radius: 8px; border: 1px solid var(--accent-blue); }
+        .custom-logo i { font-size: 20px; color: var(--accent-blue); }
         
         header h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; display: flex; align-items: center;}
         
@@ -49,17 +47,10 @@
         .sidebar { width: 340px; background-color: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); overflow: hidden; flex-shrink: 0; }
         .sidebar-title { margin: 0; font-size: 13px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; display: flex; justify-content: space-between; align-items: center;}
         
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .stat-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
         .stat-card { background-color: rgba(59, 130, 246, 0.05); border-left: 3px solid var(--accent-blue); padding: 12px; border-radius: 8px; transition: 0.3s; }
-        .stat-card.private-stats { background-color: rgba(245, 158, 11, 0.05); border-left-color: var(--accent-gold); }
         .stat-card h3 { margin: 0; font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
         .stat-card p { margin: 5px 0 0 0; font-size: 20px; font-weight: 700; color: var(--text-main); }
-
-        .filter-buttons { display: flex; gap: 8px; }
-        .filter-btn { flex: 1; background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-muted); padding: 10px 5px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
-        .filter-btn.active[data-filter="all"] { background: #475569; color: #fff; border-color: #475569; }
-        .filter-btn.active[data-filter="commercial"] { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); }
-        .filter-btn.active[data-filter="vip"] { background: var(--accent-gold); color: #000; border-color: var(--accent-gold); }
 
         .search-box { display: flex; align-items: center; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 15px; }
         .search-box input { background: transparent; border: none; color: var(--text-main); font-size: 13px; width: 100%; outline: none; margin-left: 10px; }
@@ -69,31 +60,20 @@
         .live-list::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
         .live-list li { padding: 12px; background-color: var(--bg-body); border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 10px; font-size: 13px; cursor: pointer; border-left: 3px solid transparent; transition: 0.2s; }
         .live-list li:hover { border-color: var(--accent-blue); background: rgba(59, 130, 246, 0.05); }
-        .live-list li .flight-id { color: var(--accent-blue); font-weight: 700; font-size: 14px;}
-        .live-list li .flight-id.private { color: var(--accent-gold); }
+        .live-list li .train-id { color: var(--accent-blue); font-weight: 700; font-size: 14px;}
 
         #map { flex: 1; border: 1px solid var(--border-color); border-radius: 12px; z-index: 1; background: #0b1120; }
         .leaflet-marker-icon { outline: none !important; border: none !important; background: transparent !important; }
-        .real-plane-icon svg { width: 30px; height: 30px; filter: drop-shadow(2px 5px 4px rgba(0,0,0,0.6)); transition: transform 0.5s linear; }
+        
+        /* THE TRAIN ICON */
+        .real-train-icon { display: flex; align-items: center; justify-content: center; background: var(--accent-blue); border: 2px solid #fff; border-radius: 50%; color: #fff; width: 24px; height: 24px; font-size: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: 0.3s; }
 
         /* POPUP & TAGS */
         .leaflet-popup-content-wrapper { background-color: #ffffff; color: #1e293b; border-radius: 8px; font-family: 'Inter', sans-serif; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
         .leaflet-popup-tip { background-color: #ffffff; }
         .popup-header { display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 8px; }
         .popup-header i { color: #3b82f6; font-size: 18px; }
-        .popup-header i.private-icon { color: #f59e0b; }
         .tag { background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: bold; color: #0f172a; }
-        .tag.vip { background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; }
-
-        /* --- ✈️ AIRLINES VIEW --- */
-        #airlines-view { padding: 30px; overflow-y: auto; display: none; flex-direction: column; align-items: center; }
-        .page-title { font-size: 28px; font-weight: 700; margin-bottom: 20px; color: #fff; text-align: center; }
-        .airlines-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; width: 100%; max-width: 1000px; }
-        .airline-card { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; text-align: center; transition: 0.3s; cursor: pointer; }
-        .airline-card:hover { transform: translateY(-5px); border-color: var(--accent-blue); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .airline-logo { width: 100px; height: 50px; object-fit: contain; margin-bottom: 10px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
-        .airline-card h3 { margin: 0 0 5px 0; font-size: 16px; color: var(--text-main); }
-        .airline-card p { margin: 0; font-size: 12px; color: var(--text-muted); font-family: monospace; background: var(--bg-body); padding: 4px; border-radius: 4px; }
 
         /* --- 👤 ABOUT & CONTACT VIEWS --- */
         .content-box { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 40px; max-width: 600px; width: 100%; margin: 40px auto; text-align: center; }
@@ -118,7 +98,6 @@
             #map { height: 50vh; width: 100%; flex: none; border-radius: 8px; }
             .sidebar { width: 100%; flex: none; height: auto; padding: 15px; box-sizing: border-box; }
             .live-list { height: 350px; }
-            .filter-buttons { flex-wrap: wrap; }
         }
     </style>
 </head>
@@ -127,59 +106,39 @@
     <header>
         <div class="brand-container">
             <div class="custom-logo">
-                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="50" cy="50" r="46" fill="none" stroke="#334155" stroke-width="4"/>
-                    <line x1="50" y1="4" x2="50" y2="96" stroke="#334155" stroke-width="2"/>
-                    <line x1="4" y1="50" x2="96" y2="50" stroke="#334155" stroke-width="2"/>
-                    <path class="radar-sweep" d="M50 50 L50 4 A 46 46 0 0 1 96 50 Z" fill="rgba(59, 130, 246, 0.4)"/>
-                    <path d="M40 65 L50 35 L60 65 L50 55 Z" fill="#f59e0b" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.5))"/>
-                </svg>
+                <i class="fa-solid fa-train"></i>
             </div>
-            <h1>AEROTRACK <span style="font-weight: 400; color: var(--text-muted); font-size: 16px; margin-left: 8px;">| OSINT</span></h1>
+            <h1>RAILTRACK <span style="font-weight: 400; color: var(--text-muted); font-size: 16px; margin-left: 8px;">| GROUND OSINT</span></h1>
         </div>
         
         <div class="nav-tabs">
-            <button class="nav-tab active" onclick="switchTab('radar')"><i class="fa-solid fa-satellite-dish"></i> Live Radar</button>
-            <button class="nav-tab" onclick="switchTab('airlines')"><i class="fa-solid fa-plane-tail"></i> Airlines</button>
+            <button class="nav-tab active" onclick="switchTab('radar')"><i class="fa-solid fa-satellite-dish"></i> Live Trains</button>
             <button class="nav-tab" onclick="switchTab('about')"><i class="fa-solid fa-user-astronaut"></i> About</button>
             <button class="nav-tab" onclick="switchTab('contact')"><i class="fa-solid fa-envelope"></i> Contact</button>
         </div>
 
         <div class="system-status">
             <div class="live-dot" id="dot-anim"></div>
-            <span id="api-text">Initializing Engine...</span>
+            <span id="api-text">Initializing Ground Radar...</span>
             <span id="db-status" style="margin-left: 15px; color: #ef4444;"><i class="fa-solid fa-database"></i> DB Offline</span>
         </div>
     </header>
 
     <div id="radar-view" class="view-section active">
         <div class="sidebar">
-            <h2 class="sidebar-title"><i class="fa-solid fa-chart-pie"></i> Area Analytics</h2>
+            <h2 class="sidebar-title"><i class="fa-solid fa-chart-pie"></i> US Rail Analytics</h2>
             <div class="stat-grid">
-                <div class="stat-card"><h3>Commercial</h3><p id="comm-count">0</p></div>
-                <div class="stat-card private-stats"><h3>VIP Jets</h3><p id="priv-count">0</p></div>
+                <div class="stat-card"><h3>Active Trains (Amtrak)</h3><p id="train-count">0</p></div>
             </div>
             
-            <h2 class="sidebar-title" style="margin-top: 5px;"><i class="fa-solid fa-filter"></i> Filters</h2>
-            <div class="filter-buttons">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="commercial">Airlines</button>
-                <button class="filter-btn" data-filter="vip">VIP Only</button>
-            </div>
-
-            <div class="search-box">
+            <div class="search-box" style="margin-top: 10px;">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="flight-search" placeholder="Search Callsign / Airline...">
+                <input type="text" id="train-search" placeholder="Search Train Name or Route...">
             </div>
 
-            <ul class="live-list" id="flight-feed"></ul>
+            <ul class="live-list" id="train-feed"></ul>
         </div>
         <div id="map"></div>
-    </div>
-
-    <div id="airlines-view" class="view-section" style="display: none; padding-top: 40px;">
-        <div class="page-title">Supported Airlines Database</div>
-        <div class="airlines-grid" id="airlines-container"></div>
     </div>
 
     <div id="about-view" class="view-section" style="display: none;">
@@ -187,14 +146,14 @@
             <img src="https://ui-avatars.com/api/?name=Umer+Asif&background=3b82f6&color=fff&size=128" alt="CEO Umer Asif">
             <h2>UMER ASIF</h2>
             <p style="color: var(--accent-blue); font-weight: 600; margin-top: -5px;">Tech CEO & Full-Stack Developer</p>
-            <p>Welcome to AeroTrack OSINT Radar. This platform was engineered to provide real-time, unfiltered global aviation tracking. Using a combination of multiple live ADS-B APIs, WebGL map rendering, and custom CSS engines, this project represents the pinnacle of modern web development and data visualization.</p>
+            <p>Welcome to RailTrack OSINT. When the skies closed, we took over the ground. This platform tracks live US Railway systems (Amtrak) in real-time, completely bypassing traditional API restrictions. Welcome to the future of Ground Tracking.</p>
         </div>
     </div>
 
     <div id="contact-view" class="view-section" style="display: none;">
         <div class="content-box">
             <h2>Get in Touch</h2>
-            <p>Interested in purchasing this API engine or hiring me for a project? Send a transmission below.</p>
+            <p>Interested in purchasing this Ground Engine or hiring me? Send a transmission below.</p>
             <form id="contact-form" onsubmit="window.submitContactForm(event)">
                 <div class="form-group"><label>Your Identity</label><input type="text" id="contact-name" placeholder="John Doe" required></div>
                 <div class="form-group"><label>Email Frequency</label><input type="email" id="contact-email" placeholder="john@company.com" required></div>
@@ -226,8 +185,8 @@
             document.getElementById("db-status").style.color = "#10b981";
             document.getElementById("db-status").innerHTML = `<i class="fa-solid fa-database"></i> DB Connected`;
             
-            window.saveStatsToDatabase = function(commercial, vip) {
-                if (commercial > 0 || vip > 0) { push(ref(db, 'AeroTrack_Analytics'), { timestamp: new Date().toISOString(), commercial_flights: commercial, vip_flights: vip }); }
+            window.saveStatsToDatabase = function(trains) {
+                if (trains > 0) { push(ref(db, 'RailTrack_Analytics'), { timestamp: new Date().toISOString(), active_trains: trains }); }
             };
 
             window.submitContactForm = async function(event) {
@@ -247,9 +206,8 @@
             };
 
         } catch (error) { 
-            console.error("Firebase Auth Error:", error);
+            console.error("Firebase Error:", error);
             window.saveStatsToDatabase = function() {}; 
-            window.submitContactForm = function(e) { e.preventDefault(); alert("Database Offline. Cannot send message."); };
         }
     </script>
     
@@ -262,206 +220,125 @@
             if(tabId === 'radar') { setTimeout(() => { map.invalidateSize(); }, 100); }
         }
 
-        const airlinesDb = {
-            "UAE": { name: "Emirates", iata: "EK" }, "QTR": { name: "Qatar Airways", iata: "QR" },
-            "BAW": { name: "British Airways", iata: "BA" }, "THY": { name: "Turkish Airlines", iata: "TK" },
-            "AAL": { name: "American Airlines", iata: "AA" }, "DAL": { name: "Delta Air Lines", iata: "DL" },
-            "UAL": { name: "United Airlines", iata: "UA" }, "PGT": { name: "Pegasus Airlines", iata: "PC" },
-            "DLH": { name: "Lufthansa", iata: "LH" }, "AFR": { name: "Air France", iata: "AF" },
-            "KLM": { name: "KLM Royal Dutch", iata: "KL" }, "SIA": { name: "Singapore Airlines", iata: "SQ" },
-            "PIA": { name: "Pakistan Int. Airlines", iata: "PK" }, "ABQ": { name: "Airblue", iata: "PA" },
-            "SEP": { name: "SereneAir", iata: "ER" }, "FJU": { name: "FlyJinnah", iata: "9P" },
-            "SVA": { name: "Saudia", iata: "SV" }, "ETD": { name: "Etihad Airways", iata: "EY" },
-            "FDB": { name: "flydubai", iata: "FZ" }, "RYR": { name: "Ryanair", iata: "FR" },
-            "EZY": { name: "easyJet", iata: "U2" }, "SWA": { name: "Southwest Airlines", iata: "WN" }
-        };
-
-        const gridContainer = document.getElementById('airlines-container');
-        for (const [icao, data] of Object.entries(airlinesDb)) {
-            let logoUrl = `https://images.kiwi.com/airlines/128/${data.iata}.png`;
-            gridContainer.innerHTML += `<div class="airline-card"><img src="${logoUrl}" class="airline-logo" onerror="this.style.display='none'"><h3>${data.name}</h3><p>ICAO: ${icao} | IATA: ${data.iata}</p></div>`;
-        }
-
-        function resolveAirline(callsign, isPrivate) {
-            if (isPrivate) return "Private Aircraft / VIP";
-            if (!callsign || callsign.length < 3) return "Unknown Flight";
-            let code = callsign.substring(0, 3).toUpperCase();
-            return airlinesDb[code] ? airlinesDb[code].name : "Commercial Flight";
-        }
-
-        var map = L.map('map').setView([25.0, 55.0], 5); 
+        // USA MAP CENTER (Kyunke API USA ki hai)
+        var map = L.map('map').setView([39.8283, -98.5795], 4); 
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
-        var planeLayer = L.layerGroup().addTo(map);
-        var trailLayer = L.layerGroup().addTo(map); 
+        var trainLayer = L.layerGroup().addTo(map);
 
-        const svgPath = "M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z";
-
-        function getPlaneIcon(headingAngle, color) {
-            return L.divIcon({ html: `<div style="transform: rotate(${headingAngle}deg);"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="${svgPath}" fill="${color}" stroke="#ffffff" stroke-width="1.5"/></svg></div>`, className: 'real-plane-icon', iconSize: [30, 30], iconAnchor: [15, 15], popupAnchor: [0, -15] });
+        function getTrainIcon() {
+            return L.divIcon({ 
+                html: `<div class="real-train-icon"><i class="fa-solid fa-train-subway"></i></div>`, 
+                className: '', 
+                iconSize: [24, 24], 
+                iconAnchor: [12, 12], 
+                popupAnchor: [0, -12] 
+            });
         }
 
         let activeMarkers = {};
-        let currentFilter = 'all'; 
 
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                currentFilter = e.target.getAttribute('data-filter');
-                fetchRealLiveFlights(); 
-            });
-        });
-
-        document.getElementById('flight-search').addEventListener('input', function(e) {
+        document.getElementById('train-search').addEventListener('input', function(e) {
             let searchTerm = e.target.value.toLowerCase();
-            document.querySelectorAll('#flight-feed li').forEach(li => {
+            document.querySelectorAll('#train-feed li').forEach(li => {
                 li.style.display = li.innerText.toLowerCase().includes(searchTerm) ? 'block' : 'none';
             });
         });
 
-        // 🚨 THE HYDRA ENGINE (BYPASS ALL BLOCKS) 🚨
-        async function fetchRealLiveFlights() {
+        // 🚨 LIVE US TRAIN API (No Keys, No Blocks) 🚨
+        async function fetchLiveTrains() {
             try {
-                let statusText = document.getElementById("api-text");
-                document.getElementById("api-status").className = "fa-solid fa-spinner fa-spin";
-                document.getElementById("api-status").style.color = "#f59e0b";
-                statusText.innerText = "Engaging Hydra Engine...";
+                document.getElementById("api-text").innerText = "Syncing with Railways...";
+                document.getElementById("dot-anim").style.background = "#f59e0b";
 
-                let lat = map.getCenter().lat.toFixed(2); 
-                let lng = map.getCenter().lng.toFixed(2);
+                // Amtraker Open API
+                let response = await fetch('https://api-v3.amtraker.com/v3/trains');
+                if(!response.ok) throw new Error("API Down");
                 
-                // 🚨 RADIUS KAM KAR DIYA (150) TA KE SERVER JALDI BLOCK NA KARE 🚨
-                let radius = 150; 
+                let rawData = await response.json();
                 
-                // MAIN SERVERS
-                const baseUrls = [
-                    `https://api.airplanes.live/v2/point/${lat}/${lng}/${radius}`,
-                    `https://api.adsb.fi/v2/point/${lat}/${lng}/${radius}`
-                ];
-
-                // 🚨 THE PROXY MASKS (Agar ek block hoga toh doosra IP mask lag jayega)
-                const proxies = [
-                    "", // Pehle Direct Try karega
-                    "https://api.allorigins.win/raw?url=", // Proxy 1
-                    "https://api.codetabs.com/v1/proxy?quest=" // Proxy 2
-                ];
-
-                let apiData = null;
-                let activeServerName = "";
-
-                // NESTED LOOP: Har URL ko har Proxy ke sath try karega jab tak data na mile!
-                outerLoop:
-                for (let url of baseUrls) {
-                    for (let proxy of proxies) {
-                        try {
-                            let fetchUrl = proxy === "" ? url : proxy + encodeURIComponent(url);
-                            let logName = proxy === "" ? new URL(url).hostname : `Proxy -> ${new URL(url).hostname}`;
-                            statusText.innerText = `Trying: ${logName}`;
-                            
-                            let response = await fetch(fetchUrl, { cache: 'no-store' });
-                            
-                            if (response.ok) {
-                                apiData = await response.json();
-                                activeServerName = logName;
-                                break outerLoop; // DATA MIL GAYA! Loop tod do.
-                            }
-                        } catch (err) {
-                            console.warn(`[Blocked] Shifted to next node...`);
-                        }
-                    }
-                }
-
-                if (!apiData || !apiData.ac) {
-                    throw new Error("All Proxies and Radars Blocked");
-                }
-
-                let flights = apiData.ac || [];
-
-                const feedContainer = document.getElementById('flight-feed');
+                const feedContainer = document.getElementById('train-feed');
                 feedContainer.innerHTML = ''; 
-                let commCount = 0; let privCount = 0;
-                let currentHexCodes = new Set(); 
+                let trainCount = 0;
+                let currentTrainIDs = new Set(); 
 
-                flights.forEach(flight => {
-                    let hexCode = flight.hex; 
-                    if(!flight.lat || !flight.lon) return;
+                // API Object ko Array mein convert karna
+                for (let key in rawData) {
+                    let trainInstances = rawData[key];
+                    if(trainInstances && trainInstances.length > 0) {
+                        let train = trainInstances[0]; // Get the active train object
+                        
+                        // Valid coordinates filter
+                        if(!train.lat || !train.lon || train.lat === 0) continue;
 
-                    let isPrivate = false;
-                    if (flight.desc === "Private" || !flight.flight || (flight.desc && (flight.desc.includes("Cessna") || flight.desc.includes("Gulfstream") || flight.desc.includes("Bombardier") || flight.desc.includes("Falcon")))) {
-                        isPrivate = true;
-                    }
-                    
-                    if (currentFilter === 'commercial' && isPrivate) return; 
-                    if (currentFilter === 'vip' && !isPrivate) return; 
+                        let trainId = `Train-${train.trainNum}`;
+                        currentTrainIDs.add(trainId);
+                        trainCount++;
 
-                    currentHexCodes.add(hexCode);
-                    if(isPrivate) privCount++; else commCount++;
+                        let trainName = train.routeName || "Amtrak Service";
+                        let speed = train.velocity ? Math.round(train.velocity * 1.609) : 0; // mph to km/h
+                        let status = train.trainState || "En Route";
 
-                    let callsign = flight.flight ? flight.flight.trim() : "UNKNOWN";
-                    let country = flight.r || "N/A"; 
-                    let speed = flight.gs ? Math.round(flight.gs * 1.852) : 0; 
-                    let alt = flight.alt_baro || 0; 
-                    let airlineName = flight.ownOp ? flight.ownOp : resolveAirline(callsign, isPrivate);
-                    let planeColor = isPrivate ? "#f59e0b" : "#3b82f6"; 
-                    let typeTag = isPrivate ? '<span class="tag vip">VIP / PRIVATE</span>' : '<span class="tag">COMMERCIAL</span>';
-                    let iconClass = isPrivate ? "private-icon" : "";
+                        let popupHTML = `
+                            <div class="popup-header"><i class="fa-solid fa-train"></i><div class="popup-title">${trainName}</div></div>
+                            <div style="margin-bottom: 10px;"><span class="tag">US RAILWAYS</span></div>
+                            <div class="popup-info"><b>Train ID:</b> #${train.trainNum}</div>
+                            <div class="popup-info"><b>Status:</b> ${status}</div>
+                            <div class="popup-info"><b>Speed:</b> ${speed} km/h</div>
+                            <div class="popup-info"><b>Destination:</b> ${train.destName}</div>
+                        `;
 
-                    let popupHTML = `<div class="popup-header"><i class="fa-solid fa-plane ${iconClass}"></i><div class="popup-title">${callsign}</div></div><div style="margin-bottom: 10px;">${typeTag}</div><div class="popup-info"><b>Airline:</b> ${airlineName}</div><div class="popup-info"><b>Origin:</b> ${country}</div><div class="popup-info"><b>Speed:</b> ${speed} km/h</div><div class="popup-info"><b>Altitude:</b> ${alt} ft</div>`;
+                        // Draw on Map
+                        if(activeMarkers[trainId]) {
+                            activeMarkers[trainId].setLatLng([train.lat, train.lon]);
+                            activeMarkers[trainId].setPopupContent(popupHTML);
+                        } else {
+                            let marker = L.marker([train.lat, train.lon], { icon: getTrainIcon() }).bindPopup(popupHTML);
+                            trainLayer.addLayer(marker);
+                            activeMarkers[trainId] = marker;
+                        }
 
-                    if(activeMarkers[hexCode]) {
-                        activeMarkers[hexCode].marker.setLatLng([flight.lat, flight.lon]);
-                        activeMarkers[hexCode].marker.setIcon(getPlaneIcon(flight.track||0, planeColor));
-                        activeMarkers[hexCode].marker.setPopupContent(popupHTML);
-                        activeMarkers[hexCode].trailHistory.push([flight.lat, flight.lon]);
-                        if(activeMarkers[hexCode].trailHistory.length > 40) activeMarkers[hexCode].trailHistory.shift();
-                        activeMarkers[hexCode].trailLine.setLatLngs(activeMarkers[hexCode].trailHistory);
-                    } else {
-                        let marker = L.marker([flight.lat, flight.lon], { icon: getPlaneIcon(flight.track||0, planeColor) }).bindPopup(popupHTML);
-                        planeLayer.addLayer(marker);
-                        let trailLine = L.polyline([[flight.lat, flight.lon]], { color: planeColor, weight: 3, opacity: 0.6, dashArray: '5, 5' }).addTo(trailLayer);
-                        activeMarkers[hexCode] = { marker: marker, trailHistory: [[flight.lat, flight.lon]], trailLine: trailLine };
-                    }
+                        // Add to Sidebar
+                        let listItem = document.createElement('li');
+                        let listText = `${trainName} ${train.destName}`.toLowerCase();
+                        if(document.getElementById('train-search').value !== "" && !listText.includes(document.getElementById('train-search').value.toLowerCase())) { listItem.style.display = 'none'; }
 
-                    let sidebarIdClass = isPrivate ? "flight-id private" : "flight-id";
-                    let listItem = document.createElement('li');
-                    let listText = `${callsign} ${airlineName} ${country}`.toLowerCase();
-                    if(document.getElementById('flight-search').value !== "" && !listText.includes(document.getElementById('flight-search').value.toLowerCase())) { listItem.style.display = 'none'; }
-
-                    listItem.innerHTML = `<div class="${sidebarIdClass}"><i class="fa-solid fa-plane" style="font-size:12px; margin-right:5px;"></i> ${callsign}</div><div class="airline-name">${airlineName}</div><div class="flight-route">${country} | ${speed} km/h</div>`;
-                    listItem.onclick = () => { map.flyTo([flight.lat, flight.lon], 8); activeMarkers[hexCode].marker.openPopup(); };
-                    feedContainer.appendChild(listItem);
-                });
-
-                for (let hex in activeMarkers) {
-                    if (!currentHexCodes.has(hex)) {
-                        planeLayer.removeLayer(activeMarkers[hex].marker);
-                        trailLayer.removeLayer(activeMarkers[hex].trailLine); 
-                        delete activeMarkers[hex];
+                        listItem.innerHTML = `
+                            <div class="train-id"><i class="fa-solid fa-train-subway" style="font-size:12px; margin-right:5px;"></i> ${trainName}</div>
+                            <div class="airline-name">To: ${train.destName}</div>
+                            <div class="flight-route">Status: ${status} | ${speed} km/h</div>
+                        `;
+                        listItem.onclick = () => { map.flyTo([train.lat, train.lon], 10); activeMarkers[trainId].openPopup(); };
+                        feedContainer.appendChild(listItem);
                     }
                 }
 
-                document.getElementById('comm-count').innerText = commCount;
-                document.getElementById('priv-count').innerText = privCount;
-                
-                document.getElementById("api-text").innerText = `Live: ${activeServerName}`;
-                document.getElementById("dot-anim").style.background = "#10b981"; 
-                document.getElementById("api-status").className = "fa-solid fa-circle";
-                document.getElementById("api-status").style.color = "#10b981";
+                // Cleanup old trains
+                for (let tid in activeMarkers) {
+                    if (!currentTrainIDs.has(tid)) {
+                        trainLayer.removeLayer(activeMarkers[tid]);
+                        delete activeMarkers[tid];
+                    }
+                }
 
-                if(window.saveStatsToDatabase) { window.saveStatsToDatabase(commCount, privCount); }
+                document.getElementById('train-count').innerText = trainCount;
+                
+                document.getElementById("api-text").innerText = `Live: US Ground Network`;
+                document.getElementById("dot-anim").style.background = "#10b981"; 
+
+                if(window.saveStatsToDatabase) { window.saveStatsToDatabase(trainCount); }
 
             } catch (error) {
                 console.error(error);
-                document.getElementById("api-text").innerText = "Network Jammed... Retrying.";
+                document.getElementById("api-text").innerText = "Signals Lost... Retrying.";
                 document.getElementById("dot-anim").style.background = "#ef4444"; 
             }
         }
 
-        map.on('moveend', fetchRealLiveFlights);
-        fetchRealLiveFlights();
+        map.on('moveend', fetchLiveTrains);
+        fetchLiveTrains();
         
-        // 🚨 INTERVAL KO 30 SECONDS KAR DIYA HAI TA KE DUBARA BLOCK NA HO 🚨
-        setInterval(fetchRealLiveFlights, 30000); 
+        // Refresh every 30 seconds
+        setInterval(fetchLiveTrains, 30000); 
 
     </script>
 </body>

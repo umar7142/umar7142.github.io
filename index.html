@@ -5,146 +5,199 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TremorTrack | Global OSINT by Umer Asif</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
     <style>
-        /* 🌋 TREMOR THEME & ANIMATIONS */
+        /* 🌋 PREMIUM GLASSMORPHISM THEME */
         :root {
-            --bg-body: #050505; --bg-panel: #111111; --text-main: #f8fafc; --text-muted: #a3a3a3;
-            --accent-red: #ef4444; --accent-orange: #f97316; --accent-yellow: #eab308; --border-color: #262626;
+            --bg-dark: #050505; --text-main: #f8fafc; --text-muted: #94a3b8;
+            --accent-red: #ef4444; --accent-orange: #f97316; --accent-yellow: #eab308;
+            --glass-bg: rgba(15, 23, 42, 0.7); --glass-border: rgba(255, 255, 255, 0.08);
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes pulseAlert { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+        @keyframes pulseAlert { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        body { margin: 0; padding: 0; background-color: var(--bg-body); color: var(--text-main); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        body { margin: 0; padding: 0; background-color: var(--bg-dark); color: var(--text-main); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-        header { display: flex; align-items: center; justify-content: space-between; padding: 12px 30px; background: rgba(17, 17, 17, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1); z-index: 1000; }
+        /* 🔄 LOADING SCREEN */
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #050505; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s ease; }
+        .spinner { width: 50px; height: 50px; border: 3px solid rgba(239, 68, 68, 0.2); border-top-color: var(--accent-red); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        #loader h2 { color: var(--accent-red); font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 14px;}
+
+        /* 🔝 TOP NAVIGATION (GLASS) */
+        header { display: flex; align-items: center; justify-content: space-between; padding: 15px 30px; background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--glass-border); z-index: 1000; position: relative; }
         
-        .brand-container { display: flex; align-items: center; gap: 12px; }
-        .custom-logo { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(239, 68, 68, 0.1); border-radius: 8px; border: 1px solid var(--accent-red); animation: pulseAlert 2s infinite;}
-        .custom-logo i { font-size: 18px; color: var(--accent-red); }
+        .brand-container { display: flex; align-items: center; gap: 15px; }
+        .custom-logo { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(239, 68, 68, 0.15); border-radius: 10px; border: 1px solid rgba(239, 68, 68, 0.5); animation: pulseAlert 2s infinite;}
+        .custom-logo i { font-size: 20px; color: var(--accent-red); }
+        header h1 { margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
+        header h1 span { font-weight: 400; color: var(--text-muted); font-size: 16px; margin-left: 8px; }
+
+        .system-status { display: flex; gap: 12px; font-size: 13px; font-weight: 600; color: #10b981; align-items: center; background: rgba(16, 185, 129, 0.1); padding: 8px 16px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.3);}
+        .live-dot { border-radius: 50%; width: 8px; height: 8px; background: #10b981; box-shadow: 0 0 8px #10b981;}
+
+        /* 🗂️ MAIN LAYOUT */
+        #radar-view { display: flex; flex: 1; overflow: hidden; position: relative; }
+
+        /* 🌍 MAP AREA */
+        #map { flex: 1; background: #050505; z-index: 1; }
+
+        /* 📱 FLOATING SIDEBAR (GLASSMORPHISM) */
+        .sidebar { position: absolute; top: 20px; left: 20px; width: 360px; height: calc(100vh - 120px); background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 16px; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); z-index: 10; overflow: hidden; }
         
-        header h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+        .sidebar-content { padding: 25px; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 20px;}
+        .sidebar-content::-webkit-scrollbar { width: 4px; }
+        .sidebar-content::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 4px; }
+
+        .section-title { margin: 0; font-size: 12px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 1.5px; display: flex; align-items: center; gap: 8px;}
         
-        .nav-tabs { display: flex; gap: 20px; }
-        .nav-tab { background: transparent; border: none; color: var(--text-muted); font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.3s; padding: 8px 15px; border-radius: 8px; }
-        .nav-tab:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
-        .nav-tab.active { color: var(--accent-red); background: rgba(239, 68, 68, 0.1); }
-
-        .system-status { display: flex; gap: 15px; font-size: 13px; font-weight: 600; color: var(--text-muted); align-items: center; }
-        .live-dot { border-radius: 50%; width: 10px; height: 10px; display: inline-block; background: var(--accent-red); animation: pulseAlert 1.5s infinite; }
-
-        .view-section { display: none; flex: 1; overflow: hidden; animation: fadeIn 0.4s ease-out forwards; }
-        .view-section.active { display: flex; }
-
-        #radar-view { padding: 20px; gap: 20px; }
-        .sidebar { width: 350px; background-color: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5); overflow: hidden; flex-shrink: 0; }
-        .sidebar-title { margin: 0; font-size: 13px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;}
+        /* 📊 STAT CARDS */
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .stat-card { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--glass-border); padding: 15px; border-radius: 12px; transition: transform 0.2s; }
+        .stat-card:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.05); }
+        .stat-card h3 { margin: 0 0 8px 0; font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+        .stat-card p { margin: 0; font-size: 24px; font-weight: 800; color: var(--text-main); }
+        .stat-card.danger p { color: var(--accent-red); }
         
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .stat-card { background-color: rgba(255, 255, 255, 0.03); border-left: 3px solid var(--accent-yellow); padding: 12px; border-radius: 8px; }
-        .stat-card.danger { border-left-color: var(--accent-red); background-color: rgba(239, 68, 68, 0.05); }
-        .stat-card h3 { margin: 0; font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
-        .stat-card p { margin: 5px 0 0 0; font-size: 20px; font-weight: 700; color: var(--text-main); }
+        .max-mag-card { grid-column: span 2; background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(249, 115, 22, 0.05) 100%); border-color: rgba(239, 68, 68, 0.3); display: flex; justify-content: space-between; align-items: center;}
+        .max-mag-card p { color: var(--accent-orange); }
 
-        .live-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex: 1; padding-right: 5px; }
-        .live-list::-webkit-scrollbar { width: 5px; }
-        .live-list::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
-        .live-list li { padding: 12px; background-color: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 10px; font-size: 13px; cursor: pointer; border-left: 4px solid var(--accent-yellow); transition: 0.2s; }
-        .live-list li:hover { background: rgba(255,255,255,0.05); transform: translateX(5px); }
-        .live-list li.high-mag { border-left-color: var(--accent-red); }
-        .live-list li.med-mag { border-left-color: var(--accent-orange); }
+        /* 📜 LIVE FEED */
+        .live-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+        .live-list li { padding: 15px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 10px; cursor: pointer; transition: 0.2s; position: relative; overflow: hidden; }
+        .live-list li:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); }
+        .live-list li::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 4px; background: var(--accent-yellow); }
+        .live-list li.high-mag::before { background: var(--accent-red); box-shadow: 0 0 10px var(--accent-red); }
+        .live-list li.med-mag::before { background: var(--accent-orange); }
 
-        .eq-mag { font-size: 18px; font-weight: 800; margin-bottom: 5px; }
+        .eq-mag { font-size: 16px; font-weight: 800; margin-bottom: 6px; display: flex; justify-content: space-between;}
         .high-mag .eq-mag { color: var(--accent-red); }
         .med-mag .eq-mag { color: var(--accent-orange); }
-        .eq-loc { color: var(--text-main); font-weight: 500; margin-bottom: 3px;}
-        .eq-time { color: var(--text-muted); font-size: 11px; }
+        .eq-loc { color: var(--text-main); font-weight: 500; font-size: 13px; margin-bottom: 6px; line-height: 1.4;}
+        .eq-time { color: var(--text-muted); font-size: 11px; display: flex; gap: 5px; align-items: center;}
 
-        #map { flex: 1; border: 1px solid var(--border-color); border-radius: 12px; z-index: 1; background: #050505; }
-        
-        .leaflet-popup-content-wrapper { background-color: #111; color: #fff; border: 1px solid #333; border-radius: 8px; }
-        .leaflet-popup-tip { background-color: #111; border: 1px solid #333; border-top: none; border-left: none; }
+        /* 🧑‍💻 BRANDING FOOTER */
+        .branding-footer { padding: 15px 25px; background: rgba(0,0,0,0.5); border-top: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: space-between; }
+        .dev-info h4 { margin: 0 0 3px 0; font-size: 13px; color: var(--text-main); font-weight: 700; }
+        .dev-info p { margin: 0; font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 4px;}
+        .dev-socials { display: flex; gap: 12px; }
+        .dev-socials a { color: var(--text-muted); font-size: 16px; transition: 0.2s; }
+        .dev-socials a:hover { color: var(--accent-blue); transform: scale(1.1); }
+
+        /* LEAFLET POPUP OVERRIDES */
+        .leaflet-popup-content-wrapper { background: rgba(15, 23, 42, 0.9) !important; backdrop-filter: blur(10px); color: #fff !important; border: 1px solid rgba(255,255,255,0.1) !important; border-radius: 12px !important; box-shadow: 0 10px 25px rgba(0,0,0,0.8) !important; font-family: 'Inter', sans-serif;}
+        .leaflet-popup-tip { display: none; }
 
     </style>
 </head>
 <body>
 
+    <div id="loader">
+        <div class="spinner"></div>
+        <h2 id="loader-text">Initializing OSINT Engine...</h2>
+    </div>
+
     <header>
         <div class="brand-container">
             <div class="custom-logo"><i class="fa-solid fa-house-crack"></i></div>
-            <h1>TREMORTRACK <span style="font-weight: 400; color: var(--text-muted); font-size: 16px; margin-left: 8px;">| GLOBAL OSINT</span></h1>
-        </div>
-        <div class="nav-tabs">
-            <button class="nav-tab active" onclick="switchTab('radar')"><i class="fa-solid fa-globe"></i> Global Earthquakes</button>
+            <h1>TREMORTRACK <span>| GLOBAL OSINT</span></h1>
         </div>
         <div class="system-status">
-            <div class="live-dot" id="dot-anim"></div>
-            <span id="api-text">Syncing with USGS Satellites...</span>
+            <div class="live-dot"></div>
+            <span>USGS SAT-LINK ACTIVE</span>
         </div>
     </header>
 
-    <div id="radar-view" class="view-section active">
-        <div class="sidebar">
-            <h2 class="sidebar-title"><i class="fa-solid fa-satellite-dish"></i> Global Seismic Activity (24H)</h2>
-            <div class="stat-grid">
-                <div class="stat-card"><h3>Total Quakes</h3><p id="total-count">0</p></div>
-                <div class="stat-card danger"><h3>Danger (Mag 5+)</h3><p id="danger-count">0</p></div>
-            </div>
-            <ul class="live-list" id="eq-feed"></ul>
-        </div>
+    <div id="radar-view">
         <div id="map"></div>
+        
+        <div class="sidebar">
+            <div class="sidebar-content">
+                <h2 class="section-title"><i class="fa-solid fa-chart-line"></i> Global Seismic Analytics (24H)</h2>
+                
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <h3>Total Quakes</h3>
+                        <p id="total-count">--</p>
+                    </div>
+                    <div class="stat-card danger">
+                        <h3>Mag 5.0+ Alerts</h3>
+                        <p id="danger-count">--</p>
+                    </div>
+                    <div class="stat-card max-mag-card">
+                        <div>
+                            <h3 style="color: rgba(255,255,255,0.6);">Max Magnitude Today</h3>
+                            <p id="max-mag-count">--</p>
+                        </div>
+                        <i class="fa-solid fa-fire-flame-curved" style="font-size: 28px; color: var(--accent-orange); opacity: 0.5;"></i>
+                    </div>
+                </div>
+
+                <h2 class="section-title" style="margin-top: 10px;"><i class="fa-solid fa-list-ul"></i> Live Threat Feed</h2>
+                <ul class="live-list" id="eq-feed"></ul>
+            </div>
+            
+            <div class="branding-footer">
+                <div class="dev-info">
+                    <h4>UMER ASIF</h4>
+                    <p><i class="fa-solid fa-location-dot" style="color: var(--accent-red);"></i> Rahim Yar Khan, PK</p>
+                </div>
+                <div class="dev-socials">
+                    <a href="#" title="GitHub"><i class="fa-brands fa-github"></i></a>
+                    <a href="#" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
     <script>
-        // GLOBAL MAP CENTER
-        var map = L.map('map').setView([20.0, 0.0], 2); 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
+        var map = L.map('map', { zoomControl: false }).setView([20.0, 0.0], 3); 
+        L.control.zoom({ position: 'topright' }).addTo(map);
         
+        // CartoDB Dark Matter (No Labels for cleaner hacker look)
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
         var eqLayer = L.layerGroup().addTo(map);
 
-        // Calculate Time Ago
         function timeAgo(time) {
             let mins = Math.floor((Date.now() - time) / 60000);
             if(mins < 60) return `${mins} mins ago`;
-            return `${Math.floor(mins/60)} hours ago`;
+            return `${Math.floor(mins/60)} hrs ago`;
         }
 
-        // 🚨 GLOBAL USGS EARTHQUAKE API 🚨
         async function fetchEarthquakes() {
             try {
-                document.getElementById("api-text").innerText = "Scanning Global Tectonic Plates...";
-
-                // USGS All Earthquakes past 24 hours (100% Free, Global, No Keys)
+                document.getElementById('loader-text').innerText = "Fetching Seismic Data...";
+                
                 let response = await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson');
                 if(!response.ok) throw new Error("USGS Down");
                 
                 let data = await response.json();
+                let quakes = data.features.filter(eq => eq.properties.mag >= 2.0); // Filter out micro-quakes for cleaner UI
                 
-                eqLayer.clearLayers(); // Map clear karo
+                eqLayer.clearLayers(); 
                 const feedContainer = document.getElementById('eq-feed');
                 feedContainer.innerHTML = ''; 
                 
-                let totalCount = data.features.length;
                 let dangerCount = 0;
+                let maxMag = 0;
 
-                data.features.forEach(eq => {
-                    let mag = parseFloat(eq.properties.mag).toFixed(1);
+                quakes.forEach(eq => {
+                    let mag = parseFloat(eq.properties.mag);
+                    if (mag > maxMag) maxMag = mag;
+
                     let loc = eq.properties.place;
                     let time = eq.properties.time;
-                    let coords = eq.geometry.coordinates; // [lon, lat, depth]
-                    let lat = coords[1];
-                    let lon = coords[0];
-
-                    if(mag < 1.0) return; // Ignore very micro quakes
+                    let coords = eq.geometry.coordinates; 
+                    let lat = coords[1], lon = coords[0];
 
                     let color = '#eab308'; // Yellow
-                    let radiusClass = 'yellow-dot';
                     let listClass = '';
                     
                     if (mag >= 5.0) {
@@ -156,46 +209,54 @@
                         listClass = 'med-mag';
                     }
 
-                    // Circle on Map (Size based on Magnitude)
+                    // Map Circles
                     L.circleMarker([lat, lon], {
-                        radius: Math.max(mag * 3, 5),
+                        radius: Math.max(mag * 4, 6),
                         fillColor: color,
                         color: color,
-                        weight: 1,
-                        opacity: 0.8,
-                        fillOpacity: 0.4
+                        weight: 2,
+                        opacity: 0.9,
+                        fillOpacity: 0.3
                     }).bindPopup(`
-                        <h3 style="color:${color}; margin:0 0 5px 0;">Magnitude ${mag}</h3>
-                        <p style="margin:0;"><b>Location:</b> ${loc}</p>
-                        <p style="margin:5px 0 0 0; font-size:11px; color:#aaa;">${new Date(time).toLocaleString()}</p>
+                        <div style="text-align:center;">
+                            <h2 style="margin:0 0 5px 0; color:${color}; font-size:24px; font-weight:800;">${mag.toFixed(1)} <span style="font-size:12px; color:#94a3b8; font-weight:400;">MAG</span></h2>
+                            <p style="margin:0; font-size:13px; border-top:1px solid rgba(255,255,255,0.1); padding-top:8px;">${loc}</p>
+                            <p style="margin:5px 0 0 0; font-size:11px; color:#94a3b8;">${new Date(time).toLocaleString()}</p>
+                        </div>
                     `).addTo(eqLayer);
 
-                    // Add to Sidebar (Only top 100 to avoid lag)
-                    if (feedContainer.children.length < 100) {
+                    // Sidebar List (Top 50)
+                    if (feedContainer.children.length < 50) {
                         let li = document.createElement('li');
                         li.className = listClass;
                         li.innerHTML = `
-                            <div class="eq-mag"><i class="fa-solid fa-wave-square"></i> Mag ${mag}</div>
+                            <div class="eq-mag"><span>Mag ${mag.toFixed(1)}</span> <i class="fa-solid fa-satellite-dish" style="font-size:12px; opacity:0.5;"></i></div>
                             <div class="eq-loc">${loc}</div>
                             <div class="eq-time"><i class="fa-regular fa-clock"></i> ${timeAgo(time)}</div>
                         `;
-                        li.onclick = () => { map.flyTo([lat, lon], 6); };
+                        li.onclick = () => { map.flyTo([lat, lon], 7, {duration: 1.5}); };
                         feedContainer.appendChild(li);
                     }
                 });
 
-                document.getElementById('total-count').innerText = totalCount;
+                // Update Stat Cards
+                document.getElementById('total-count').innerText = quakes.length;
                 document.getElementById('danger-count').innerText = dangerCount;
-                document.getElementById("api-text").innerText = `Live: Global Tectonic Sensors`;
+                document.getElementById('max-mag-count').innerText = maxMag.toFixed(1);
+
+                // Hide Loader smoothly
+                setTimeout(() => { document.getElementById('loader').style.animation = 'fadeOut 0.5s forwards'; }, 800);
 
             } catch (error) {
                 console.error(error);
-                document.getElementById("api-text").innerText = "Satellites Disconnected...";
+                document.getElementById('loader-text').innerText = "CONNECTION FAILED. RETRYING...";
+                document.getElementById('loader-text').style.color = "#ef4444";
             }
         }
 
+        // Initialize & Auto-Refresh every 3 minutes
         fetchEarthquakes();
-        setInterval(fetchEarthquakes, 60000); // Check every 1 minute
+        setInterval(fetchEarthquakes, 180000); 
 
     </script>
 </body>

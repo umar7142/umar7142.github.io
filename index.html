@@ -46,7 +46,7 @@
         /* 🌍 MAP AREA */
         #map { flex: 1; background: #050505; z-index: 1; }
 
-        /* 📱 FLOATING SIDEBAR (GLASSMORPHISM) */
+        /* 📱 FLOATING SIDEBAR */
         .sidebar { position: absolute; top: 20px; left: 20px; width: 360px; height: calc(100vh - 120px); background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 16px; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); z-index: 10; overflow: hidden; }
         
         .sidebar-content { padding: 25px; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 20px;}
@@ -66,21 +66,15 @@
         .max-mag-card { grid-column: span 2; background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(249, 115, 22, 0.05) 100%); border-color: rgba(239, 68, 68, 0.3); display: flex; justify-content: space-between; align-items: center;}
         .max-mag-card p { color: var(--accent-orange); }
 
-        /* 📜 LIVE FEED (With Neon Classes) */
+        /* 📜 LIVE FEED */
         .live-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
         .live-list li { padding: 15px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 10px; cursor: pointer; transition: 0.2s; position: relative; overflow: hidden; }
         .live-list li:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); transform: translateX(5px); }
-        
-        /* Default Yellow Line */
         .live-list li::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 4px; background: var(--accent-yellow); }
-        
-        /* 🔥 THE MAGNITUDE CLASSES 🔥 */
         .live-list li.high-mag::before { background: var(--accent-red); box-shadow: 0 0 10px var(--accent-red); }
         .high-mag .eq-mag { color: var(--accent-red); font-weight: 900; }
-        
         .live-list li.med-mag::before { background: var(--accent-orange); }
         .med-mag .eq-mag { color: var(--accent-orange); font-weight: 800;}
-
         .eq-mag { font-size: 16px; font-weight: 700; margin-bottom: 6px; display: flex; justify-content: space-between;}
         .eq-loc { color: var(--text-main); font-weight: 500; font-size: 13px; margin-bottom: 6px; line-height: 1.4;}
         .eq-time { color: var(--text-muted); font-size: 11px; display: flex; gap: 5px; align-items: center;}
@@ -90,8 +84,17 @@
         .dev-info h4 { margin: 0 0 3px 0; font-size: 13px; color: var(--text-main); font-weight: 700; }
         .dev-info p { margin: 0; font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 4px;}
         .dev-socials { display: flex; gap: 12px; }
-        .dev-socials a { color: var(--text-muted); font-size: 16px; transition: 0.2s; }
-        .dev-socials a:hover { color: var(--accent-blue); transform: scale(1.1); }
+        .dev-socials a { color: var(--text-muted); font-size: 16px; transition: 0.2s; cursor: pointer;}
+        .dev-socials a:hover { color: var(--accent-red); transform: scale(1.1); }
+
+        /* 🧑‍💻 ABOUT MODAL (GLASS) */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 9999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 30px; width: 90%; max-width: 500px; color: var(--text-main); position: relative; transform: translateY(20px); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.8); }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        .close-btn { position: absolute; top: 15px; right: 20px; background: transparent; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; transition: 0.2s; }
+        .close-btn:hover { color: var(--accent-red); transform: scale(1.1); }
+        .about-badge { display: inline-block; background: rgba(14, 165, 233, 0.1); color: #0ea5e9; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; margin-bottom: 15px; border: 1px solid rgba(14, 165, 233, 0.3);}
 
         /* LEAFLET POPUP OVERRIDES */
         .leaflet-popup-content-wrapper { background: rgba(15, 23, 42, 0.9) !important; backdrop-filter: blur(10px); color: #fff !important; border: 1px solid rgba(255,255,255,0.1) !important; border-radius: 12px !important; box-shadow: 0 10px 25px rgba(0,0,0,0.8) !important; font-family: 'Inter', sans-serif;}
@@ -104,6 +107,22 @@
     <div id="loader">
         <div class="spinner"></div>
         <h2 id="loader-text">Initializing USGS Sat-Link...</h2>
+    </div>
+
+    <div class="modal-overlay" id="aboutModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="toggleModal(false)"><i class="fa-solid fa-xmark"></i></button>
+            <span class="about-badge">ARCHITECT'S LOG</span>
+            <h2 style="margin: 0 0 10px 0; font-weight: 800; font-size: 22px;">Built with Vision & AI 🧠💻</h2>
+            <p style="color: var(--text-muted); font-size: 14px; line-height: 1.6;">
+                Hi, I'm <b>Umer Asif</b>, a Tech CEO and OSINT Architect based in Rahim Yar Khan, Pakistan. <br><br>
+                <b>The Honest Truth:</b> TremorTrack wasn't built by typing every single line of code manually. It was built using a powerful synergy of <b>Human Strategy and AI Execution</b>. I designed the architecture, conceptualized the OSINT features, and directed an AI assistant to rapidly compile the logic and Glassmorphism UI. <br><br>
+                The future of development isn't just coding; it's engineering ideas. This radar fetches live USGS satellite data to keep the public informed and safe. Welcome to the future of open-source intelligence.
+            </p>
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <a href="#" style="background: #fff; color: #000; padding: 10px 15px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 700;"><i class="fa-brands fa-github"></i> View Source</a>
+            </div>
+        </div>
     </div>
 
     <header>
@@ -152,9 +171,9 @@
                     <p><i class="fa-solid fa-location-dot" style="color: var(--accent-red);"></i> Rahim Yar Khan, PK</p>
                 </div>
                 <div class="dev-socials">
+                    <a href="javascript:void(0)" onclick="toggleModal(true)" title="About Project" style="color: var(--accent-yellow);"><i class="fa-solid fa-circle-info"></i></a>
                     <a href="#" title="GitHub"><i class="fa-brands fa-github"></i></a>
                     <a href="#" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
                 </div>
             </div>
         </div>
@@ -163,7 +182,14 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
     <script>
-        // 🗺️ 1. LEAFLET SETUP (Dark Theme)
+        // MODAL TOGGLE FUNCTION
+        function toggleModal(show) {
+            const modal = document.getElementById('aboutModal');
+            if(show) modal.classList.add('active');
+            else modal.classList.remove('active');
+        }
+
+        // 🗺️ LEAFLET SETUP (Dark Theme)
         var map = L.map('map', { zoomControl: false }).setView([20.0, 0.0], 3); 
         L.control.zoom({ position: 'topright' }).addTo(map);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
@@ -178,7 +204,7 @@
 
         async function fetchEarthquakes() {
             try {
-                // 📡 2. FETCH USGS GEOJSON
+                // 📡 FETCH USGS GEOJSON
                 let response = await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson');
                 if(!response.ok) throw new Error("USGS Down");
                 
@@ -204,7 +230,7 @@
                     let color = '#eab308'; // Default Yellow
                     let listClass = '';
                     
-                    // 🎨 3. MAGNITUDE LOGIC & CLASSES
+                    // 🎨 MAGNITUDE LOGIC & CLASSES
                     if (mag >= 5.0) {
                         color = '#ef4444'; // Red
                         dangerCount++;
@@ -233,7 +259,7 @@
                     // 📝 UPDATE SIDEBAR LIST
                     if (feedContainer.children.length < 50) {
                         let li = document.createElement('li');
-                        li.className = listClass; // Injecting CSS class based on Mag
+                        li.className = listClass; 
                         li.innerHTML = `
                             <div class="eq-mag"><span>Mag ${mag.toFixed(1)}</span> <i class="fa-solid fa-satellite-dish" style="font-size:12px; opacity:0.5;"></i></div>
                             <div class="eq-loc">${loc}</div>
@@ -262,7 +288,7 @@
         // Initialize Call
         fetchEarthquakes();
         
-        // 🔄 4. AUTO-REFRESH EVERY 5 MINUTES (300,000 milliseconds)
+        // 🔄 AUTO-REFRESH EVERY 5 MINUTES
         setInterval(fetchEarthquakes, 300000); 
 
     </script>

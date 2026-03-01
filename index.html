@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AeroTrack | OSINT Hacker Radar</title>
+    <title>AeroTrack | Umer Asif OSINT</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -67,7 +67,8 @@
         .live-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex: 1; padding-right: 5px; }
         .live-list::-webkit-scrollbar { width: 5px; }
         .live-list::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
-        .live-list li { padding: 12px; background-color: var(--bg-body); border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 10px; font-size: 13px; cursor: pointer; }
+        .live-list li { padding: 12px; background-color: var(--bg-body); border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 10px; font-size: 13px; cursor: pointer; border-left: 3px solid transparent; transition: 0.2s; }
+        .live-list li:hover { border-color: var(--accent-blue); background: rgba(59, 130, 246, 0.05); }
         .live-list li .flight-id { color: var(--accent-blue); font-weight: 700; font-size: 14px;}
         .live-list li .flight-id.private { color: var(--accent-gold); }
 
@@ -105,6 +106,7 @@
         .form-group input, .form-group textarea { width: 100%; padding: 12px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 8px; color: #fff; font-family: 'Inter'; outline: none; box-sizing: border-box; }
         .form-group input:focus, .form-group textarea:focus { border-color: var(--accent-blue); }
         .submit-btn { background: var(--accent-blue); color: #fff; border: none; padding: 12px 30px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 10px; }
+        .submit-btn:hover { background: #2563eb; transform: translateY(-2px); }
 
         /* 📱 MOBILE RESPONSIVE */
         @media (max-width: 768px) {
@@ -317,52 +319,61 @@
             });
         });
 
-        // 🚨 THE BYPASS ENGINE 🚨
+        // 🚨 THE SMART SEQUENTIAL FALLBACK ENGINE 🚨
         async function fetchRealLiveFlights() {
             try {
+                let statusText = document.getElementById("api-text");
                 document.getElementById("api-status").className = "fa-solid fa-spinner fa-spin";
                 document.getElementById("api-status").style.color = "#f59e0b";
-                document.getElementById("api-text").innerText = "Connecting Radars...";
+                statusText.innerText = "Finding Active Radar...";
 
                 let lat = map.getCenter().lat.toFixed(2); 
                 let lng = map.getCenter().lng.toFixed(2);
                 let radius = 250;
                 
+                // Hum ne 4 alag servers list kiye hain
+                const apiList = [
+                    `https://api.airplanes.live/v2/point/${lat}/${lng}/${radius}`,
+                    `https://api.adsb.fi/v2/point/${lat}/${lng}/${radius}`,
+                    `https://api.adsb.one/v2/point/${lat}/${lng}/${radius}`,
+                    `https://api.adsb.lol/v2/point/${lat}/${lng}/${radius}`
+                ];
+
                 let apiData = null;
                 let activeServerName = "";
 
-                // STEP 1: Try Standard APIs (Shayad unhone block hata diya ho)
-                const primaryUrls = [
-                    `https://api.airplanes.live/v2/point/${lat}/${lng}/${radius}`,
-                    `https://api.adsb.fi/v2/point/${lat}/${lng}/${radius}`
-                ];
-
-                for (let url of primaryUrls) {
+                // 🛑 NEW LOGIC: Ek ek kar ke check karega. Race nahi lagayega!
+                for (let i = 0; i < apiList.length; i++) {
                     try {
-                        let res = await fetch(url);
-                        if (res.ok) {
-                            apiData = await res.json();
-                            activeServerName = new URL(url).hostname;
-                            break;
+                        let host = new URL(apiList[i]).hostname;
+                        statusText.innerText = `Checking: ${host}...`;
+                        
+                        let response = await fetch(apiList[i]);
+                        
+                        if (response.ok) {
+                            apiData = await response.json();
+                            activeServerName = host;
+                            break; // ✅ Agar data mil gaya toh loop yahin ruk jayega (Agli APIs block nahi hongi)
                         }
-                    } catch (e) {}
+                    } catch (err) {
+                        console.warn(`[Blocked/Offline] API Failed: ${apiList[i]}. Shifting to next...`);
+                    }
                 }
 
-                // 🚨 STEP 2: THE OPENSKY BYPASS (AGAR BLOCK HO GAYA TOH YE CHALEGA) 🚨
+                // 🛑 PLAN B: Agar chaaron main APIs ne dhoka de diya (OpenSky Bypass)
                 if (!apiData || !apiData.ac) {
-                    console.log("Primary Blocked! Initiating OpenSky Bypass...");
-                    document.getElementById("api-text").innerText = "Bypassing Blocks...";
+                    console.log("All main ADSB APIs blocked! Shifting to OpenSky Bypass...");
+                    statusText.innerText = "Connecting Backup Server...";
                     
                     let bounds = map.getBounds();
-                    // OpenSky API uses Bounding Box (South, West, North, East)
                     let osUrl = `https://opensky-network.org/api/states/all?lamin=${bounds.getSouth()}&lomin=${bounds.getWest()}&lamax=${bounds.getNorth()}&lomax=${bounds.getEast()}`;
                     
                     let res = await fetch(osUrl);
-                    if (!res.ok) throw new Error("All Radars Down");
+                    if (!res.ok) throw new Error("Complete Radar Failure");
                     
                     let osData = await res.json();
                     apiData = { ac: [] }; 
-                    activeServerName = "OpenSky Network (Bypass)";
+                    activeServerName = "OpenSky (Backup)";
                     
                     if (osData.states) {
                         osData.states.forEach(f => {
@@ -385,7 +396,6 @@
 
                 flights.forEach(flight => {
                     let hexCode = flight.hex; 
-                    // Protect against null coordinates
                     if(!flight.lat || !flight.lon) return;
 
                     let isPrivate = false;
@@ -444,7 +454,9 @@
 
                 document.getElementById('comm-count').innerText = commCount;
                 document.getElementById('priv-count').innerText = privCount;
-                document.getElementById("api-text").innerText = activeServerName;
+                
+                // Success: Ye batayega kis API par shift hua hai
+                document.getElementById("api-text").innerText = `Connected: ${activeServerName}`;
                 document.getElementById("dot-anim").style.background = "#10b981"; 
                 document.getElementById("api-status").className = "fa-solid fa-circle";
                 document.getElementById("api-status").style.color = "#10b981";
@@ -453,7 +465,7 @@
 
             } catch (error) {
                 console.error(error);
-                document.getElementById("api-text").innerText = "Blocked! Retrying...";
+                document.getElementById("api-text").innerText = "All Radars Down... Retrying.";
                 document.getElementById("dot-anim").style.background = "#ef4444"; 
             }
         }
@@ -461,7 +473,7 @@
         map.on('moveend', fetchRealLiveFlights);
         fetchRealLiveFlights();
         
-        // Refresh 20 seconds
+        // 🚨 Refresh every 20 seconds to completely avoid future blocks 🚨
         setInterval(fetchRealLiveFlights, 20000); 
 
     </script>

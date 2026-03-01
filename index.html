@@ -319,74 +319,60 @@
             });
         });
 
-        // 🚨 THE PROXY GHOST ENGINE (ANTI-BLOCK) 🚨
+        // 🚨 THE HYDRA ENGINE (BYPASS ALL BLOCKS) 🚨
         async function fetchRealLiveFlights() {
             try {
                 let statusText = document.getElementById("api-text");
                 document.getElementById("api-status").className = "fa-solid fa-spinner fa-spin";
                 document.getElementById("api-status").style.color = "#f59e0b";
-                statusText.innerText = "Ghosting APIs...";
+                statusText.innerText = "Engaging Hydra Engine...";
 
                 let lat = map.getCenter().lat.toFixed(2); 
                 let lng = map.getCenter().lng.toFixed(2);
-                let radius = 250;
                 
-                // 🚨 Corsproxy API: Yeh tere IP ko chupa kar apne IP se request marega!
-                const proxyUrl = "https://corsproxy.io/?";
+                // 🚨 RADIUS KAM KAR DIYA (150) TA KE SERVER JALDI BLOCK NA KARE 🚨
+                let radius = 150; 
+                
+                // MAIN SERVERS
+                const baseUrls = [
+                    `https://api.airplanes.live/v2/point/${lat}/${lng}/${radius}`,
+                    `https://api.adsb.fi/v2/point/${lat}/${lng}/${radius}`
+                ];
 
-                const apiList = [
-                    `${proxyUrl}https://api.airplanes.live/v2/point/${lat}/${lng}/${radius}`,
-                    `${proxyUrl}https://api.adsb.one/v2/point/${lat}/${lng}/${radius}`,
-                    `${proxyUrl}https://api.adsb.fi/v2/point/${lat}/${lng}/${radius}`
+                // 🚨 THE PROXY MASKS (Agar ek block hoga toh doosra IP mask lag jayega)
+                const proxies = [
+                    "", // Pehle Direct Try karega
+                    "https://api.allorigins.win/raw?url=", // Proxy 1
+                    "https://api.codetabs.com/v1/proxy?quest=" // Proxy 2
                 ];
 
                 let apiData = null;
                 let activeServerName = "";
 
-                // Ek ek kar ke Proxy ke zariye request bhejna
-                for (let i = 0; i < apiList.length; i++) {
-                    try {
-                        let originalHost = apiList[i].replace(proxyUrl, "").split('/')[2];
-                        statusText.innerText = `Proxying: ${originalHost}...`;
-                        
-                        let response = await fetch(apiList[i]);
-                        
-                        if (response.ok) {
-                            apiData = await response.json();
-                            activeServerName = originalHost;
-                            break; 
+                // NESTED LOOP: Har URL ko har Proxy ke sath try karega jab tak data na mile!
+                outerLoop:
+                for (let url of baseUrls) {
+                    for (let proxy of proxies) {
+                        try {
+                            let fetchUrl = proxy === "" ? url : proxy + encodeURIComponent(url);
+                            let logName = proxy === "" ? new URL(url).hostname : `Proxy -> ${new URL(url).hostname}`;
+                            statusText.innerText = `Trying: ${logName}`;
+                            
+                            let response = await fetch(fetchUrl, { cache: 'no-store' });
+                            
+                            if (response.ok) {
+                                apiData = await response.json();
+                                activeServerName = logName;
+                                break outerLoop; // DATA MIL GAYA! Loop tod do.
+                            }
+                        } catch (err) {
+                            console.warn(`[Blocked] Shifted to next node...`);
                         }
-                    } catch (err) {
-                        console.warn(`[Proxy Failed] for: ${apiList[i]}`);
                     }
                 }
 
-                // 🛑 PLAN B: OpenSky Via PROXY!
                 if (!apiData || !apiData.ac) {
-                    console.log("Main APIs Failed. Proxying OpenSky...");
-                    statusText.innerText = "Proxying OpenSky...";
-                    
-                    let bounds = map.getBounds();
-                    let rawOsUrl = `https://opensky-network.org/api/states/all?lamin=${bounds.getSouth()}&lomin=${bounds.getWest()}&lamax=${bounds.getNorth()}&lomax=${bounds.getEast()}`;
-                    let osProxyUrl = proxyUrl + encodeURIComponent(rawOsUrl);
-                    
-                    let res = await fetch(osProxyUrl);
-                    if (!res.ok) throw new Error("Complete Radar Failure");
-                    
-                    let osData = await res.json();
-                    apiData = { ac: [] }; 
-                    activeServerName = "OpenSky (Proxy)";
-                    
-                    if (osData.states) {
-                        osData.states.forEach(f => {
-                            apiData.ac.push({
-                                hex: f[0], flight: f[1], r: f[2], lon: f[5], lat: f[6], 
-                                alt_baro: f[7] ? Math.round(f[7] * 3.28084) : 0, 
-                                gs: f[9] ? Math.round(f[9] * 1.94384) : 0, 
-                                track: f[10], desc: (f[17] === 2 || f[17] === 3) ? "Private" : "Commercial"
-                            });
-                        });
-                    }
+                    throw new Error("All Proxies and Radars Blocked");
                 }
 
                 let flights = apiData.ac || [];
@@ -466,7 +452,7 @@
 
             } catch (error) {
                 console.error(error);
-                document.getElementById("api-text").innerText = "All Radars Down... Retrying.";
+                document.getElementById("api-text").innerText = "Network Jammed... Retrying.";
                 document.getElementById("dot-anim").style.background = "#ef4444"; 
             }
         }
@@ -474,7 +460,8 @@
         map.on('moveend', fetchRealLiveFlights);
         fetchRealLiveFlights();
         
-        setInterval(fetchRealLiveFlights, 20000); 
+        // 🚨 INTERVAL KO 30 SECONDS KAR DIYA HAI TA KE DUBARA BLOCK NA HO 🚨
+        setInterval(fetchRealLiveFlights, 30000); 
 
     </script>
 </body>

@@ -66,17 +66,22 @@
         .max-mag-card { grid-column: span 2; background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(249, 115, 22, 0.05) 100%); border-color: rgba(239, 68, 68, 0.3); display: flex; justify-content: space-between; align-items: center;}
         .max-mag-card p { color: var(--accent-orange); }
 
-        /* 📜 LIVE FEED */
+        /* 📜 LIVE FEED (With Neon Classes) */
         .live-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
         .live-list li { padding: 15px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 10px; cursor: pointer; transition: 0.2s; position: relative; overflow: hidden; }
-        .live-list li:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); }
+        .live-list li:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); transform: translateX(5px); }
+        
+        /* Default Yellow Line */
         .live-list li::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 4px; background: var(--accent-yellow); }
+        
+        /* 🔥 THE MAGNITUDE CLASSES 🔥 */
         .live-list li.high-mag::before { background: var(--accent-red); box-shadow: 0 0 10px var(--accent-red); }
+        .high-mag .eq-mag { color: var(--accent-red); font-weight: 900; }
+        
         .live-list li.med-mag::before { background: var(--accent-orange); }
+        .med-mag .eq-mag { color: var(--accent-orange); font-weight: 800;}
 
-        .eq-mag { font-size: 16px; font-weight: 800; margin-bottom: 6px; display: flex; justify-content: space-between;}
-        .high-mag .eq-mag { color: var(--accent-red); }
-        .med-mag .eq-mag { color: var(--accent-orange); }
+        .eq-mag { font-size: 16px; font-weight: 700; margin-bottom: 6px; display: flex; justify-content: space-between;}
         .eq-loc { color: var(--text-main); font-weight: 500; font-size: 13px; margin-bottom: 6px; line-height: 1.4;}
         .eq-time { color: var(--text-muted); font-size: 11px; display: flex; gap: 5px; align-items: center;}
 
@@ -98,7 +103,7 @@
 
     <div id="loader">
         <div class="spinner"></div>
-        <h2 id="loader-text">Initializing OSINT Engine...</h2>
+        <h2 id="loader-text">Initializing USGS Sat-Link...</h2>
     </div>
 
     <header>
@@ -158,11 +163,11 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
     <script>
+        // 🗺️ 1. LEAFLET SETUP (Dark Theme)
         var map = L.map('map', { zoomControl: false }).setView([20.0, 0.0], 3); 
         L.control.zoom({ position: 'topright' }).addTo(map);
-        
-        // CartoDB Dark Matter (No Labels for cleaner hacker look)
         L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
+        
         var eqLayer = L.layerGroup().addTo(map);
 
         function timeAgo(time) {
@@ -173,13 +178,12 @@
 
         async function fetchEarthquakes() {
             try {
-                document.getElementById('loader-text').innerText = "Fetching Seismic Data...";
-                
+                // 📡 2. FETCH USGS GEOJSON
                 let response = await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson');
                 if(!response.ok) throw new Error("USGS Down");
                 
                 let data = await response.json();
-                let quakes = data.features.filter(eq => eq.properties.mag >= 2.0); // Filter out micro-quakes for cleaner UI
+                let quakes = data.features.filter(eq => eq.properties.mag >= 2.0); // Filter micro-quakes
                 
                 eqLayer.clearLayers(); 
                 const feedContainer = document.getElementById('eq-feed');
@@ -197,9 +201,10 @@
                     let coords = eq.geometry.coordinates; 
                     let lat = coords[1], lon = coords[0];
 
-                    let color = '#eab308'; // Yellow
+                    let color = '#eab308'; // Default Yellow
                     let listClass = '';
                     
+                    // 🎨 3. MAGNITUDE LOGIC & CLASSES
                     if (mag >= 5.0) {
                         color = '#ef4444'; // Red
                         dangerCount++;
@@ -209,7 +214,7 @@
                         listClass = 'med-mag';
                     }
 
-                    // Map Circles
+                    // 🔴 PLOT MARKERS ON MAP
                     L.circleMarker([lat, lon], {
                         radius: Math.max(mag * 4, 6),
                         fillColor: color,
@@ -225,10 +230,10 @@
                         </div>
                     `).addTo(eqLayer);
 
-                    // Sidebar List (Top 50)
+                    // 📝 UPDATE SIDEBAR LIST
                     if (feedContainer.children.length < 50) {
                         let li = document.createElement('li');
-                        li.className = listClass;
+                        li.className = listClass; // Injecting CSS class based on Mag
                         li.innerHTML = `
                             <div class="eq-mag"><span>Mag ${mag.toFixed(1)}</span> <i class="fa-solid fa-satellite-dish" style="font-size:12px; opacity:0.5;"></i></div>
                             <div class="eq-loc">${loc}</div>
@@ -239,12 +244,12 @@
                     }
                 });
 
-                // Update Stat Cards
+                // Update Stats
                 document.getElementById('total-count').innerText = quakes.length;
                 document.getElementById('danger-count').innerText = dangerCount;
                 document.getElementById('max-mag-count').innerText = maxMag.toFixed(1);
 
-                // Hide Loader smoothly
+                // Hide Loader
                 setTimeout(() => { document.getElementById('loader').style.animation = 'fadeOut 0.5s forwards'; }, 800);
 
             } catch (error) {
@@ -254,9 +259,11 @@
             }
         }
 
-        // Initialize & Auto-Refresh every 3 minutes
+        // Initialize Call
         fetchEarthquakes();
-        setInterval(fetchEarthquakes, 180000); 
+        
+        // 🔄 4. AUTO-REFRESH EVERY 5 MINUTES (300,000 milliseconds)
+        setInterval(fetchEarthquakes, 300000); 
 
     </script>
 </body>

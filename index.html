@@ -226,15 +226,13 @@
 
         // BALTIC SEA / GULF OF FINLAND (Huge Marine Traffic Hub)
         var map = L.map('map').setView([59.50, 23.50], 7); 
-        // 🚨 HACKER MAP LAYER: CartoDB Dark Matter for Oceans 🚨
         L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
         
         var shipLayer = L.layerGroup().addTo(map);
-        var wakeLayer = L.layerGroup().addTo(map); // Trail of the ship (Wake)
+        var wakeLayer = L.layerGroup().addTo(map); 
 
         function getShipIcon(heading, isTanker) {
             let colorClass = isTanker ? 'tanker' : '';
-            // CSS rotate for ship direction
             return L.divIcon({ 
                 html: `<div class="real-ship-icon ${colorClass}" style="transform: rotate(${heading}deg);"><i class="fa-solid fa-ship"></i></div>`, 
                 className: '', 
@@ -245,7 +243,7 @@
         }
 
         let activeMarkers = {};
-        let shipMetadataCache = {}; // Cache to store ship names by MMSI
+        let shipMetadataCache = {}; 
 
         document.getElementById('ship-search').addEventListener('input', function(e) {
             let searchTerm = e.target.value.toLowerCase();
@@ -254,7 +252,7 @@
             });
         });
 
-        // 🚨 PRE-FETCH SHIP METADATA (Names, Types) 🚨
+        // 🚨 PRE-FETCH SHIP METADATA
         async function fetchShipMetadata() {
             try {
                 let res = await fetch('https://meri.digitraffic.fi/api/ais/v1/vessels');
@@ -265,21 +263,22 @@
                         type: ship.shipType || 0
                     };
                 });
-                console.log("Metadata loaded for", data.length, "ships.");
             } catch(e) { console.log("Metadata fetch failed."); }
         }
 
-        // 🚨 MAIN RADAR ENGINE (NORDIC AIS API) 🚨
+        // 🚨 MAIN RADAR ENGINE
         async function fetchLiveShips() {
             try {
                 document.getElementById("api-text").innerText = "Scanning Ocean AIS...";
                 document.getElementById("dot-anim").style.background = "#0ea5e9";
 
-                // Live Ships Coordinates API (Finland Open Data - Completely Free & Unblockable)
                 let response = await fetch('https://meri.digitraffic.fi/api/ais/v1/locations');
                 if(!response.ok) throw new Error("API Down");
                 
                 let rawData = await response.json();
+                
+                // 🛑 HACKER FIX: JSON Feature Box Open Kiya Hai Yahan 🛑
+                let shipsData = rawData.features || rawData;
                 
                 const feedContainer = document.getElementById('ship-feed');
                 feedContainer.innerHTML = ''; 
@@ -287,33 +286,36 @@
                 let currentShipIDs = new Set(); 
                 
                 let currentBounds = map.getBounds();
+                
+                // Limit to 500 ships at a time to keep browser super fast
+                let loopLimit = Math.min(shipsData.length, 500);
 
-                for (let i = 0; i < rawData.length; i++) {
-                    let ship = rawData[i];
+                for (let i = 0; i < loopLimit; i++) {
+                    let ship = shipsData[i];
                     if(!ship.geometry || !ship.geometry.coordinates) continue;
 
-                    // GeoJSON format is [Longitude, Latitude]
                     let lon = ship.geometry.coordinates[0];
                     let lat = ship.geometry.coordinates[1];
-                    let mmsi = ship.mmsi; // Unique Ship ID
                     
-                    // PERFORMANCE HACK: Only process ships currently visible on the screen!
+                    // 🛑 HACKER FIX: MMSI ID dhoondhne ka sahi rasta
+                    let mmsi = ship.properties ? ship.properties.mmsi : ship.mmsi;
+                    if(!mmsi) continue;
+                    
+                    // Only process ships currently visible on screen
                     if(!currentBounds.contains([lat, lon])) continue;
 
                     currentShipIDs.add(mmsi);
 
-                    // Get Metadata from Cache
                     let meta = shipMetadataCache[mmsi] || { name: `MMSI: ${mmsi}`, type: 0 };
                     let shipName = meta.name;
                     
-                    // Ship Types (AIS standard): 80s are Tankers, 70s are Cargo.
                     let isTanker = (meta.type >= 80 && meta.type < 90);
                     let shipTypeName = isTanker ? "Oil/Chemical Tanker" : "Cargo / Gen Vessel";
                     
                     if(isTanker) tankerCount++; else cargoCount++;
 
-                    let speed = ship.properties.sog || 0; // Speed Over Ground (Knots)
-                    let heading = ship.properties.heading || ship.properties.cog || 0; // Direction
+                    let speed = ship.properties ? (ship.properties.sog || 0) : 0; 
+                    let heading = ship.properties ? (ship.properties.heading || ship.properties.cog || 0) : 0; 
 
                     let typeTag = isTanker ? '<span class="tag tanker">OIL TANKER</span>' : '<span class="tag">CARGO VESSEL</span>';
                     
@@ -325,7 +327,7 @@
                         <div class="popup-info"><b>Heading:</b> ${heading}°</div>
                     `;
 
-                    // 🔴 MAP DRAWING LOGIC (Wake / Trails) 🔴
+                    // MAP DRAWING
                     if(activeMarkers[mmsi]) {
                         activeMarkers[mmsi].marker.setLatLng([lat, lon]);
                         activeMarkers[mmsi].marker.setIcon(getShipIcon(heading, isTanker));
@@ -366,7 +368,7 @@
                     feedContainer.appendChild(listItem);
                 }
 
-                // Cleanup ships that sailed off screen
+                // Cleanup old ships
                 for (let mmsi in activeMarkers) {
                     if (!currentShipIDs.has(parseInt(mmsi))) {
                         shipLayer.removeLayer(activeMarkers[mmsi].marker);
@@ -393,8 +395,8 @@
         // Initialize
         fetchShipMetadata().then(() => {
             fetchLiveShips();
-            map.on('moveend', fetchLiveShips); // Refresh when map moves
-            setInterval(fetchLiveShips, 20000); // 20 sec refresh
+            map.on('moveend', fetchLiveShips); 
+            setInterval(fetchLiveShips, 20000); 
         });
 
     </script>

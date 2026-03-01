@@ -319,61 +319,63 @@
             });
         });
 
-        // 🚨 THE SMART SEQUENTIAL FALLBACK ENGINE 🚨
+        // 🚨 THE PROXY GHOST ENGINE (ANTI-BLOCK) 🚨
         async function fetchRealLiveFlights() {
             try {
                 let statusText = document.getElementById("api-text");
                 document.getElementById("api-status").className = "fa-solid fa-spinner fa-spin";
                 document.getElementById("api-status").style.color = "#f59e0b";
-                statusText.innerText = "Finding Active Radar...";
+                statusText.innerText = "Ghosting APIs...";
 
                 let lat = map.getCenter().lat.toFixed(2); 
                 let lng = map.getCenter().lng.toFixed(2);
                 let radius = 250;
                 
-                // Hum ne 4 alag servers list kiye hain
+                // 🚨 Corsproxy API: Yeh tere IP ko chupa kar apne IP se request marega!
+                const proxyUrl = "https://corsproxy.io/?";
+
                 const apiList = [
-                    `https://api.airplanes.live/v2/point/${lat}/${lng}/${radius}`,
-                    `https://api.adsb.fi/v2/point/${lat}/${lng}/${radius}`,
-                    `https://api.adsb.one/v2/point/${lat}/${lng}/${radius}`,
-                    `https://api.adsb.lol/v2/point/${lat}/${lng}/${radius}`
+                    `${proxyUrl}https://api.airplanes.live/v2/point/${lat}/${lng}/${radius}`,
+                    `${proxyUrl}https://api.adsb.one/v2/point/${lat}/${lng}/${radius}`,
+                    `${proxyUrl}https://api.adsb.fi/v2/point/${lat}/${lng}/${radius}`
                 ];
 
                 let apiData = null;
                 let activeServerName = "";
 
-                // 🛑 NEW LOGIC: Ek ek kar ke check karega. Race nahi lagayega!
+                // Ek ek kar ke Proxy ke zariye request bhejna
                 for (let i = 0; i < apiList.length; i++) {
                     try {
-                        let host = new URL(apiList[i]).hostname;
-                        statusText.innerText = `Checking: ${host}...`;
+                        let originalHost = apiList[i].replace(proxyUrl, "").split('/')[2];
+                        statusText.innerText = `Proxying: ${originalHost}...`;
                         
                         let response = await fetch(apiList[i]);
                         
                         if (response.ok) {
                             apiData = await response.json();
-                            activeServerName = host;
-                            break; // ✅ Agar data mil gaya toh loop yahin ruk jayega (Agli APIs block nahi hongi)
+                            activeServerName = originalHost;
+                            break; 
                         }
                     } catch (err) {
-                        console.warn(`[Blocked/Offline] API Failed: ${apiList[i]}. Shifting to next...`);
+                        console.warn(`[Proxy Failed] for: ${apiList[i]}`);
                     }
                 }
 
-                // 🛑 PLAN B: Agar chaaron main APIs ne dhoka de diya (OpenSky Bypass)
+                // 🛑 PLAN B: OpenSky Via PROXY!
                 if (!apiData || !apiData.ac) {
-                    console.log("All main ADSB APIs blocked! Shifting to OpenSky Bypass...");
-                    statusText.innerText = "Connecting Backup Server...";
+                    console.log("Main APIs Failed. Proxying OpenSky...");
+                    statusText.innerText = "Proxying OpenSky...";
                     
                     let bounds = map.getBounds();
-                    let osUrl = `https://opensky-network.org/api/states/all?lamin=${bounds.getSouth()}&lomin=${bounds.getWest()}&lamax=${bounds.getNorth()}&lomax=${bounds.getEast()}`;
+                    let rawOsUrl = `https://opensky-network.org/api/states/all?lamin=${bounds.getSouth()}&lomin=${bounds.getWest()}&lamax=${bounds.getNorth()}&lomax=${bounds.getEast()}`;
+                    let osProxyUrl = proxyUrl + encodeURIComponent(rawOsUrl);
                     
-                    let res = await fetch(osUrl);
+                    let res = await fetch(osProxyUrl);
                     if (!res.ok) throw new Error("Complete Radar Failure");
                     
                     let osData = await res.json();
                     apiData = { ac: [] }; 
-                    activeServerName = "OpenSky (Backup)";
+                    activeServerName = "OpenSky (Proxy)";
                     
                     if (osData.states) {
                         osData.states.forEach(f => {
@@ -455,8 +457,7 @@
                 document.getElementById('comm-count').innerText = commCount;
                 document.getElementById('priv-count').innerText = privCount;
                 
-                // Success: Ye batayega kis API par shift hua hai
-                document.getElementById("api-text").innerText = `Connected: ${activeServerName}`;
+                document.getElementById("api-text").innerText = `Live: ${activeServerName}`;
                 document.getElementById("dot-anim").style.background = "#10b981"; 
                 document.getElementById("api-status").className = "fa-solid fa-circle";
                 document.getElementById("api-status").style.color = "#10b981";
@@ -473,7 +474,6 @@
         map.on('moveend', fetchRealLiveFlights);
         fetchRealLiveFlights();
         
-        // 🚨 Refresh every 20 seconds to completely avoid future blocks 🚨
         setInterval(fetchRealLiveFlights, 20000); 
 
     </script>

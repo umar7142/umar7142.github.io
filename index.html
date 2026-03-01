@@ -220,10 +220,13 @@
             if(tabId === 'radar') { setTimeout(() => { map.invalidateSize(); }, 100); }
         }
 
-        // USA MAP CENTER (Kyunke API USA ki hai)
+        // USA MAP CENTER 
         var map = L.map('map').setView([39.8283, -98.5795], 4); 
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
+        
+        // Layers for better management
         var trainLayer = L.layerGroup().addTo(map);
+        var trackLayer = L.layerGroup().addTo(map);
 
         function getTrainIcon() {
             return L.divIcon({ 
@@ -244,13 +247,12 @@
             });
         });
 
-        // 🚨 LIVE US TRAIN API (No Keys, No Blocks) 🚨
+        // 🚨 LIVE US TRAIN API WITH RED PATH TRACKING 🚨
         async function fetchLiveTrains() {
             try {
                 document.getElementById("api-text").innerText = "Syncing with Railways...";
                 document.getElementById("dot-anim").style.background = "#f59e0b";
 
-                // Amtraker Open API
                 let response = await fetch('https://api-v3.amtraker.com/v3/trains');
                 if(!response.ok) throw new Error("API Down");
                 
@@ -261,13 +263,11 @@
                 let trainCount = 0;
                 let currentTrainIDs = new Set(); 
 
-                // API Object ko Array mein convert karna
                 for (let key in rawData) {
                     let trainInstances = rawData[key];
                     if(trainInstances && trainInstances.length > 0) {
-                        let train = trainInstances[0]; // Get the active train object
+                        let train = trainInstances[0]; 
                         
-                        // Valid coordinates filter
                         if(!train.lat || !train.lon || train.lat === 0) continue;
 
                         let trainId = `Train-${train.trainNum}`;
@@ -275,7 +275,7 @@
                         trainCount++;
 
                         let trainName = train.routeName || "Amtrak Service";
-                        let speed = train.velocity ? Math.round(train.velocity * 1.609) : 0; // mph to km/h
+                        let speed = train.velocity ? Math.round(train.velocity * 1.609) : 0; 
                         let status = train.trainState || "En Route";
 
                         let popupHTML = `
@@ -287,14 +287,41 @@
                             <div class="popup-info"><b>Destination:</b> ${train.destName}</div>
                         `;
 
-                        // Draw on Map
+                        // 🔴 MAP DRAWING LOGIC (The Red Line Tracking) 🔴
                         if(activeMarkers[trainId]) {
-                            activeMarkers[trainId].setLatLng([train.lat, train.lon]);
-                            activeMarkers[trainId].setPopupContent(popupHTML);
+                            // Agar train pehle se map par hai, toh uski location update karo
+                            activeMarkers[trainId].marker.setLatLng([train.lat, train.lon]);
+                            activeMarkers[trainId].marker.setPopupContent(popupHTML);
+                            
+                            // History mein naya point add karo
+                            activeMarkers[trainId].trailHistory.push([train.lat, train.lon]);
+                            
+                            // Pichle 50 points save rakho taake line boht lambi na ho jaye
+                            if(activeMarkers[trainId].trailHistory.length > 50) {
+                                activeMarkers[trainId].trailHistory.shift();
+                            }
+                            
+                            // Map par Red Line draw karo
+                            activeMarkers[trainId].trailLine.setLatLngs(activeMarkers[trainId].trailHistory);
+
                         } else {
+                            // Agar naye train hai, toh pehli dafa map par dalo
                             let marker = L.marker([train.lat, train.lon], { icon: getTrainIcon() }).bindPopup(popupHTML);
                             trainLayer.addLayer(marker);
-                            activeMarkers[trainId] = marker;
+                            
+                            // Red Track banayo (Line)
+                            let trailLine = L.polyline([[train.lat, train.lon]], { 
+                                color: '#ef4444', 
+                                weight: 4, 
+                                opacity: 0.8, 
+                                dashArray: '5, 5' 
+                            }).addTo(trackLayer);
+                            
+                            activeMarkers[trainId] = {
+                                marker: marker,
+                                trailHistory: [[train.lat, train.lon]],
+                                trailLine: trailLine
+                            };
                         }
 
                         // Add to Sidebar
@@ -307,15 +334,16 @@
                             <div class="airline-name">To: ${train.destName}</div>
                             <div class="flight-route">Status: ${status} | ${speed} km/h</div>
                         `;
-                        listItem.onclick = () => { map.flyTo([train.lat, train.lon], 10); activeMarkers[trainId].openPopup(); };
+                        listItem.onclick = () => { map.flyTo([train.lat, train.lon], 10); activeMarkers[trainId].marker.openPopup(); };
                         feedContainer.appendChild(listItem);
                     }
                 }
 
-                // Cleanup old trains
+                // Cleanup old trains that disappeared from API
                 for (let tid in activeMarkers) {
                     if (!currentTrainIDs.has(tid)) {
-                        trainLayer.removeLayer(activeMarkers[tid]);
+                        trainLayer.removeLayer(activeMarkers[tid].marker);
+                        trackLayer.removeLayer(activeMarkers[tid].trailLine);
                         delete activeMarkers[tid];
                     }
                 }

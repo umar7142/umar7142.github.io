@@ -3,29 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RailTrack | Umer Asif OSINT</title>
+    <title>AquaTrack | Marine OSINT by Umer Asif</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
     <style>
-        /* 🎨 THEME & ANIMATIONS */
+        /* 🌊 MARINE THEME & ANIMATIONS */
         :root {
-            --bg-body: #0f172a; --bg-panel: #1e293b; --text-main: #f8fafc; --text-muted: #94a3b8;
-            --accent-blue: #3b82f6; --accent-gold: #f59e0b; --accent-green: #10b981; --accent-red: #ef4444; --border-color: #334155;
+            --bg-body: #020617; --bg-panel: #0f172a; --text-main: #f8fafc; --text-muted: #94a3b8;
+            --accent-blue: #0ea5e9; --accent-gold: #f59e0b; --accent-green: #10b981; --accent-red: #ef4444; --border-color: #1e293b;
         }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+        @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.7); } 70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(14, 165, 233, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(14, 165, 233, 0); } }
 
         body { margin: 0; padding: 0; background-color: var(--bg-body); color: var(--text-main); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
         /* 🔝 TOP NAVIGATION */
-        header { display: flex; align-items: center; justify-content: space-between; padding: 12px 30px; background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1000; }
+        header { display: flex; align-items: center; justify-content: space-between; padding: 12px 30px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0,0,0,0.4); z-index: 1000; }
         
         .brand-container { display: flex; align-items: center; gap: 12px; }
-        .custom-logo { width: 36px; height: 36px; position: relative; display: flex; align-items: center; justify-content: center; background: rgba(59,130,246,0.1); border-radius: 8px; border: 1px solid var(--accent-blue); }
+        .custom-logo { width: 36px; height: 36px; position: relative; display: flex; align-items: center; justify-content: center; background: rgba(14, 165, 233, 0.1); border-radius: 8px; border: 1px solid var(--accent-blue); }
         .custom-logo i { font-size: 20px; color: var(--accent-blue); }
         
         header h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; display: flex; align-items: center;}
@@ -33,10 +33,10 @@
         .nav-tabs { display: flex; gap: 20px; }
         .nav-tab { background: transparent; border: none; color: var(--text-muted); font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.3s; padding: 8px 15px; border-radius: 8px; font-family: 'Inter', sans-serif; }
         .nav-tab:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
-        .nav-tab.active { color: var(--accent-blue); background: rgba(59, 130, 246, 0.1); }
+        .nav-tab.active { color: var(--accent-blue); background: rgba(14, 165, 233, 0.1); }
 
         .system-status { display: flex; gap: 15px; font-size: 13px; font-weight: 600; color: var(--text-muted); align-items: center; }
-        .live-dot { border-radius: 50%; width: 10px; height: 10px; display: inline-block; background: var(--accent-green); animation: pulse 2s infinite; }
+        .live-dot { border-radius: 50%; width: 10px; height: 10px; display: inline-block; background: var(--accent-blue); animation: pulse 2s infinite; }
 
         /* 🗂️ VIEWS CONTROLLER */
         .view-section { display: none; flex: 1; overflow: hidden; animation: fadeIn 0.4s ease-out forwards; }
@@ -44,11 +44,12 @@
 
         /* --- 🌍 RADAR VIEW --- */
         #radar-view { padding: 20px; gap: 20px; }
-        .sidebar { width: 340px; background-color: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); overflow: hidden; flex-shrink: 0; }
+        .sidebar { width: 340px; background-color: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); overflow: hidden; flex-shrink: 0; }
         .sidebar-title { margin: 0; font-size: 13px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; display: flex; justify-content: space-between; align-items: center;}
         
-        .stat-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
-        .stat-card { background-color: rgba(59, 130, 246, 0.05); border-left: 3px solid var(--accent-blue); padding: 12px; border-radius: 8px; transition: 0.3s; }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .stat-card { background-color: rgba(14, 165, 233, 0.05); border-left: 3px solid var(--accent-blue); padding: 12px; border-radius: 8px; transition: 0.3s; }
+        .stat-card.tanker-stats { border-left-color: var(--accent-gold); }
         .stat-card h3 { margin: 0; font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
         .stat-card p { margin: 5px 0 0 0; font-size: 20px; font-weight: 700; color: var(--text-main); }
 
@@ -59,21 +60,23 @@
         .live-list::-webkit-scrollbar { width: 5px; }
         .live-list::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
         .live-list li { padding: 12px; background-color: var(--bg-body); border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 10px; font-size: 13px; cursor: pointer; border-left: 3px solid transparent; transition: 0.2s; }
-        .live-list li:hover { border-color: var(--accent-blue); background: rgba(59, 130, 246, 0.05); }
-        .live-list li .train-id { color: var(--accent-blue); font-weight: 700; font-size: 14px;}
+        .live-list li:hover { border-color: var(--accent-blue); background: rgba(14, 165, 233, 0.05); }
+        .live-list li .ship-id { color: var(--accent-blue); font-weight: 700; font-size: 14px;}
 
-        #map { flex: 1; border: 1px solid var(--border-color); border-radius: 12px; z-index: 1; background: #0b1120; }
+        #map { flex: 1; border: 1px solid var(--border-color); border-radius: 12px; z-index: 1; background: #020617; }
         .leaflet-marker-icon { outline: none !important; border: none !important; background: transparent !important; }
         
-        /* THE TRAIN ICON */
-        .real-train-icon { display: flex; align-items: center; justify-content: center; background: var(--accent-blue); border: 2px solid #fff; border-radius: 50%; color: #fff; width: 24px; height: 24px; font-size: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: 0.3s; }
+        /* THE SHIP ICON */
+        .real-ship-icon { display: flex; align-items: center; justify-content: center; background: var(--bg-panel); border: 2px solid var(--accent-blue); border-radius: 50%; color: var(--accent-blue); width: 26px; height: 26px; font-size: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.8); transition: transform 0.5s linear; }
+        .real-ship-icon.tanker { border-color: var(--accent-gold); color: var(--accent-gold); }
 
         /* POPUP & TAGS */
-        .leaflet-popup-content-wrapper { background-color: #ffffff; color: #1e293b; border-radius: 8px; font-family: 'Inter', sans-serif; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        .leaflet-popup-tip { background-color: #ffffff; }
-        .popup-header { display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 8px; }
-        .popup-header i { color: #3b82f6; font-size: 18px; }
-        .tag { background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: bold; color: #0f172a; }
+        .leaflet-popup-content-wrapper { background-color: #0f172a; color: #f8fafc; border: 1px solid #1e293b; border-radius: 8px; font-family: 'Inter', sans-serif; box-shadow: 0 10px 25px rgba(0,0,0,0.8); }
+        .leaflet-popup-tip { background-color: #0f172a; border: 1px solid #1e293b; border-top: none; border-left: none; }
+        .popup-header { display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 8px; }
+        .popup-header i { color: #0ea5e9; font-size: 18px; }
+        .tag { background: rgba(14, 165, 233, 0.2); padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: bold; color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.5); }
+        .tag.tanker { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border-color: rgba(245, 158, 11, 0.5); }
 
         /* --- 👤 ABOUT & CONTACT VIEWS --- */
         .content-box { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 40px; max-width: 600px; width: 100%; margin: 40px auto; text-align: center; }
@@ -86,7 +89,7 @@
         .form-group input, .form-group textarea { width: 100%; padding: 12px; background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 8px; color: #fff; font-family: 'Inter'; outline: none; box-sizing: border-box; }
         .form-group input:focus, .form-group textarea:focus { border-color: var(--accent-blue); }
         .submit-btn { background: var(--accent-blue); color: #fff; border: none; padding: 12px 30px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 10px; }
-        .submit-btn:hover { background: #2563eb; transform: translateY(-2px); }
+        .submit-btn:hover { background: #0284c7; transform: translateY(-2px); }
 
         /* 📱 MOBILE RESPONSIVE */
         @media (max-width: 768px) {
@@ -106,54 +109,55 @@
     <header>
         <div class="brand-container">
             <div class="custom-logo">
-                <i class="fa-solid fa-train"></i>
+                <i class="fa-solid fa-ship"></i>
             </div>
-            <h1>RAILTRACK <span style="font-weight: 400; color: var(--text-muted); font-size: 16px; margin-left: 8px;">| GROUND OSINT</span></h1>
+            <h1>AQUATRACK <span style="font-weight: 400; color: var(--text-muted); font-size: 16px; margin-left: 8px;">| MARINE OSINT</span></h1>
         </div>
         
         <div class="nav-tabs">
-            <button class="nav-tab active" onclick="switchTab('radar')"><i class="fa-solid fa-satellite-dish"></i> Live Trains</button>
+            <button class="nav-tab active" onclick="switchTab('radar')"><i class="fa-solid fa-satellite-dish"></i> Live Vessels</button>
             <button class="nav-tab" onclick="switchTab('about')"><i class="fa-solid fa-user-astronaut"></i> About</button>
             <button class="nav-tab" onclick="switchTab('contact')"><i class="fa-solid fa-envelope"></i> Contact</button>
         </div>
 
         <div class="system-status">
             <div class="live-dot" id="dot-anim"></div>
-            <span id="api-text">Initializing Ground Radar...</span>
+            <span id="api-text">Booting Sonar System...</span>
             <span id="db-status" style="margin-left: 15px; color: #ef4444;"><i class="fa-solid fa-database"></i> DB Offline</span>
         </div>
     </header>
 
     <div id="radar-view" class="view-section active">
         <div class="sidebar">
-            <h2 class="sidebar-title"><i class="fa-solid fa-chart-pie"></i> US Rail Analytics</h2>
+            <h2 class="sidebar-title"><i class="fa-solid fa-chart-pie"></i> Marine Traffic Analytics</h2>
             <div class="stat-grid">
-                <div class="stat-card"><h3>Active Trains (Amtrak)</h3><p id="train-count">0</p></div>
+                <div class="stat-card"><h3>Cargo / General</h3><p id="cargo-count">0</p></div>
+                <div class="stat-card tanker-stats"><h3>Oil Tankers</h3><p id="tanker-count">0</p></div>
             </div>
             
             <div class="search-box" style="margin-top: 10px;">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="train-search" placeholder="Search Train Name or Route...">
+                <input type="text" id="ship-search" placeholder="Search MMSI or Ship Name...">
             </div>
 
-            <ul class="live-list" id="train-feed"></ul>
+            <ul class="live-list" id="ship-feed"></ul>
         </div>
         <div id="map"></div>
     </div>
 
     <div id="about-view" class="view-section" style="display: none;">
         <div class="content-box">
-            <img src="https://ui-avatars.com/api/?name=Umer+Asif&background=3b82f6&color=fff&size=128" alt="CEO Umer Asif">
+            <img src="https://ui-avatars.com/api/?name=Umer+Asif&background=0ea5e9&color=fff&size=128" alt="CEO Umer Asif">
             <h2>UMER ASIF</h2>
-            <p style="color: var(--accent-blue); font-weight: 600; margin-top: -5px;">Tech CEO & Full-Stack Developer</p>
-            <p>Welcome to RailTrack OSINT. When the skies closed, we took over the ground. This platform tracks live US Railway systems (Amtrak) in real-time, completely bypassing traditional API restrictions. Welcome to the future of Ground Tracking.</p>
+            <p style="color: var(--accent-blue); font-weight: 600; margin-top: -5px;">Tech CEO & OSINT Architect</p>
+            <p>Welcome to AquaTrack Marine OSINT. This system intercepts live Automatic Identification System (AIS) broadcasts from vessels traversing the global oceans. From airplanes to trains, and now to multi-million dollar Cargo Ships and Oil Tankers. We track everything.</p>
         </div>
     </div>
 
     <div id="contact-view" class="view-section" style="display: none;">
         <div class="content-box">
-            <h2>Get in Touch</h2>
-            <p>Interested in purchasing this Ground Engine or hiring me? Send a transmission below.</p>
+            <h2>Secure Transmission</h2>
+            <p>Looking to deploy a private marine tracking server? Send a transmission below.</p>
             <form id="contact-form" onsubmit="window.submitContactForm(event)">
                 <div class="form-group"><label>Your Identity</label><input type="text" id="contact-name" placeholder="John Doe" required></div>
                 <div class="form-group"><label>Email Frequency</label><input type="email" id="contact-email" placeholder="john@company.com" required></div>
@@ -185,8 +189,8 @@
             document.getElementById("db-status").style.color = "#10b981";
             document.getElementById("db-status").innerHTML = `<i class="fa-solid fa-database"></i> DB Connected`;
             
-            window.saveStatsToDatabase = function(trains) {
-                if (trains > 0) { push(ref(db, 'RailTrack_Analytics'), { timestamp: new Date().toISOString(), active_trains: trains }); }
+            window.saveStatsToDatabase = function(cargo, tanker) {
+                if (cargo > 0 || tanker > 0) { push(ref(db, 'AquaTrack_Analytics'), { timestamp: new Date().toISOString(), cargo_ships: cargo, oil_tankers: tanker }); }
             };
 
             window.submitContactForm = async function(event) {
@@ -220,153 +224,178 @@
             if(tabId === 'radar') { setTimeout(() => { map.invalidateSize(); }, 100); }
         }
 
-        // USA MAP CENTER 
-        var map = L.map('map').setView([39.8283, -98.5795], 4); 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
+        // BALTIC SEA / GULF OF FINLAND (Huge Marine Traffic Hub)
+        var map = L.map('map').setView([59.50, 23.50], 7); 
+        // 🚨 HACKER MAP LAYER: CartoDB Dark Matter for Oceans 🚨
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
         
-        // Layers for better management
-        var trainLayer = L.layerGroup().addTo(map);
-        var trackLayer = L.layerGroup().addTo(map);
+        var shipLayer = L.layerGroup().addTo(map);
+        var wakeLayer = L.layerGroup().addTo(map); // Trail of the ship (Wake)
 
-        function getTrainIcon() {
+        function getShipIcon(heading, isTanker) {
+            let colorClass = isTanker ? 'tanker' : '';
+            // CSS rotate for ship direction
             return L.divIcon({ 
-                html: `<div class="real-train-icon"><i class="fa-solid fa-train-subway"></i></div>`, 
+                html: `<div class="real-ship-icon ${colorClass}" style="transform: rotate(${heading}deg);"><i class="fa-solid fa-ship"></i></div>`, 
                 className: '', 
-                iconSize: [24, 24], 
-                iconAnchor: [12, 12], 
-                popupAnchor: [0, -12] 
+                iconSize: [26, 26], 
+                iconAnchor: [13, 13], 
+                popupAnchor: [0, -13] 
             });
         }
 
         let activeMarkers = {};
+        let shipMetadataCache = {}; // Cache to store ship names by MMSI
 
-        document.getElementById('train-search').addEventListener('input', function(e) {
+        document.getElementById('ship-search').addEventListener('input', function(e) {
             let searchTerm = e.target.value.toLowerCase();
-            document.querySelectorAll('#train-feed li').forEach(li => {
+            document.querySelectorAll('#ship-feed li').forEach(li => {
                 li.style.display = li.innerText.toLowerCase().includes(searchTerm) ? 'block' : 'none';
             });
         });
 
-        // 🚨 LIVE US TRAIN API WITH RED PATH TRACKING 🚨
-        async function fetchLiveTrains() {
+        // 🚨 PRE-FETCH SHIP METADATA (Names, Types) 🚨
+        async function fetchShipMetadata() {
             try {
-                document.getElementById("api-text").innerText = "Syncing with Railways...";
-                document.getElementById("dot-anim").style.background = "#f59e0b";
+                let res = await fetch('https://meri.digitraffic.fi/api/ais/v1/vessels');
+                let data = await res.json();
+                data.forEach(ship => {
+                    shipMetadataCache[ship.mmsi] = {
+                        name: ship.name || "Unknown Vessel",
+                        type: ship.shipType || 0
+                    };
+                });
+                console.log("Metadata loaded for", data.length, "ships.");
+            } catch(e) { console.log("Metadata fetch failed."); }
+        }
 
-                let response = await fetch('https://api-v3.amtraker.com/v3/trains');
+        // 🚨 MAIN RADAR ENGINE (NORDIC AIS API) 🚨
+        async function fetchLiveShips() {
+            try {
+                document.getElementById("api-text").innerText = "Scanning Ocean AIS...";
+                document.getElementById("dot-anim").style.background = "#0ea5e9";
+
+                // Live Ships Coordinates API (Finland Open Data - Completely Free & Unblockable)
+                let response = await fetch('https://meri.digitraffic.fi/api/ais/v1/locations');
                 if(!response.ok) throw new Error("API Down");
                 
                 let rawData = await response.json();
                 
-                const feedContainer = document.getElementById('train-feed');
+                const feedContainer = document.getElementById('ship-feed');
                 feedContainer.innerHTML = ''; 
-                let trainCount = 0;
-                let currentTrainIDs = new Set(); 
-
-                for (let key in rawData) {
-                    let trainInstances = rawData[key];
-                    if(trainInstances && trainInstances.length > 0) {
-                        let train = trainInstances[0]; 
-                        
-                        if(!train.lat || !train.lon || train.lat === 0) continue;
-
-                        let trainId = `Train-${train.trainNum}`;
-                        currentTrainIDs.add(trainId);
-                        trainCount++;
-
-                        let trainName = train.routeName || "Amtrak Service";
-                        let speed = train.velocity ? Math.round(train.velocity * 1.609) : 0; 
-                        let status = train.trainState || "En Route";
-
-                        let popupHTML = `
-                            <div class="popup-header"><i class="fa-solid fa-train"></i><div class="popup-title">${trainName}</div></div>
-                            <div style="margin-bottom: 10px;"><span class="tag">US RAILWAYS</span></div>
-                            <div class="popup-info"><b>Train ID:</b> #${train.trainNum}</div>
-                            <div class="popup-info"><b>Status:</b> ${status}</div>
-                            <div class="popup-info"><b>Speed:</b> ${speed} km/h</div>
-                            <div class="popup-info"><b>Destination:</b> ${train.destName}</div>
-                        `;
-
-                        // 🔴 MAP DRAWING LOGIC (The Red Line Tracking) 🔴
-                        if(activeMarkers[trainId]) {
-                            // Agar train pehle se map par hai, toh uski location update karo
-                            activeMarkers[trainId].marker.setLatLng([train.lat, train.lon]);
-                            activeMarkers[trainId].marker.setPopupContent(popupHTML);
-                            
-                            // History mein naya point add karo
-                            activeMarkers[trainId].trailHistory.push([train.lat, train.lon]);
-                            
-                            // Pichle 50 points save rakho taake line boht lambi na ho jaye
-                            if(activeMarkers[trainId].trailHistory.length > 50) {
-                                activeMarkers[trainId].trailHistory.shift();
-                            }
-                            
-                            // Map par Red Line draw karo
-                            activeMarkers[trainId].trailLine.setLatLngs(activeMarkers[trainId].trailHistory);
-
-                        } else {
-                            // Agar naye train hai, toh pehli dafa map par dalo
-                            let marker = L.marker([train.lat, train.lon], { icon: getTrainIcon() }).bindPopup(popupHTML);
-                            trainLayer.addLayer(marker);
-                            
-                            // Red Track banayo (Line)
-                            let trailLine = L.polyline([[train.lat, train.lon]], { 
-                                color: '#ef4444', 
-                                weight: 4, 
-                                opacity: 0.8, 
-                                dashArray: '5, 5' 
-                            }).addTo(trackLayer);
-                            
-                            activeMarkers[trainId] = {
-                                marker: marker,
-                                trailHistory: [[train.lat, train.lon]],
-                                trailLine: trailLine
-                            };
-                        }
-
-                        // Add to Sidebar
-                        let listItem = document.createElement('li');
-                        let listText = `${trainName} ${train.destName}`.toLowerCase();
-                        if(document.getElementById('train-search').value !== "" && !listText.includes(document.getElementById('train-search').value.toLowerCase())) { listItem.style.display = 'none'; }
-
-                        listItem.innerHTML = `
-                            <div class="train-id"><i class="fa-solid fa-train-subway" style="font-size:12px; margin-right:5px;"></i> ${trainName}</div>
-                            <div class="airline-name">To: ${train.destName}</div>
-                            <div class="flight-route">Status: ${status} | ${speed} km/h</div>
-                        `;
-                        listItem.onclick = () => { map.flyTo([train.lat, train.lon], 10); activeMarkers[trainId].marker.openPopup(); };
-                        feedContainer.appendChild(listItem);
-                    }
-                }
-
-                // Cleanup old trains that disappeared from API
-                for (let tid in activeMarkers) {
-                    if (!currentTrainIDs.has(tid)) {
-                        trainLayer.removeLayer(activeMarkers[tid].marker);
-                        trackLayer.removeLayer(activeMarkers[tid].trailLine);
-                        delete activeMarkers[tid];
-                    }
-                }
-
-                document.getElementById('train-count').innerText = trainCount;
+                let cargoCount = 0; let tankerCount = 0;
+                let currentShipIDs = new Set(); 
                 
-                document.getElementById("api-text").innerText = `Live: US Ground Network`;
+                let currentBounds = map.getBounds();
+
+                for (let i = 0; i < rawData.length; i++) {
+                    let ship = rawData[i];
+                    if(!ship.geometry || !ship.geometry.coordinates) continue;
+
+                    // GeoJSON format is [Longitude, Latitude]
+                    let lon = ship.geometry.coordinates[0];
+                    let lat = ship.geometry.coordinates[1];
+                    let mmsi = ship.mmsi; // Unique Ship ID
+                    
+                    // PERFORMANCE HACK: Only process ships currently visible on the screen!
+                    if(!currentBounds.contains([lat, lon])) continue;
+
+                    currentShipIDs.add(mmsi);
+
+                    // Get Metadata from Cache
+                    let meta = shipMetadataCache[mmsi] || { name: `MMSI: ${mmsi}`, type: 0 };
+                    let shipName = meta.name;
+                    
+                    // Ship Types (AIS standard): 80s are Tankers, 70s are Cargo.
+                    let isTanker = (meta.type >= 80 && meta.type < 90);
+                    let shipTypeName = isTanker ? "Oil/Chemical Tanker" : "Cargo / Gen Vessel";
+                    
+                    if(isTanker) tankerCount++; else cargoCount++;
+
+                    let speed = ship.properties.sog || 0; // Speed Over Ground (Knots)
+                    let heading = ship.properties.heading || ship.properties.cog || 0; // Direction
+
+                    let typeTag = isTanker ? '<span class="tag tanker">OIL TANKER</span>' : '<span class="tag">CARGO VESSEL</span>';
+                    
+                    let popupHTML = `
+                        <div class="popup-header"><i class="fa-solid fa-ship" style="color: ${isTanker ? '#f59e0b' : '#0ea5e9'};"></i><div class="popup-title">${shipName}</div></div>
+                        <div style="margin-bottom: 10px;">${typeTag}</div>
+                        <div class="popup-info"><b>MMSI ID:</b> ${mmsi}</div>
+                        <div class="popup-info"><b>Speed:</b> ${speed} Knots</div>
+                        <div class="popup-info"><b>Heading:</b> ${heading}°</div>
+                    `;
+
+                    // 🔴 MAP DRAWING LOGIC (Wake / Trails) 🔴
+                    if(activeMarkers[mmsi]) {
+                        activeMarkers[mmsi].marker.setLatLng([lat, lon]);
+                        activeMarkers[mmsi].marker.setIcon(getShipIcon(heading, isTanker));
+                        activeMarkers[mmsi].marker.setPopupContent(popupHTML);
+                        
+                        activeMarkers[mmsi].trailHistory.push([lat, lon]);
+                        if(activeMarkers[mmsi].trailHistory.length > 20) activeMarkers[mmsi].trailHistory.shift();
+                        
+                        activeMarkers[mmsi].trailLine.setLatLngs(activeMarkers[mmsi].trailHistory);
+
+                    } else {
+                        let marker = L.marker([lat, lon], { icon: getShipIcon(heading, isTanker) }).bindPopup(popupHTML);
+                        shipLayer.addLayer(marker);
+                        
+                        let trailColor = isTanker ? '#f59e0b' : '#0ea5e9';
+                        let trailLine = L.polyline([[lat, lon]], { 
+                            color: trailColor, 
+                            weight: 3, 
+                            opacity: 0.6, 
+                            dashArray: '2, 6' 
+                        }).addTo(wakeLayer);
+                        
+                        activeMarkers[mmsi] = { marker: marker, trailHistory: [[lat, lon]], trailLine: trailLine };
+                    }
+
+                    // Add to Sidebar
+                    let listItem = document.createElement('li');
+                    let listText = `${shipName} ${mmsi}`.toLowerCase();
+                    if(document.getElementById('ship-search').value !== "" && !listText.includes(document.getElementById('ship-search').value.toLowerCase())) { listItem.style.display = 'none'; }
+
+                    let sidebarIconColor = isTanker ? "color: var(--accent-gold);" : "color: var(--accent-blue);";
+                    listItem.innerHTML = `
+                        <div class="ship-id" style="${sidebarIconColor}"><i class="fa-solid fa-anchor" style="font-size:12px; margin-right:5px;"></i> ${shipName}</div>
+                        <div class="airline-name">${shipTypeName}</div>
+                        <div class="flight-route">MMSI: ${mmsi} | ${speed} Knots</div>
+                    `;
+                    listItem.onclick = () => { map.flyTo([lat, lon], 12); activeMarkers[mmsi].marker.openPopup(); };
+                    feedContainer.appendChild(listItem);
+                }
+
+                // Cleanup ships that sailed off screen
+                for (let mmsi in activeMarkers) {
+                    if (!currentShipIDs.has(parseInt(mmsi))) {
+                        shipLayer.removeLayer(activeMarkers[mmsi].marker);
+                        wakeLayer.removeLayer(activeMarkers[mmsi].trailLine);
+                        delete activeMarkers[mmsi];
+                    }
+                }
+
+                document.getElementById('cargo-count').innerText = cargoCount;
+                document.getElementById('tanker-count').innerText = tankerCount;
+                
+                document.getElementById("api-text").innerText = `Live: Nordic Marine AIS`;
                 document.getElementById("dot-anim").style.background = "#10b981"; 
 
-                if(window.saveStatsToDatabase) { window.saveStatsToDatabase(trainCount); }
+                if(window.saveStatsToDatabase) { window.saveStatsToDatabase(cargoCount, tankerCount); }
 
             } catch (error) {
                 console.error(error);
-                document.getElementById("api-text").innerText = "Signals Lost... Retrying.";
+                document.getElementById("api-text").innerText = "Sonar Jammed... Retrying.";
                 document.getElementById("dot-anim").style.background = "#ef4444"; 
             }
         }
 
-        map.on('moveend', fetchLiveTrains);
-        fetchLiveTrains();
-        
-        // Refresh every 30 seconds
-        setInterval(fetchLiveTrains, 30000); 
+        // Initialize
+        fetchShipMetadata().then(() => {
+            fetchLiveShips();
+            map.on('moveend', fetchLiveShips); // Refresh when map moves
+            setInterval(fetchLiveShips, 20000); // 20 sec refresh
+        });
 
     </script>
 </body>

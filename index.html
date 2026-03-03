@@ -3,236 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OFitPro | Web Watch UI</title>
-    <style>
-        /* 📱 VIP 3D SMARTWATCH CSS */
-        :root {
-            --bg-color: #0f172a;
-            --watch-case: linear-gradient(145deg, #d1d5db, #9ca3af);
-            --watch-screen: #000000;
-            --accent-orange: #f97316;
-            --neon-green: #34d399;
-            --neon-blue: #38bdf8;
-            --neon-pink: #f472b6;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: var(--bg-color);
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            perspective: 1000px; /* For 3D Tilt Effect */
-            color: white;
-            overflow: hidden;
-        }
-
-        /* ⌚ Watch Body (The Hardware) */
-        .watch-container {
-            position: relative;
-            transition: transform 0.5s ease;
-        }
-
-        .watch-container:hover {
-            transform: rotateX(10deg) rotateY(-15deg) scale(1.05);
-            box-shadow: -20px 30px 50px rgba(0,0,0,0.5);
-        }
-
-        .watch-case {
-            width: 320px;
-            height: 400px;
-            background: var(--watch-case);
-            border-radius: 60px;
-            padding: 12px;
-            box-shadow: 
-                inset 2px 2px 5px rgba(255,255,255,0.7),
-                inset -5px -5px 15px rgba(0,0,0,0.5),
-                0 20px 40px rgba(0,0,0,0.5);
-            position: relative;
-        }
-
-        /* The Ultra Orange Action Button */
-        .action-button {
-            position: absolute;
-            left: -8px;
-            top: 120px;
-            width: 8px;
-            height: 60px;
-            background: var(--accent-orange);
-            border-radius: 5px 0 0 5px;
-            box-shadow: inset 2px 2px 3px rgba(255,255,255,0.4);
-        }
-
-        /* The Digital Crown */
-        .crown {
-            position: absolute;
-            right: -12px;
-            top: 100px;
-            width: 14px;
-            height: 45px;
-            background: repeating-linear-gradient(
-                to bottom,
-                #6b7280,
-                #6b7280 2px,
-                #4b5563 2px,
-                #4b5563 4px
-            );
-            border-radius: 0 8px 8px 0;
-            box-shadow: inset -2px 0 5px rgba(0,0,0,0.5);
-        }
-
-        /* 📺 Watch Screen (The OLED Display) */
-        .watch-screen {
-            width: 100%;
-            height: 100%;
-            background: var(--watch-screen);
-            border-radius: 48px;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid #1f2937;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 25px 20px;
-            box-sizing: border-box;
-        }
-
-        /* Status Bar */
-        .status-bar {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: #9ca3af;
-            padding: 0 10px;
-        }
-
-        /* Time Display */
-        .time-container {
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        .time {
-            font-size: 4.5rem;
-            font-weight: 800;
-            line-height: 1;
-            margin: 0;
-            /* Hacker Gradient Text */
-            background: linear-gradient(to right, var(--neon-blue), var(--neon-green));
-            -webkit-background-clip: text;
-            color: transparent;
-            letter-spacing: -2px;
-        }
-
-        .date {
-            font-size: 1.1rem;
-            color: #94a3b8;
-            margin-top: 5px;
-            font-weight: 500;
-            text-transform: uppercase;
-        }
-
-        /* Activity Widgets */
-        .widgets {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .widget {
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 15px 10px;
-            text-align: center;
-            backdrop-filter: blur(5px);
-        }
-
-        .widget-icon {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-        }
-
-        .widget-value {
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-
-        .widget-label {
-            font-size: 0.7rem;
-            color: #9ca3af;
-            text-transform: uppercase;
-        }
-
-        /* 💓 Animations */
-        @keyframes heartbeat {
-            0% { transform: scale(1); }
-            15% { transform: scale(1.3); }
-            30% { transform: scale(1); }
-            45% { transform: scale(1.15); }
-            60% { transform: scale(1); }
-        }
-
-        .heart {
-            color: var(--neon-pink);
-            display: inline-block;
-            animation: heartbeat 1.2s infinite;
-        }
-
-        .steps { color: var(--neon-blue); }
-
-        /* Floating particles for bg effect */
-        .glow {
-            position: absolute;
-            width: 150px;
-            height: 150px;
-            background: radial-gradient(circle, rgba(56,189,248,0.2) 0%, rgba(0,0,0,0) 70%);
-            top: 20%;
-            left: 25%;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-    </style>
+    <title>OFitPro | Interactive Web UI</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="watch-container">
-    <div class="action-button"></div>
+    <div class="action-button" id="sideBtn"></div>
     <div class="crown"></div>
     
     <div class="watch-case">
         <div class="watch-screen">
             <div class="glow"></div>
             
-            <div class="status-bar" style="z-index: 1;">
+            <div class="status-bar">
                 <span>🔋 84%</span>
-                <span><span style="color:#38bdf8;">🌐</span> Connected</span>
+                <span><span style="color:#38bdf8;">🌐</span> Web Mode</span>
             </div>
 
-            <div class="time-container" style="z-index: 1;">
-                <div class="time" id="clock">00:00</div>
-                <div class="date" id="date">DAY, MON DD</div>
+            <div class="screen-content active" id="mainScreen">
+                <div class="time-container">
+                    <div class="time" id="clock">00:00</div>
+                    <div class="date" id="date">DAY, MON DD</div>
+                </div>
+
+                <div class="widgets">
+                    <div class="widget">
+                        <div class="widget-icon heart">❤️</div>
+                        <div class="widget-value" id="bpm">72</div>
+                        <div class="widget-label">BPM (Demo)</div>
+                    </div>
+                    <div class="widget">
+                        <div class="widget-icon steps">👟</div>
+                        <div class="widget-value" id="steps">6,432</div>
+                        <div class="widget-label">Steps (Demo)</div>
+                    </div>
+                </div>
+                <div style="text-align:center; color:#64748b; font-size:0.75rem;">
+                    Click Orange Button ➡️
+                </div>
             </div>
 
-            <div class="widgets" style="z-index: 1;">
-                <div class="widget">
-                    <div class="widget-icon heart">❤️</div>
-                    <div class="widget-value" id="bpm">72</div>
-                    <div class="widget-label">BPM</div>
+            <div class="screen-content" id="menuScreen">
+                <div style="text-align:center; margin-bottom:20px; font-weight:bold;">APPS MENU</div>
+                <div class="app-grid">
+                    <div class="app-icon" style="background:#f97316;">👟</div>
+                    <div class="app-icon" style="background:#f43f5e;">❤️</div>
+                    <div class="app-icon" style="background:#38bdf8;">🌤️</div>
+                    <div class="app-icon" style="background:#22c55e;">💬</div>
+                    <div class="app-icon" style="background:#a855f7;">🎵</div>
+                    <div class="app-icon" style="background:#eab308;">⚙️</div>
                 </div>
-                
-                <div class="widget">
-                    <div class="widget-icon steps">👟</div>
-                    <div class="widget-value" id="steps">6,432</div>
-                    <div class="widget-label">Steps</div>
+                <div style="text-align:center; color:#64748b; font-size:0.75rem; margin-top:20px;">
+                    TremorTrack OSINT App
                 </div>
-            </div>
-            
-            <div style="text-align:center; color:#64748b; font-size:0.75rem; z-index:1;">
-                TremorTrack OSINT Sync
             </div>
 
         </div>
@@ -240,38 +64,52 @@
 </div>
 
 <script>
-    // 🧠 THE JAVASCRIPT ENGINE (Making it Alive)
+    // 🧠 JAVASCRIPT FOR INTERACTION
 
-    // 1. Live Digital Clock
+    // 1. Button Click Logic (Screen Switcher)
+    const sideBtn = document.getElementById('sideBtn');
+    const mainScreen = document.getElementById('mainScreen');
+    const menuScreen = document.getElementById('menuScreen');
+    let isMainScreen = true;
+
+    sideBtn.addEventListener('click', () => {
+        // Button dabane par "active" class toggle karo
+        if (isMainScreen) {
+            mainScreen.classList.remove('active');
+            menuScreen.classList.add('active');
+        } else {
+            menuScreen.classList.remove('active');
+            mainScreen.classList.add('active');
+        }
+        isMainScreen = !isMainScreen; // State badal do
+        
+        // Button press animation
+        sideBtn.style.transform = 'scale(0.95)';
+        setTimeout(() => sideBtn.style.transform = 'scale(1)', 100);
+    });
+
+    // 2. Live Clock & Demo Data (Same as before)
     function updateTime() {
         const now = new Date();
-        
-        // Format Time (HH:MM)
         let hours = now.getHours();
         let minutes = now.getMinutes();
         hours = hours < 10 ? '0' + hours : hours;
         minutes = minutes < 10 ? '0' + minutes : minutes;
         document.getElementById('clock').innerText = `${hours}:${minutes}`;
 
-        // Format Date (e.g., TUE, MAR 03)
         const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
         const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
         const dayName = days[now.getDay()];
         const monthName = months[now.getMonth()];
         let dateNum = now.getDate();
         dateNum = dateNum < 10 ? '0' + dateNum : dateNum;
-        
         document.getElementById('date').innerText = `${dayName}, ${monthName} ${dateNum}`;
     }
-
-    // Update time every second
     setInterval(updateTime, 1000);
-    updateTime(); // Call immediately on load
+    updateTime();
 
-    // 2. Fake Live Heart Rate (Changes slightly every 3 seconds)
     let currentBpm = 72;
     setInterval(() => {
-        // Randomly go up or down by 1 or 2 beats
         let change = Math.floor(Math.random() * 3) - 1; 
         currentBpm += change;
         if(currentBpm < 65) currentBpm = 65;
@@ -279,11 +117,9 @@
         document.getElementById('bpm').innerText = currentBpm;
     }, 3000);
 
-    // 3. Fake Steps Counter (Increases every few seconds as if you are walking)
     let currentSteps = 6432;
     setInterval(() => {
-        currentSteps += Math.floor(Math.random() * 3); // add 0 to 2 steps
-        // Add comma to numbers (e.g. 6,432)
+        currentSteps += Math.floor(Math.random() * 3); 
         document.getElementById('steps').innerText = currentSteps.toLocaleString();
     }, 2500);
 

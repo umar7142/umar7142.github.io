@@ -3,82 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mirza Umar | Tech Tycoon</title>
+    <title>Mirza Umar | Tech Architect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* 🎨 THE VIP DARK MODE CSS */
+        /* 🎨 THE VIP DARK MODE CSS (Pro Edition) */
         body { 
             background-color: #0f172a; 
             color: white; 
-            font-family: 'Courier New', Courier, monospace; 
+            /* Yeh hai wo line jis se asli professional font aayega */
+            font-family: 'Roboto', sans-serif; 
             text-align: center; 
             margin: 0;
             padding: 0;
         }
         .container { 
             max-width: 400px; 
-            margin: 50px auto; 
+            margin: 60px auto; 
             padding: 20px; 
         }
         .profile-pic { 
-            width: 130px; 
-            height: 130px; 
+            width: 140px; 
+            height: 140px; 
             border-radius: 50%; 
-            border: 3px solid #38bdf8; 
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.5); 
-            margin-bottom: 10px;
+            border: 4px solid #38bdf8; 
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.4); 
+            margin-bottom: 15px;
         }
         h1 { 
-            color: #38bdf8; 
-            margin-top: 10px; 
+            color: white; 
+            margin-top: 15px; 
             margin-bottom: 5px;
-            text-transform: uppercase; 
-            letter-spacing: 2px; 
             font-weight: 900;
+            font-size: 32px;
+            letter-spacing: 1px;
         }
         h3 { 
-            color: #f97316; 
-            font-size: 14px; 
+            color: #38bdf8; 
+            font-size: 16px; 
+            font-weight: 400;
             margin-top: 0;
-            margin-bottom: 40px; 
+            margin-bottom: 45px; 
             letter-spacing: 1px;
+            text-transform: uppercase;
         }
         .link-btn { 
             display: block; 
-            background: rgba(255, 255, 255, 0.05); 
-            border: 1px solid #f97316; 
-            padding: 15px; 
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid #334155; 
+            padding: 18px; 
             margin: 15px 0; 
             border-radius: 12px; 
             color: white; 
             text-decoration: none; 
-            font-weight: bold; 
-            transition: all 0.3s ease-in-out; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            font-weight: 600; 
+            font-size: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        /* Hover Effect (Jadu) */
+        /* Hover Effect (Jadu - Ab Zyada Smooth Hai) */
         .link-btn:hover { 
-            background: #f97316; 
-            box-shadow: 0 0 20px #f97316; 
+            background: #38bdf8; 
+            border-color: #38bdf8;
+            box-shadow: 0 10px 20px -10px rgba(56, 189, 248, 0.7); 
             color: #0f172a; 
-            transform: translateY(-3px);
+            transform: translateY(-4px);
         }
         .footer { 
-            margin-top: 50px; 
-            font-size: 11px; 
-            color: #475569; 
+            margin-top: 60px; 
+            font-size: 12px; 
+            color: #64748b; 
             border-top: 1px solid #1e293b;
-            padding-top: 20px;
+            padding-top: 25px;
+            font-weight: 300;
         }
         .status-dot {
             color: #22c55e;
             font-size: 14px;
+            margin-right: 5px;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <img src="https://ui-avatars.com/api/?name=Mirza+Umar&background=0D8ABC&color=fff&size=256&bold=true" alt="CEO Mirza" class="profile-pic">
+        <img src="https://ui-avatars.com/api/?name=Mirza+Umar&background=0D8ABC&color=fff&size=256&bold=true&font-size=0.4" alt="CEO Mirza" class="profile-pic">
         
         <h1>Mirza Umar</h1>
         <h3>CEO & Tech Architect 🚀</h3>

@@ -1,112 +1,1220 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mirza Umar | Tech Architect</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
-    <style>
-        /* 🎨 THE VIP DARK MODE CSS (Pro Edition) */
-        body { 
-            background-color: #0f172a; 
-            color: white; 
-            /* Yeh hai wo line jis se asli professional font aayega */
-            font-family: 'Roboto', sans-serif; 
-            text-align: center; 
-            margin: 0;
-            padding: 0;
-        }
-        .container { 
-            max-width: 400px; 
-            margin: 60px auto; 
-            padding: 20px; 
-        }
-        .profile-pic { 
-            width: 140px; 
-            height: 140px; 
-            border-radius: 50%; 
-            border: 4px solid #38bdf8; 
-            box-shadow: 0 0 25px rgba(56, 189, 248, 0.4); 
-            margin-bottom: 15px;
-        }
-        h1 { 
-            color: white; 
-            margin-top: 15px; 
-            margin-bottom: 5px;
-            font-weight: 900;
-            font-size: 32px;
-            letter-spacing: 1px;
-        }
-        h3 { 
-            color: #38bdf8; 
-            font-size: 16px; 
-            font-weight: 400;
-            margin-top: 0;
-            margin-bottom: 45px; 
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        .link-btn { 
-            display: block; 
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border: 1px solid #334155; 
-            padding: 18px; 
-            margin: 15px 0; 
-            border-radius: 12px; 
-            color: white; 
-            text-decoration: none; 
-            font-weight: 600; 
-            font-size: 16px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        /* Hover Effect (Jadu - Ab Zyada Smooth Hai) */
-        .link-btn:hover { 
-            background: #38bdf8; 
-            border-color: #38bdf8;
-            box-shadow: 0 10px 20px -10px rgba(56, 189, 248, 0.7); 
-            color: #0f172a; 
-            transform: translateY(-4px);
-        }
-        .footer { 
-            margin-top: 60px; 
-            font-size: 12px; 
-            color: #64748b; 
-            border-top: 1px solid #1e293b;
-            padding-top: 25px;
-            font-weight: 300;
-        }
-        .status-dot {
-            color: #22c55e;
-            font-size: 14px;
-            margin-right: 5px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Mirza | Data & Dev Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Icons (real logos feel) -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    :root {
+      --bg-main: #05060a;
+      --bg-elevated: #0c0f18;
+      --bg-soft: #111522;
+      --accent-1: #7c3aed;
+      --accent-2: #22d3ee;
+      --accent-3: #f97316;
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --border-subtle: rgba(148, 163, 184, 0.25);
+      --radius-lg: 18px;
+      --radius-xl: 26px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.75);
+      --transition-fast: 0.25s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top left, #1f2937 0, #020617 45%, #000 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    /* Layout */
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 18px 60px;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(to bottom, rgba(2, 6, 23, 0.92), rgba(2, 6, 23, 0.4), transparent);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    .nav {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 14px;
+      background: conic-gradient(from 210deg, #22d3ee, #7c3aed, #f97316, #22d3ee);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.9), 0 12px 30px rgba(15, 23, 42, 0.9);
+    }
+
+    .nav-logo span {
+      font-size: 18px;
+      font-weight: 700;
+      color: #020617;
+    }
+
+    .nav-title {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .nav-title-main {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #e5e7eb;
+    }
+
+    .nav-title-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 13px;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: var(--transition-fast);
+    }
+
+    .nav-links a:hover {
+      color: var(--text-main);
+      border-color: rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .nav-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: radial-gradient(circle at top left, rgba(55, 65, 81, 0.6), rgba(15, 23, 42, 0.95));
+    }
+
+    .nav-pill i {
+      color: var(--accent-2);
+      font-size: 12px;
+    }
+
+    main {
+      margin-top: 18px;
+    }
+
+    /* Hero */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+      gap: 26px;
+      align-items: stretch;
+      margin-bottom: 32px;
+    }
+
+    @media (max-width: 840px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .hero-card {
+      background: radial-gradient(circle at top left, rgba(55, 65, 81, 0.7), rgba(15, 23, 42, 0.98));
+      border-radius: var(--radius-xl);
+      padding: 22px 22px 20px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      animation: floatIn 0.7s ease-out both;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(34, 211, 238, 0.16), transparent 55%),
+        radial-gradient(circle at 100% 0%, rgba(124, 58, 237, 0.18), transparent 55%);
+      opacity: 0.9;
+      z-index: -1;
+    }
+
+    .hero-pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .hero-pill {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      padding: 6px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: #e5e7eb;
+      background: rgba(15, 23, 42, 0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-pill i {
+      font-size: 12px;
+      color: var(--accent-2);
+    }
+
+    .hero-title {
+      font-size: clamp(26px, 4vw, 32px);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(120deg, #22d3ee, #7c3aed, #f97316);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin-bottom: 18px;
+    }
+
+    .hero-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .hero-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      padding: 7px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: rgba(15, 23, 42, 0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero-meta i {
+      color: var(--accent-1);
+      font-size: 13px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .btn-primary,
+    .btn-ghost {
+      font-size: 13px;
+      padding: 9px 16px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition-fast);
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #22d3ee, #7c3aed);
+      color: #020617;
+      font-weight: 600;
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.9);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.95);
+    }
+
+    .btn-ghost {
+      border-color: rgba(148, 163, 184, 0.6);
+      color: var(--text-main);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(15, 23, 42, 1);
+      border-color: rgba(148, 163, 184, 0.9);
+    }
+
+    .hero-social {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .hero-social a {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      background: rgba(15, 23, 42, 0.9);
+      transition: var(--transition-fast);
+    }
+
+    .hero-social a:hover {
+      color: #e5e7eb;
+      border-color: var(--accent-2);
+      transform: translateY(-1px);
+    }
+
+    /* Hero right card */
+    .hero-right {
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.9), #020617);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-subtle);
+      padding: 18px 18px 16px;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      animation: floatIn 0.7s ease-out 0.08s both;
+    }
+
+    .hero-right-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .hero-right-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero-right-title i {
+      color: var(--accent-2);
+    }
+
+    .hero-right-chip {
+      font-size: 11px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: var(--text-muted);
+    }
+
+    .hero-right-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .hero-stat {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.7));
+      border-radius: 16px;
+      padding: 10px 11px;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .hero-stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .hero-stat-value {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .hero-stat-pill {
+      font-size: 11px;
+      color: var(--accent-2);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .hero-tagline {
+      font-size: 12px;
+      color: var(--text-muted);
+      border-radius: 14px;
+      border: 1px dashed rgba(148, 163, 184, 0.6);
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero-tagline i {
+      color: var(--accent-3);
+    }
+
+    /* Section base */
+    section {
+      margin-bottom: 32px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title i {
+      color: var(--accent-2);
+    }
+
+    .section-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Skills */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+    }
+
+    .skill-card {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.8));
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      padding: 14px 14px 12px;
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.9);
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition-fast);
+      animation: fadeUp 0.6s ease-out both;
+    }
+
+    .skill-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at top right, rgba(124, 58, 237, 0.16), transparent 55%);
+      opacity: 0;
+      transition: var(--transition-fast);
+      z-index: -1;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(148, 163, 184, 0.8);
+    }
+
+    .skill-card:hover::before {
+      opacity: 1;
+    }
+
+    .skill-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .skill-card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .skill-card-title i {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top left, rgba(34, 211, 238, 0.18), rgba(15, 23, 42, 1));
+      color: var(--accent-2);
+      font-size: 13px;
+    }
+
+    .skill-card-chip {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: var(--text-muted);
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .skill-tag {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: #e5e7eb;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .skill-tag i {
+      font-size: 11px;
+      color: var(--accent-2);
+    }
+
+    /* Projects */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .project-card {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.8));
+      border-radius: var(--radius-lg);
+      border: 1px dashed rgba(75, 85, 99, 0.9);
+      padding: 16px 14px 14px;
+      text-align: left;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      animation: fadeUp 0.6s ease-out both;
+    }
+
+    .project-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: rgba(148, 163, 184, 0.9);
+    }
+
+    .project-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: #e5e7eb;
+    }
+
+    .project-pill {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+    }
+
+    .project-pill i {
+      color: var(--accent-2);
+    }
+
+    /* Contact */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 840px) {
+      .contact-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .contact-card {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.85));
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      padding: 16px 16px 14px;
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.9);
+      animation: fadeUp 0.6s ease-out both;
+    }
+
+    .contact-card h3 {
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .contact-card p {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    label {
+      font-size: 12px;
+      color: #e5e7eb;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 9px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+      transition: var(--transition-fast);
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--accent-2);
+      box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.4);
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .contact-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .contact-meta-row i {
+      color: var(--accent-2);
+    }
+
+    .contact-meta a {
+      color: #e5e7eb;
+      text-decoration: none;
+    }
+
+    .contact-meta a:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 26px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    footer span strong {
+      color: #e5e7eb;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: #e5e7eb;
+    }
+
+    /* Animations */
+    @keyframes floatIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 <body>
-
-    <div class="container">
-        <img src="https://ui-avatars.com/api/?name=Mirza+Umar&background=0D8ABC&color=fff&size=256&bold=true&font-size=0.4" alt="CEO Mirza" class="profile-pic">
-        
-        <h1>Mirza Umar</h1>
-        <h3>CEO & Tech Architect 🚀</h3>
-
-        <a href="#" class="link-btn">💼 My GitHub Empire</a>
-        <a href="#" class="link-btn">📱 OFitPro App (Beta)</a>
-        <a href="#" class="link-btn">🐍 Python AI Projects</a>
-        <a href="#" class="link-btn">📸 Instagram Vibe</a>
-
-        <div class="footer">
-            <p><span class="status-dot">●</span> System Status: Online</p>
-            <p>Location: Rahim Yar Khan, PK</p>
-            <p>© 2026 Tycoon Industries</p>
+  <header>
+    <nav class="nav">
+      <div class="nav-left">
+        <div class="nav-logo">
+          <span>M</span>
         </div>
-    </div>
+        <div class="nav-title">
+          <div class="nav-title-main">Muhammad Umar Mirza</div>
+          <div class="nav-title-sub">Data‑driven Developer & Problem Solver</div>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="#hero">Home</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+        <div class="nav-pill">
+          <i class="fa-solid fa-circle"></i>
+          Available for remote work
+        </div>
+      </div>
+    </nav>
+  </header>
 
+  <div class="page">
+    <main>
+      <!-- Hero -->
+      <section id="hero" class="hero">
+        <div class="hero-card">
+          <div class="hero-pill-row">
+            <div class="hero-pill">
+              <i class="fa-solid fa-bolt"></i>
+              Data‑first Portfolio
+            </div>
+            <div class="hero-pill">
+              <i class="fa-solid fa-mobile-screen"></i>
+              Pixel‑inspired dark theme
+            </div>
+          </div>
+
+          <h1 class="hero-title">
+            Turning <span>data, code & automation</span> into clean, real‑world solutions.
+          </h1>
+
+          <p class="hero-subtitle">
+            I’m Umar, a data‑driven developer who blends <strong>Python, web scraping, analytics, and backend logic</strong>
+            to build tools, dashboards, and web experiences that actually solve problems—not just look good.
+          </p>
+
+          <div class="hero-meta-row">
+            <div class="hero-meta">
+              <i class="fa-solid fa-database"></i>
+              Data analytics • Web scraping • Automation
+            </div>
+            <div class="hero-meta">
+              <i class="fa-solid fa-code"></i>
+              Python • Backend • Frontend
+            </div>
+          </div>
+
+          <div class="hero-actions">
+            <a href="#projects" class="btn-primary">
+              <i class="fa-solid fa-rocket"></i>
+              View projects (coming soon)
+            </a>
+            <a href="#contact" class="btn-ghost">
+              <i class="fa-regular fa-paper-plane"></i>
+              Let’s work together
+            </a>
+          </div>
+
+          <div class="hero-social">
+            <a href="#" title="GitHub">
+              <i class="fa-brands fa-github"></i>
+            </a>
+            <a href="#" title="LinkedIn">
+              <i class="fa-brands fa-linkedin-in"></i>
+            </a>
+            <a href="mailto:youremail@example.com" title="Email">
+              <i class="fa-regular fa-envelope"></i>
+            </a>
+          </div>
+        </div>
+
+        <aside class="hero-right">
+          <div class="hero-right-header">
+            <div class="hero-right-title">
+              <i class="fa-solid fa-chart-line"></i>
+              Data & Dev Snapshot
+            </div>
+            <div class="hero-right-chip">Pixel‑style dashboard</div>
+          </div>
+
+          <div class="hero-right-grid">
+            <div class="hero-stat">
+              <div class="hero-stat-label">Core stack</div>
+              <div class="hero-stat-value">Python + Web</div>
+              <div class="hero-stat-pill">
+                <i class="fa-solid fa-circle"></i>
+                Data, APIs, automation
+              </div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-label">Focus</div>
+              <div class="hero-stat-value">Data‑driven</div>
+              <div class="hero-stat-pill">
+                <i class="fa-solid fa-circle"></i>
+                Clean, practical solutions
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-tagline">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            From raw data to usable dashboards, scripts, and web tools—built with a modern, minimal, Pixel‑inspired feel.
+          </div>
+        </aside>
+      </section>
+
+      <!-- Skills -->
+      <section id="skills">
+        <div class="section-header">
+          <h2 class="section-title">
+            <i class="fa-solid fa-layer-group"></i>
+            Skills & Specializations
+          </h2>
+          <p class="section-subtitle">
+            Data‑centric skills grouped into clear categories for analytics, automation, and web development.
+          </p>
+        </div>
+
+        <div class="skills-grid">
+          <!-- Data & Analytics -->
+          <article class="skill-card">
+            <div class="skill-card-header">
+              <div class="skill-card-title">
+                <i class="fa-solid fa-chart-pie"></i>
+                Data & Analytics
+              </div>
+              <div class="skill-card-chip">Data‑first mindset</div>
+            </div>
+            <div class="skill-tags">
+              <span class="skill-tag">
+                <i class="fa-solid fa-database"></i>
+                Data analysis
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-table"></i>
+                Pandas, NumPy
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-chart-column"></i>
+                Matplotlib, Seaborn
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-magnifying-glass-chart"></i>
+                Exploratory data analysis (EDA)
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-file-excel"></i>
+                Excel & Google Sheets
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-chart-simple"></i>
+                Reporting & dashboards
+              </span>
+            </div>
+          </article>
+
+          <!-- Web Scraping & Automation -->
+          <article class="skill-card">
+            <div class="skill-card-header">
+              <div class="skill-card-title">
+                <i class="fa-solid fa-spider"></i>
+                Web Scraping & Automation
+              </div>
+              <div class="skill-card-chip">Data collection</div>
+            </div>
+            <div class="skill-tags">
+              <span class="skill-tag">
+                <i class="fa-solid fa-code"></i>
+                Python scripting
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-bug-slash"></i>
+                BeautifulSoup, Requests
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-robot"></i>
+                Selenium automation
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-cloud-arrow-down"></i>
+                API integration
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-gears"></i>
+                Task automation
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-shield-halved"></i>
+                Clean, structured data pipelines
+              </span>
+            </div>
+          </article>
+
+          <!-- Backend & APIs -->
+          <article class="skill-card">
+            <div class="skill-card-header">
+              <div class="skill-card-title">
+                <i class="fa-solid fa-server"></i>
+                Backend & APIs
+              </div>
+              <div class="skill-card-chip">Logic & structure</div>
+            </div>
+            <div class="skill-tags">
+              <span class="skill-tag">
+                <i class="fa-solid fa-code-branch"></i>
+                REST APIs
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-flask"></i>
+                Flask / FastAPI basics
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-database"></i>
+                SQL fundamentals
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-cloud"></i>
+                Firebase (auth & DB)
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-lock"></i>
+                Basic auth & security
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-diagram-project"></i>
+                API‑driven tools
+              </span>
+            </div>
+          </article>
+
+          <!-- Frontend & UI -->
+          <article class="skill-card">
+            <div class="skill-card-header">
+              <div class="skill-card-title">
+                <i class="fa-solid fa-display"></i>
+                Frontend & UI
+              </div>
+              <div class="skill-card-chip">Pixel‑inspired</div>
+            </div>
+            <div class="skill-tags">
+              <span class="skill-tag">
+                <i class="fa-brands fa-html5"></i>
+                HTML5
+              </span>
+              <span class="skill-tag">
+                <i class="fa-brands fa-css3-alt"></i>
+                Modern CSS
+              </span>
+              <span class="skill-tag">
+                <i class="fa-brands fa-js"></i>
+                JavaScript basics
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-moon"></i>
+                Dark theme design
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                Smooth micro‑animations
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-mobile-screen-button"></i>
+                Responsive layouts
+              </span>
+            </div>
+          </article>
+
+          <!-- Business & Accounts -->
+          <article class="skill-card">
+            <div class="skill-card-header">
+              <div class="skill-card-title">
+                <i class="fa-solid fa-briefcase"></i>
+                Business & Account Handling
+              </div>
+              <div class="skill-card-chip">Real‑world ops</div>
+            </div>
+            <div class="skill-tags">
+              <span class="skill-tag">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                Account handling
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-clipboard-list"></i>
+                Data‑driven reporting
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-user-check"></i>
+                Client coordination
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-chart-line"></i>
+                Performance tracking
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-layer-group"></i>
+                Organized documentation
+              </span>
+            </div>
+          </article>
+
+          <!-- Tools & Ecosystem -->
+          <article class="skill-card">
+            <div class="skill-card-header">
+              <div class="skill-card-title">
+                <i class="fa-solid fa-toolbox"></i>
+                Tools & Ecosystem
+              </div>
+              <div class="skill-card-chip">Workflow</div>
+            </div>
+            <div class="skill-tags">
+              <span class="skill-tag">
+                <i class="fa-brands fa-git-alt"></i>
+                Git & GitHub
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-code"></i>
+                VS Code / Replit
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                GitHub Pages / Netlify
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-brain"></i>
+                AI‑assisted dev (Copilot, etc.)
+              </span>
+              <span class="skill-tag">
+                <i class="fa-solid fa-diagram-next"></i>
+                Fast prototyping
+              </span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section id="projects">
+        <div class="section-header">
+          <h2 class="section-title">
+            <i class="fa-solid fa-rocket"></i>
+            Projects
+          </h2>
+          <p class="section-subtitle">
+            A space reserved for upcoming data tools, dashboards, scrapers, and automation projects.
+          </p>
+        </div>
+
+        <div class="projects-grid">
+          <article class="project-card">
+            <div class="project-label">Coming soon</div>
+            <div class="project-title">Data dashboards, scrapers & automation tools</div>
+            <p>
+              This section will showcase real projects: data dashboards, web scrapers, backend tools, and automation
+              scripts built with Python, APIs, and modern web tech.
+            </p>
+            <div class="project-pill">
+              <i class="fa-solid fa-circle"></i>
+              Stay tuned — projects in progress
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact">
+        <div class="section-header">
+          <h2 class="section-title">
+            <i class="fa-regular fa-paper-plane"></i>
+            Contact
+          </h2>
+          <p class="section-subtitle">
+            Let’s talk about data, automation, dashboards, or building something useful together.
+          </p>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-card">
+            <h3>Let’s build something data‑driven.</h3>
+            <p>
+              Share a brief idea, problem, or project. I’ll get back with practical, realistic ways to move it forward.
+            </p>
+
+            <!-- TODO: Replace action with your Formspree / backend endpoint -->
+            <form action="https://formspree.io/f/your-form-id" method="POST">
+              <div>
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" placeholder="Your name" required />
+              </div>
+              <div>
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="you@example.com" required />
+              </div>
+              <div>
+                <label for="topic">Topic</label>
+                <input id="topic" name="topic" type="text" placeholder="Data, automation, dashboard, portfolio..." />
+              </div>
+              <div>
+                <label for="message">Message</label>
+                <textarea id="message" name="message" placeholder="Tell me what you want to build or fix." required></textarea>
+              </div>
+              <button type="submit" class="btn-primary" style="margin-top: 4px;">
+                <i class="fa-regular fa-paper-plane"></i>
+                Send message
+              </button>
+            </form>
+          </div>
+
+          <div class="contact-meta">
+            <div class="contact-meta-row">
+              <i class="fa-regular fa-envelope"></i>
+              <span>Email: <a href="mailto:youremail@example.com">youremail@example.com</a></span>
+            </div>
+            <div class="contact-meta-row">
+              <i class="fa-brands fa-github"></i>
+              <span>GitHub: <a href="#">github.com/your-username</a></span>
+            </div>
+            <div class="contact-meta-row">
+              <i class="fa-brands fa-linkedin"></i>
+              <span>LinkedIn: <a href="#">linkedin.com/in/your-profile</a></span>
+            </div>
+            <div class="contact-meta-row">
+              <i class="fa-solid fa-location-dot"></i>
+              <span>Based in Rahim Yar Khan, Pakistan — open to remote work.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>
+        Built by <strong>Muhammad Umar Mirza</strong> — data‑driven, AI‑powered, and always learning.
+      </span>
+      <div class="footer-links">
+        <a href="#hero">Back to top</a>
+        <span>•</span>
+        <span>Pixel‑inspired dark layout</span>
+      </div>
+    </footer>
+  </div>
 </body>
 </html>

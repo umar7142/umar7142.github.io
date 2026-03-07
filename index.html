@@ -2,13 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Muhammad Umar | Data Analyst</title>
+<title>Muhammad Umar | Data Tycoon</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-<!-- Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
@@ -25,7 +23,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 
 body{
-  font-family:Inter,sans-serif;
+  font-family: 'Poppins', sans-serif; /* Professional Font */
   background:var(--bg);
   color:var(--text);
   line-height:1.6;
@@ -50,18 +48,21 @@ header{
   display:flex;
   align-items:center;
   gap:10px;
-  font-weight:700;
-  font-size:18px;
+  font-weight:400;
+  font-size:24px;
+  font-family: 'Luckiest Guy', cursive; /* Angry Birds Vibe */
+  letter-spacing: 1.5px;
 }
 
-.logo i{color:var(--accent);font-size:22px}
+.logo i{color:var(--accent);font-size:26px}
 
 nav a{
   color:var(--muted);
   margin-left:20px;
   text-decoration:none;
-  font-size:14px;
+  font-size:15px;
   position:relative;
+  font-weight: 600;
 }
 
 nav a::after{
@@ -98,10 +99,15 @@ nav a:hover{color:var(--accent)}
   to{opacity:1;transform:translateY(0)}
 }
 
-.hero h1{font-size:34px;margin-bottom:10px}
+.hero h1{
+  font-size:42px;
+  margin-bottom:10px;
+  font-family: 'Luckiest Guy', cursive; /* Angry Birds Vibe */
+  letter-spacing: 2px;
+}
 .hero h1 span{color:var(--accent)}
 
-.hero p{color:var(--muted);margin-bottom:25px}
+.hero p{color:var(--muted);margin-bottom:25px; font-size: 16px;}
 
 .badges span{
   display:inline-block;
@@ -109,8 +115,9 @@ nav a:hover{color:var(--accent)}
   border:1px solid var(--border);
   padding:6px 12px;
   border-radius:20px;
-  font-size:12px;
+  font-size:13px;
   margin:4px;
+  font-weight: 600;
 }
 
 .stats{
@@ -132,8 +139,8 @@ nav a:hover{color:var(--accent)}
   box-shadow:0 10px 25px rgba(34,211,238,0.15);
 }
 
-.stat h3{font-size:18px;color:var(--accent)}
-.stat p{font-size:12px;color:var(--muted)}
+.stat h3{font-size:18px;color:var(--accent); font-weight: 700;}
+.stat p{font-size:13px;color:var(--muted)}
 
 section{
   margin-bottom:80px;
@@ -146,11 +153,13 @@ section{
 }
 
 .section-title{
-  font-size:22px;
+  font-size:28px;
   margin-bottom:25px;
   display:flex;
   align-items:center;
   gap:10px;
+  font-family: 'Luckiest Guy', cursive; /* Angry Birds Vibe */
+  letter-spacing: 1px;
 }
 
 .section-title i{color:var(--accent)}
@@ -175,25 +184,55 @@ section{
 }
 
 .skill-card h3{
-  margin-bottom:10px;
-  font-size:16px;
+  margin-bottom:15px;
+  font-size:18px;
   color:var(--accent2);
+  font-weight: 700;
 }
 
 .skill-card ul{
   list-style:none;
-  font-size:13px;
-  color:var(--muted);
+  font-size:14px;
+  color:var(--text);
 }
 
-.skill-card li{margin-bottom:6px}
+.skill-card li{
+  margin-bottom:10px; 
+  display: flex; 
+  align-items: center; 
+  gap: 10px;
+}
 
 .projects{
   background:var(--card);
   border:1px dashed var(--border);
   border-radius:16px;
   padding:30px;
-  color:var(--muted);
+}
+
+.project-list {
+  list-style: none;
+  counter-reset: my-awesome-counter;
+}
+
+.project-list li {
+  counter-increment: my-awesome-counter;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border);
+}
+
+.project-list li:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.project-list li::before {
+  content: counter(my-awesome-counter) ". ";
+  color: var(--accent);
+  font-weight: bold;
+  font-size: 20px;
 }
 
 .contact{
@@ -207,9 +246,10 @@ form input,form textarea{
   background:#0f172a;
   border:1px solid var(--border);
   border-radius:10px;
-  padding:10px;
+  padding:12px;
   color:var(--text);
-  margin-bottom:12px;
+  margin-bottom:15px;
+  font-family: 'Poppins', sans-serif;
 }
 
 input:focus,textarea:focus{
@@ -220,20 +260,23 @@ input:focus,textarea:focus{
 form button{
   background:var(--accent);
   border:none;
-  padding:10px;
+  padding:12px 20px;
   border-radius:10px;
-  font-weight:600;
+  font-weight:700;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
   cursor:pointer;
   transition:0.3s;
 }
 
 form button:hover{
   box-shadow:0 0 15px rgba(34,211,238,0.4);
+  transform: translateY(-2px);
 }
 
 footer{
   text-align:center;
-  font-size:12px;
+  font-size:14px;
   color:var(--muted);
   margin-top:40px;
 }
@@ -261,7 +304,7 @@ footer{
 
 <section class="hero">
   <div class="hero-card">
-    <h1>Data Analyst & <span>Automation Specialist</span></h1>
+    <h1>Data Tycoon & <br><span>Automation Specialist</span></h1>
     <p>
       I analyze, clean, and transform raw data into meaningful insights using Python,
       analytics tools, and automation techniques.
@@ -284,78 +327,99 @@ footer{
 </section>
 
 <section id="skills">
-  <div class="section-title"><i class="fa-solid fa-database"></i> Skills</div>
+  <div class="section-title"><i class="fa-solid fa-database"></i> Core Skills</div>
 
   <div class="skills">
     <div class="skill-card">
       <h3>Data Analysis</h3>
       <ul>
-        <li>Pandas, NumPy</li>
-        <li>EDA & Data Cleaning</li>
-        <li>Excel / Sheets</li>
-        <li>Reporting</li>
+        <li><i class="fa-brands fa-python" style="color: #3776AB; font-size: 20px;"></i> Pandas, NumPy</li>
+        <li><i class="fa-solid fa-broom" style="color: var(--accent); font-size: 18px;"></i> EDA & Data Cleaning</li>
+        <li><i class="fa-solid fa-file-excel" style="color: #107C41; font-size: 20px;"></i> Excel / Spreadsheets</li>
+        <li><i class="fa-solid fa-chart-pie" style="color: #FF5722; font-size: 20px;"></i> Dashboards & Reporting</li>
       </ul>
     </div>
 
     <div class="skill-card">
       <h3>Web Scraping</h3>
       <ul>
-        <li>BeautifulSoup</li>
-        <li>Selenium</li>
-        <li>API Integration</li>
-        <li>Automation Scripts</li>
+        <li><i class="fa-solid fa-spider" style="color: var(--muted); font-size: 18px;"></i> BeautifulSoup</li>
+        <li><i class="fa-solid fa-robot" style="color: var(--accent2); font-size: 18px;"></i> Selenium Automation</li>
+        <li><i class="fa-solid fa-network-wired" style="color: #4CAF50; font-size: 18px;"></i> API Integration</li>
+        <li><i class="fa-solid fa-gears" style="color: #FF9800; font-size: 18px;"></i> Custom Bot Scripts</li>
       </ul>
     </div>
 
     <div class="skill-card">
       <h3>Backend & Web</h3>
       <ul>
-        <li>Python</li>
-        <li>Flask / FastAPI</li>
-        <li>HTML, CSS</li>
-        <li>Firebase</li>
+        <li><i class="fa-brands fa-python" style="color: #3776AB; font-size: 20px;"></i> Python Core</li>
+        <li><i class="fa-solid fa-server" style="color: #607D8B; font-size: 18px;"></i> Flask / FastAPI</li>
+        <li><i class="fa-brands fa-html5" style="color: #E34F26; font-size: 20px;"></i> HTML & CSS</li>
+        <li><i class="fa-brands fa-github" style="color: #fff; font-size: 20px;"></i> Git & GitHub</li>
       </ul>
     </div>
 
     <div class="skill-card">
       <h3>Business & Accounts</h3>
       <ul>
-        <li>Account Handling</li>
-        <li>Data Reporting</li>
-        <li>Client Coordination</li>
+        <li><i class="fa-solid fa-briefcase" style="color: #795548; font-size: 18px;"></i> Account Handling</li>
+        <li><i class="fa-solid fa-chart-column" style="color: var(--accent); font-size: 18px;"></i> Data Reporting</li>
+        <li><i class="fa-solid fa-handshake" style="color: #FFC107; font-size: 18px;"></i> Client Coordination</li>
       </ul>
     </div>
   </div>
 </section>
 
 <section id="projects">
-  <div class="section-title"><i class="fa-solid fa-folder-open"></i> Projects</div>
+  <div class="section-title"><i class="fa-solid fa-folder-open"></i> Premium Projects</div>
   <div class="projects">
-    Projects coming soon — dashboards, scrapers, and automation tools.
+    <ul class="project-list">
+      <li>
+        <strong style="color: var(--text); font-size: 18px;">Executive Sales Dashboard (Power BI Style):</strong><br>
+        <span style="color: var(--muted); font-size: 15px;">A fully interactive executive dashboard built using Python, Pandas, and Plotly. It takes raw, messy CSV data, cleans it instantly, and visualizes KPIs like Total Revenue and Orders in a sleek, Microsoft-style theme.</span>
+      </li>
+      <li>
+        <strong style="color: var(--text); font-size: 18px;">Global E-Commerce Master Dashboard:</strong><br>
+        <span style="color: var(--muted); font-size: 15px;">A high-end, dark-themed (Hacker Mode) data visualization tool. Designed with Plotly Subplots to display real-time sales by category, profit distributions via donut charts, and 6-month forecasting trend lines.</span>
+      </li>
+      <li>
+        <strong style="color: var(--text); font-size: 18px;">Real Estate Data Scraper Bot:</strong><br>
+        <span style="color: var(--muted); font-size: 15px;">An automated Python bot utilizing BeautifulSoup and Selenium to bypass website restrictions and scrape thousands of property listings. It automatically cleans the extracted data and saves it into a structured Excel file.</span>
+      </li>
+      <li>
+        <strong style="color: var(--text); font-size: 18px;">Automated Excel Data Cleaning Script:</strong><br>
+        <span style="color: var(--muted); font-size: 15px;">A powerful backend Pandas script created for clients with unstructured data. It automatically removes duplicate rows, fixes missing values (NaNs), corrects formatting errors, and outputs a crystal-clear database ready for analysis.</span>
+      </li>
+    </ul>
   </div>
 </section>
 
 <section id="contact">
-  <div class="section-title"><i class="fa-solid fa-envelope"></i> Contact</div>
+  <div class="section-title"><i class="fa-solid fa-envelope"></i> Get In Touch</div>
 
   <div class="contact">
-    <form action="https://formspree.io/f/your-id" method="POST">
+    <form action="https://formsubmit.co/umarasifmirza439@gmail.com" method="POST">
+      <input type="hidden" name="_subject" value="New Client Message from Portfolio Website!">
+      <input type="hidden" name="_captcha" value="false">
+      
       <input type="text" name="name" placeholder="Your Name" required>
-      <input type="email" name="email" placeholder="Email" required>
-      <textarea name="message" placeholder="Your message" required></textarea>
-      <button type="submit">Send Message</button>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <textarea name="message" placeholder="How can I help you automate your business?" rows="5" required></textarea>
+      <button type="submit">Send Message <i class="fa-solid fa-paper-plane" style="margin-left: 5px;"></i></button>
     </form>
 
-    <div>
-      <p><strong>Email:</strong> youremail@example.com</p>
-      <p><strong>Location:</strong> Pakistan (Remote)</p>
-      <p><strong>GitHub:</strong> github.com/yourname</p>
+    <div style="background: var(--card); padding: 25px; border-radius: 16px; border: 1px solid var(--border);">
+      <p style="margin-bottom: 15px;"><i class="fa-solid fa-envelope" style="color: var(--accent); margin-right: 10px;"></i> <strong>Email:</strong> umarasifmirza439@gmail.com</p>
+      <p style="margin-bottom: 15px;"><i class="fa-solid fa-location-dot" style="color: #FF5722; margin-right: 10px;"></i> <strong>Location:</strong> Rahim Yar Khan, Punjab, Pakistan</p>
+      <p style="margin-bottom: 15px;"><i class="fa-brands fa-github" style="color: #fff; margin-right: 10px;"></i> <strong>GitHub:</strong> github.com/umar7142</p>
+      <p><i class="fa-solid fa-phone" style="color: #4CAF50; margin-right: 10px;"></i> <strong>Phone:</strong> +92 300 0000000</p>
     </div>
   </div>
 </section>
 
 <footer>
-  © 2026 Muhammad Umar — Data Analyst Portfolio
+  © 2026 Muhammad Umar — Data Tycoon & Analyst Portfolio
 </footer>
 
 </div>

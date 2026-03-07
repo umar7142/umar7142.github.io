@@ -293,15 +293,57 @@ footer{
 
 <section id="projects">
   <div class="section-title">
-    <i class="fa-solid fa-folder-open"></i> Projects
+    <i class="fa-solid fa-folder-open"></i> Projects & Portfolios
   </div>
-  <div class="projects">
-   <div style="margin-top: 40px; margin-bottom: 50px; background-color: #1e1e1e; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 15px rgba(0,0,0,0.5);">
-    <h3 style="color: #118DFF; margin-top: 0;">🏆 Executive Sales Dashboard (Power BI Style)</h3>
-    <p style="color: #ccc;">Built with: <strong>Python, Pandas, & Plotly</strong></p>
-    
-    <iframe src="PowerBI_Style_Dashboard.html" width="100%" height="700px" style="border: none; border-radius: 8px; background-color: white;"></iframe>
-</div>
+  
+  <div class="projects" style="padding: 15px; background: transparent; border: none;">
+
+    <details style="background: var(--card); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 20px; padding: 20px; cursor: pointer; transition: 0.3s;">
+      
+      <summary style="font-size: 18px; font-weight: 600; color: var(--accent); outline: none; list-style: none;">
+        📊 1. Executive Sales Dashboard (Power BI Style) <span style="float: right; font-size: 14px; color: var(--muted);">Click to View ▼</span>
+      </summary>
+      
+      <div style="margin-top: 20px; color: var(--text); border-top: 1px solid var(--border); padding-top: 20px;">
+        <p><strong>Tools Used:</strong> <span style="color: var(--accent2);">Python, Pandas, Plotly</span></p>
+        <p style="margin-bottom: 15px; color: var(--muted);"><strong>Description:</strong> A fully interactive executive dashboard built from raw CSV data. It cleans the messy data and presents key performance indicators (KPIs) like Total Revenue, Total Orders, and City-wise profit shares in a sleek Power BI theme.</p>
+        
+        <iframe src="PowerBI_Style_Dashboard.html" width="100%" height="700px" style="border: none; border-radius: 8px; background-color: white;"></iframe>
+      </div>
+    </details>
+
+    <details style="background: var(--card); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 20px; padding: 20px; cursor: pointer; transition: 0.3s;">
+      
+      <summary style="font-size: 18px; font-weight: 600; color: var(--accent); outline: none; list-style: none;">
+        🕷️ 2. Real Estate Data Scraper Bot <span style="float: right; font-size: 14px; color: var(--muted);">Click to View ▼</span>
+      </summary>
+      
+      <div style="margin-top: 20px; color: var(--text); border-top: 1px solid var(--border); padding-top: 20px;">
+        <p><strong>Tools Used:</strong> <span style="color: var(--accent2);">Python, BeautifulSoup, Selenium</span></p>
+        <p style="margin-bottom: 15px; color: var(--muted);"><strong>Description:</strong> An automated script designed to extract thousands of property listings from real estate websites. It gathers prices, locations, and descriptions, saving the cleaned data directly into an organized Excel/CSV file.</p>
+        
+        <div style="text-align: center; background: #0f172a; padding: 20px; border-radius: 10px; border: 1px dashed var(--border);">
+          <img src="https://via.placeholder.com/800x400.png?text=Scraper+Project+Screenshot+Here" alt="Project Image" style="max-width: 100%; border-radius: 8px;">
+        </div>
+      </div>
+    </details>
+
+    <details style="background: var(--card); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 20px; padding: 20px; cursor: pointer; transition: 0.3s;">
+      
+      <summary style="font-size: 18px; font-weight: 600; color: var(--accent); outline: none; list-style: none;">
+        🧹 3. Automated Excel Data Cleaning Script <span style="float: right; font-size: 14px; color: var(--muted);">Click to View ▼</span>
+      </summary>
+      
+      <div style="margin-top: 20px; color: var(--text); border-top: 1px solid var(--border); padding-top: 20px;">
+        <p><strong>Tools Used:</strong> <span style="color: var(--accent2);">Python, Pandas, NumPy</span></p>
+        <p style="margin-bottom: 15px; color: var(--muted);"><strong>Description:</strong> A powerful Pandas script that takes messy, unstructured Excel files from clients, removes duplicates, fixes missing values (NaNs), and formats currency columns perfectly for business use.</p>
+        
+        <div style="text-align: center; background: #0f172a; padding: 20px; border-radius: 10px; border: 1px dashed var(--border);">
+          <img src="https://via.placeholder.com/800x400.png?text=Data+Cleaning+Screenshot+Here" alt="Project Image" style="max-width: 100%; border-radius: 8px;">
+        </div>
+      </div>
+    </details>
+
   </div>
 </section>
 

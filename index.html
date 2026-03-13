@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
@@ -23,7 +22,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 
 body{
-  font-family: 'Poppins', sans-serif; /* Professional Font */
+  font-family: 'Poppins', sans-serif;
   background:var(--bg);
   color:var(--text);
   line-height:1.6;
@@ -50,7 +49,7 @@ header{
   gap:10px;
   font-weight:400;
   font-size:24px;
-  font-family: 'Luckiest Guy', cursive; /* Angry Birds Vibe */
+  font-family: 'Luckiest Guy', cursive;
   letter-spacing: 1.5px;
 }
 
@@ -102,7 +101,7 @@ nav a:hover{color:var(--accent)}
 .hero h1{
   font-size:42px;
   margin-bottom:10px;
-  font-family: 'Luckiest Guy', cursive; /* Angry Birds Vibe */
+  font-family: 'Luckiest Guy', cursive;
   letter-spacing: 2px;
 }
 .hero h1 span{color:var(--accent)}
@@ -158,7 +157,7 @@ section{
   display:flex;
   align-items:center;
   gap:10px;
-  font-family: 'Luckiest Guy', cursive; /* Angry Birds Vibe */
+  font-family: 'Luckiest Guy', cursive;
   letter-spacing: 1px;
 }
 
@@ -220,6 +219,7 @@ section{
   margin-bottom: 20px;
   padding-bottom: 15px;
   border-bottom: 1px solid var(--border);
+  animation: heroSlide 0.5s ease forwards; /* Added animation for dynamic loading */
 }
 
 .project-list li:last-child {
@@ -328,100 +328,85 @@ footer{
 
 <section id="skills">
   <div class="section-title"><i class="fa-solid fa-database"></i> Core Skills</div>
-
   <div class="skills">
     <div class="skill-card">
       <h3>Data Analysis</h3>
       <ul>
         <li><i class="fa-brands fa-python" style="color: #3776AB; font-size: 20px;"></i> Pandas, NumPy</li>
         <li><i class="fa-solid fa-broom" style="color: var(--accent); font-size: 18px;"></i> EDA & Data Cleaning</li>
-        <li><i class="fa-solid fa-file-excel" style="color: #107C41; font-size: 20px;"></i> Excel / Spreadsheets</li>
-        <li><i class="fa-solid fa-chart-pie" style="color: #FF5722; font-size: 20px;"></i> Dashboards & Reporting</li>
       </ul>
     </div>
-
-    <div class="skill-card">
-      <h3>Web Scraping</h3>
-      <ul>
-        <li><i class="fa-solid fa-spider" style="color: var(--muted); font-size: 18px;"></i> BeautifulSoup</li>
-        <li><i class="fa-solid fa-robot" style="color: var(--accent2); font-size: 18px;"></i> Selenium Automation</li>
-        <li><i class="fa-solid fa-network-wired" style="color: #4CAF50; font-size: 18px;"></i> API Integration</li>
-        <li><i class="fa-solid fa-gears" style="color: #FF9800; font-size: 18px;"></i> Custom Bot Scripts</li>
-      </ul>
     </div>
-
-    <div class="skill-card">
-      <h3>Backend & Web</h3>
-      <ul>
-        <li><i class="fa-brands fa-python" style="color: #3776AB; font-size: 20px;"></i> Python Core</li>
-        <li><i class="fa-solid fa-server" style="color: #607D8B; font-size: 18px;"></i> Flask / FastAPI</li>
-        <li><i class="fa-brands fa-html5" style="color: #E34F26; font-size: 20px;"></i> HTML & CSS</li>
-        <li><i class="fa-brands fa-github" style="color: #fff; font-size: 20px;"></i> Git & GitHub</li>
-      </ul>
-    </div>
-
-    <div class="skill-card">
-      <h3>Business & Accounts</h3>
-      <ul>
-        <li><i class="fa-solid fa-briefcase" style="color: #795548; font-size: 18px;"></i> Account Handling</li>
-        <li><i class="fa-solid fa-chart-column" style="color: var(--accent); font-size: 18px;"></i> Data Reporting</li>
-        <li><i class="fa-solid fa-handshake" style="color: #FFC107; font-size: 18px;"></i> Client Coordination</li>
-      </ul>
-    </div>
-  </div>
 </section>
 
 <section id="projects">
   <div class="section-title"><i class="fa-solid fa-folder-open"></i> Premium Projects</div>
   <div class="projects">
-    <ul class="project-list">
-      <li>
-        <strong style="color: var(--text); font-size: 18px;">Executive Sales Dashboard (Power BI Style):</strong><br>
-        <span style="color: var(--muted); font-size: 15px;">A fully interactive executive dashboard built using Python, Pandas, and Plotly. It takes raw, messy CSV data, cleans it instantly, and visualizes KPIs like Total Revenue and Orders in a sleek, Microsoft-style theme.</span>
-      </li>
-      <li>
-        <strong style="color: var(--text); font-size: 18px;">Global E-Commerce Master Dashboard:</strong><br>
-        <span style="color: var(--muted); font-size: 15px;">A high-end, dark-themed (Hacker Mode) data visualization tool. Designed with Plotly Subplots to display real-time sales by category, profit distributions via donut charts, and 6-month forecasting trend lines.</span>
-      </li>
-      <li>
-        <strong style="color: var(--text); font-size: 18px;">Real Estate Data Scraper Bot:</strong><br>
-        <span style="color: var(--muted); font-size: 15px;">An automated Python bot utilizing BeautifulSoup and Selenium to bypass website restrictions and scrape thousands of property listings. It automatically cleans the extracted data and saves it into a structured Excel file.</span>
-      </li>
-      <li>
-        <strong style="color: var(--text); font-size: 18px;">Automated Excel Data Cleaning Script:</strong><br>
-        <span style="color: var(--muted); font-size: 15px;">A powerful backend Pandas script created for clients with unstructured data. It automatically removes duplicate rows, fixes missing values (NaNs), corrects formatting errors, and outputs a crystal-clear database ready for analysis.</span>
-      </li>
-    </ul>
+    <ul class="project-list" id="dynamic-project-list">
+      </ul>
   </div>
 </section>
 
 <section id="contact">
   <div class="section-title"><i class="fa-solid fa-envelope"></i> Get In Touch</div>
-
-  <div class="contact">
-    <form action="https://formsubmit.co/umarasifmirza439@gmail.com" method="POST">
-      <input type="hidden" name="_subject" value="New Client Message from Portfolio Website!">
-      <input type="hidden" name="_captcha" value="false">
-      
-      <input type="text" name="name" placeholder="Your Name" required>
-      <input type="email" name="email" placeholder="Your Email" required>
-      <textarea name="message" placeholder="How can I help you automate your business?" rows="5" required></textarea>
-      <button type="submit">Send Message <i class="fa-solid fa-paper-plane" style="margin-left: 5px;"></i></button>
-    </form>
-
-    <div style="background: var(--card); padding: 25px; border-radius: 16px; border: 1px solid var(--border);">
-      <p style="margin-bottom: 15px;"><i class="fa-solid fa-envelope" style="color: var(--accent); margin-right: 10px;"></i> <strong>Email:</strong> umarasifmirza439@gmail.com</p>
-      <p style="margin-bottom: 15px;"><i class="fa-solid fa-location-dot" style="color: #FF5722; margin-right: 10px;"></i> <strong>Location:</strong> Rahim Yar Khan, Punjab, Pakistan</p>
-      <p style="margin-bottom: 15px;"><i class="fa-brands fa-github" style="color: #fff; margin-right: 10px;"></i> <strong>GitHub:</strong> github.com/umar7142</p>
-      <p><i class="fa-solid fa-phone" style="color: #4CAF50; margin-right: 10px;"></i> <strong>Phone:</strong> +92 300 0000000</p>
-    </div>
-  </div>
-</section>
+  </section>
 
 <footer>
   © 2026 Muhammad Umar — All Rights Reserved
 </footer>
 
 </div>
+
+<script>
+  async function loadVIPProjects() {
+    const listContainer = document.getElementById('dynamic-project-list');
+    
+    // Step 1: Loading Animation show karega jab tak data aa raha hai
+    listContainer.innerHTML = '<li><strong style="color: var(--accent); font-size: 18px;">⏳ Fetching VIP Projects from Server...</strong></li>';
+
+    try {
+      // ⚠️ TEST DATA: Abhi main direct code mein data de raha hoon taake tu Live Magic dekh sake.
+      // Jab tu SheetDB ka API banayega, toh hum yahan uski link (fetch) daal denge!
+      
+      const apiData = [
+        { 
+          Project_Name: "Executive Sales Dashboard (Dynamic)", 
+          Description: "Loaded securely using JavaScript. Taking messy CSV data and instantly visualizing KPIs." 
+        },
+        { 
+          Project_Name: "Real Estate VIP Scraper Bot", 
+          Description: "This text is no longer in HTML. It's coming directly from the Engine." 
+        },
+        { 
+          Project_Name: "Automated Excel Cleaning Script", 
+          Description: "A powerful backend Pandas script created for clients with unstructured data." 
+        }
+      ];
+
+      // Step 2: 1.5 seconds ka delay taake tu loading check kar sake (Asli server feel)
+      setTimeout(() => {
+        // Purana loading wala text uda do
+        listContainer.innerHTML = '';
+
+        // Har project ke liye naya dabba (<li>) banao
+        apiData.forEach(project => {
+          const listItem = document.createElement('li');
+          listItem.innerHTML = `
+            <strong style="color: var(--text); font-size: 18px;">${project.Project_Name}</strong><br>
+            <span style="color: var(--muted); font-size: 15px;">${project.Description}</span>
+          `;
+          listContainer.appendChild(listItem); // Dabba screen par phenk do!
+        });
+      }, 1500);
+
+    } catch (error) {
+      listContainer.innerHTML = '<li><strong style="color: red;">🚨 Connection Error! Failed to load projects.</strong></li>';
+    }
+  }
+
+  // Jaise hi page load ho, yeh script Foran chal pare!
+  window.onload = loadVIPProjects;
+</script>
+
 </body>
 </html>

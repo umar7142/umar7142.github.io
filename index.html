@@ -409,8 +409,7 @@ footer{
       const apiData = [
         { 
           Project_Name: "UMAR AI (Premium SaaS Web App) 🚀", 
-          Description: "A military-grade, password-protected AI web application powered by the Llama 3.1 engine. Built with Streamlit, it features intelligent PDF invoice data extraction, persistent chat memory, and a custom dark-mode UI. 100% optimized for low-end devices."
-          link:"https://umar-ai-bot-01.streamlit.app/"
+          Description: "A military-grade, password-protected AI web application powered by the Llama 3.1 engine. Built with Streamlit, it features intelligent PDF invoice data extraction, persistent chat memory, and a custom dark-mode UI. 100% optimized for low-end devices.<br><br><a href='https://umar-ai-bot-01.streamlit.app' target='_blank' style='display:inline-block; background:var(--accent); color:#000; padding:8px 16px; border-radius:6px; text-decoration:none; font-weight:bold; margin-bottom:10px; transition:0.3s;' onmouseover='this.style.transform=\"translateY(-2px)\"; this.style.boxShadow=\"0 5px 15px rgba(34,211,238,0.4)\"' onmouseout='this.style.transform=\"translateY(0)\"; this.style.boxShadow=\"none\"'><i class='fa-solid fa-arrow-up-right-from-square'></i> Launch UMAR AI</a><br><span style='background:#1e293b; padding:6px 12px; border-radius:6px; font-size:14px; color:var(--accent2); border:1px solid #334155; display:inline-block;'><i class='fa-solid fa-key' style='color:#FFC107;'></i> <strong>Username:</strong> umar &nbsp;|&nbsp; <strong>Password:</strong> 9090</span>" 
         },
         { 
           Project_Name: "Executive Sales Dashboard (Power BI Style)", 
@@ -433,13 +432,13 @@ footer{
           // VIP glow for the first project (UMAR AI)
           if(index === 0) {
             listItem.style.background = 'rgba(34, 211, 238, 0.05)';
-            listItem.style.padding = '15px';
-            listItem.style.borderRadius = '10px';
-            listItem.style.border = '1px solid rgba(34, 211, 238, 0.3)';
+            listItem.style.padding = '18px';
+            listItem.style.borderRadius = '12px';
+            listItem.style.border = '1px solid rgba(34, 211, 238, 0.4)';
           }
           listItem.innerHTML = `
-            <strong style="color: var(--text); font-size: 18px;">${project.Project_Name}:</strong><br>
-            <span style="color: var(--muted); font-size: 15px;">${project.Description}</span>
+            <strong style="color: var(--text); font-size: 20px;">${project.Project_Name}:</strong><br>
+            <span style="color: var(--muted); font-size: 15px; display:block; margin-top:8px;">${project.Description}</span>
           `;
           listContainer.appendChild(listItem);
         });

@@ -1,6 +1,5 @@
 /* =========================
-   Data Analyst Theme + Animations (CSS Only)
-   Paste this into style.css
+   Data Analyst VIP Theme + Dhamakedar Animations
    ========================= */
 
 :root{
@@ -14,7 +13,7 @@
 
   --r-lg:18px;
   --r-md:14px;
-  --t:0.28s ease;
+  --t:0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother Tycoon Transition */
 }
 
 /* Base */
@@ -27,7 +26,7 @@ body{
               var(--bg);
   color:var(--text);
   line-height:1.6;
-  animation:pageFade .8s ease-in-out both;
+  animation:pageFade 1s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .container{max-width:1100px;margin:auto;padding:40px 20px}
@@ -38,6 +37,7 @@ header{
   justify-content:space-between;
   align-items:center;
   margin-bottom:60px;
+  animation: slideDown 0.8s ease backwards;
 }
 
 .logo{
@@ -46,12 +46,17 @@ header{
   gap:10px;
   font-weight:700;
   font-size:18px;
+  transition: transform var(--t);
+}
+.logo:hover {
+  transform: scale(1.05);
 }
 
 .logo i{
   color:var(--accent);
   font-size:22px;
-  filter: drop-shadow(0 10px 18px rgba(34,211,238,.18));
+  filter: drop-shadow(0 0 12px rgba(34,211,238,.6));
+  animation: neonPulse 2s infinite alternate;
 }
 
 nav a{
@@ -74,7 +79,7 @@ nav a::after{
   transition:width var(--t);
 }
 
-nav a:hover{color:var(--accent)}
+nav a:hover{color:var(--accent); text-shadow: 0 0 8px rgba(34,211,238,.4);}
 nav a:hover::after{width:100%}
 
 /* Hero */
@@ -93,7 +98,8 @@ nav a:hover::after{width:100%}
   box-shadow:0 18px 45px rgba(0,0,0,.35);
   position:relative;
   overflow:hidden;
-  animation:heroSlide .9s ease both;
+  /* Added Float Animation after Slide in */
+  animation: heroSlide 0.9s cubic-bezier(0.16, 1, 0.3, 1) both, float 6s ease-in-out infinite 0.9s;
 }
 
 .hero-card::before{
@@ -105,6 +111,7 @@ nav a:hover::after{width:100%}
     radial-gradient(circle at 80% 0%, rgba(56,189,248,.14), transparent 55%);
   opacity:.9;
   pointer-events:none;
+  animation: spinSlow 15s linear infinite; /* Subtle background spin */
 }
 
 .hero h1{font-size:34px;margin-bottom:10px}
@@ -113,6 +120,8 @@ nav a:hover::after{width:100%}
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
+  display: inline-block;
+  animation: textGlitch 3s infinite;
 }
 
 .hero p{color:var(--muted);margin-bottom:25px}
@@ -125,12 +134,15 @@ nav a:hover::after{width:100%}
   border-radius:999px;
   font-size:12px;
   margin:4px;
-  transition:transform var(--t), border-color var(--t);
+  transition:all var(--t);
+  cursor: pointer;
 }
 
 .badges span:hover{
-  transform:translateY(-2px);
-  border-color:rgba(34,211,238,.55);
+  transform:translateY(-4px) scale(1.08) rotate(2deg);
+  border-color:var(--accent);
+  box-shadow: 0 5px 15px rgba(34,211,238,.2);
+  color: #fff;
 }
 
 /* Stats */
@@ -145,14 +157,22 @@ nav a:hover::after{width:100%}
   border:1px solid var(--border);
   border-radius:var(--r-md);
   padding:15px;
-  transition:transform var(--t), box-shadow var(--t), border-color var(--t);
+  transition:all var(--t);
   animation:fadeUp .7s ease both;
+  position: relative;
+  overflow: hidden;
 }
 
+/* Staggered loading for stats */
+.stat:nth-child(1) { animation-delay: 0.2s; }
+.stat:nth-child(2) { animation-delay: 0.4s; }
+.stat:nth-child(3) { animation-delay: 0.6s; }
+.stat:nth-child(4) { animation-delay: 0.8s; }
+
 .stat:hover{
-  transform:translateY(-4px);
-  border-color:rgba(34,211,238,.55);
-  box-shadow:0 14px 30px rgba(34,211,238,.10);
+  transform:translateY(-6px) scale(1.02);
+  border-color:var(--accent);
+  box-shadow:0 14px 30px rgba(34,211,238,.15);
 }
 
 .stat h3{font-size:18px;color:var(--accent)}
@@ -161,7 +181,6 @@ nav a:hover::after{width:100%}
 /* Sections */
 section{
   margin-bottom:80px;
-  animation:sectionFade .7s ease both;
 }
 
 .section-title{
@@ -170,11 +189,12 @@ section{
   display:flex;
   align-items:center;
   gap:10px;
+  animation: fadeUp 0.8s ease both;
 }
 
 .section-title i{
   color:var(--accent);
-  filter: drop-shadow(0 10px 18px rgba(34,211,238,.12));
+  filter: drop-shadow(0 0 10px rgba(34,211,238,.4));
 }
 
 /* Skills */
@@ -189,14 +209,18 @@ section{
   border:1px solid var(--border);
   border-radius:16px;
   padding:20px;
-  transition:transform var(--t), border-color var(--t), box-shadow var(--t);
+  transition:all var(--t);
   animation:fadeUp .7s ease both;
 }
 
+.skill-card:nth-child(1) { animation-delay: 0.3s; }
+.skill-card:nth-child(2) { animation-delay: 0.5s; }
+.skill-card:nth-child(3) { animation-delay: 0.7s; }
+
 .skill-card:hover{
-  transform:translateY(-6px);
-  border-color:rgba(34,211,238,.65);
-  box-shadow:0 18px 40px rgba(0,0,0,.35);
+  transform:translateY(-8px);
+  border-color:var(--accent2);
+  box-shadow:0 20px 40px rgba(0,0,0,.5), 0 0 20px rgba(34,211,238,.1);
 }
 
 .skill-card h3{
@@ -211,16 +235,27 @@ section{
   color:var(--muted);
 }
 
-.skill-card li{margin-bottom:6px}
+.skill-card li{
+  margin-bottom:6px;
+  transition: transform 0.2s;
+}
+.skill-card li:hover {
+  transform: translateX(5px);
+  color: var(--accent);
+}
 
 /* Projects */
 .projects{
   background:linear-gradient(145deg, rgba(18,24,38,.98), rgba(15,23,42,.85));
-  border:1px dashed rgba(31,41,55,.95);
+  border:1px dashed rgba(34,211,238,.3);
   border-radius:16px;
   padding:30px;
   color:var(--muted);
-  animation:fadeUp .7s ease both;
+  animation:fadeUp .9s ease both 0.2s;
+  transition: box-shadow var(--t);
+}
+.projects:hover {
+  box-shadow: 0 0 30px rgba(34,211,238,.05) inset;
 }
 
 /* Contact */
@@ -228,6 +263,7 @@ section{
   display:grid;
   grid-template-columns:1.2fr 1fr;
   gap:30px;
+  animation: fadeUp 1s ease both 0.4s;
 }
 
 form input, form textarea{
@@ -235,33 +271,53 @@ form input, form textarea{
   background:rgba(15,23,42,.92);
   border:1px solid var(--border);
   border-radius:10px;
-  padding:10px;
+  padding:12px;
   color:var(--text);
-  margin-bottom:12px;
-  transition:border-color var(--t), box-shadow var(--t), transform var(--t);
+  margin-bottom:15px;
+  transition:all var(--t);
 }
 
 form input:focus, form textarea:focus{
   outline:none;
-  border-color:rgba(34,211,238,.75);
-  box-shadow:0 0 0 2px rgba(34,211,238,.18);
-  transform:translateY(-1px);
+  border-color:var(--accent);
+  box-shadow:0 0 15px rgba(34,211,238,.2);
+  transform:translateY(-2px);
+  background: rgba(18,24,38,1);
 }
 
 form button{
   background:linear-gradient(90deg,var(--accent),var(--accent2));
   border:none;
-  padding:10px 14px;
+  padding:12px 20px;
   border-radius:10px;
   font-weight:700;
+  color: #0b0f14;
   cursor:pointer;
-  transition:transform var(--t), box-shadow var(--t), filter var(--t);
+  transition:all var(--t);
+  position: relative;
+  overflow: hidden;
+}
+
+/* The Cyber Shine Effect on Button */
+form button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-25deg);
+  transition: all 0.6s ease;
 }
 
 form button:hover{
-  transform:translateY(-2px);
-  box-shadow:0 0 18px rgba(34,211,238,.28);
-  filter:saturate(1.1);
+  transform:translateY(-3px);
+  box-shadow:0 10px 25px rgba(34,211,238,.4);
+}
+
+form button:hover::before {
+  left: 200%;
 }
 
 /* Footer */
@@ -270,6 +326,7 @@ footer{
   font-size:12px;
   color:var(--muted);
   margin-top:40px;
+  padding-bottom: 20px;
 }
 
 /* Responsive */
@@ -278,24 +335,45 @@ footer{
 }
 
 /* =========================
-   Animations
+   DHAMAKEDAR ANIMATIONS
    ========================= */
 @keyframes pageFade{
-  from{opacity:0;transform:translateY(8px)}
+  from{opacity:0; filter: blur(10px);}
+  to{opacity:1; filter: blur(0);}
+}
+
+@keyframes slideDown{
+  from{opacity:0;transform:translateY(-30px)}
   to{opacity:1;transform:translateY(0)}
 }
 
 @keyframes heroSlide{
-  from{opacity:0;transform:translateY(20px)}
-  to{opacity:1;transform:translateY(0)}
-}
-
-@keyframes sectionFade{
-  from{opacity:0;transform:translateY(12px)}
-  to{opacity:1;transform:translateY(0)}
+  from{opacity:0;transform:translateX(-40px)}
+  to{opacity:1;transform:translateX(0)}
 }
 
 @keyframes fadeUp{
-  from{opacity:0;transform:translateY(10px)}
+  from{opacity:0;transform:translateY(30px)}
   to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes float{
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes spinSlow{
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes neonPulse{
+  0% { filter: drop-shadow(0 0 5px rgba(34,211,238,.4)); }
+  100% { filter: drop-shadow(0 0 15px rgba(56,189,248,.8)); }
+}
+
+@keyframes textGlitch{
+  0%, 100% { text-shadow: none; }
+  50% { text-shadow: 2px 2px 5px rgba(34,211,238,.3); }
 }

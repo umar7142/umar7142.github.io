@@ -408,6 +408,10 @@ footer{
     try {
       const apiData = [
         { 
+          Project_Name: "ME CHAT VIP (Global Cloud Messaging App) 🌍📱", 
+          Description: "A next-generation, ultra-lightweight (7KB client) secure messaging platform. Engineered with a Python/FastAPI backend and hosted on a custom Hugging Face cloud server. Verified by Samsung Knox & Google Play Protect, ensuring military-grade security, anti-sleep cron-jobs, and zero-lag real-time global communication.<br><br><a href='https://umar71-mechat-network.hf.space' target='_blank' style='display:inline-block; background:var(--accent2); color:#0b0f14; padding:8px 16px; border-radius:6px; text-decoration:none; font-weight:bold; margin-bottom:10px; transition:0.3s;' onmouseover='this.style.transform=\"translateY(-2px)\"; this.style.boxShadow=\"0 5px 15px rgba(56,189,248,0.4)\"' onmouseout='this.style.transform=\"translateY(0)\"; this.style.boxShadow=\"none\"'><i class='fa-solid fa-server'></i> Access Live Cloud Server</a>" 
+        },
+        { 
           Project_Name: "UMAR AI (Premium SaaS Web App) 🚀", 
           Description: "A military-grade, password-protected AI web application powered by the Llama 3.1 engine. Built with Streamlit, it features intelligent PDF invoice data extraction, persistent chat memory, and a custom dark-mode UI. 100% optimized for low-end devices.<br><br><a href='https://umar-ai-bot-01.streamlit.app' target='_blank' style='display:inline-block; background:var(--accent); color:#000; padding:8px 16px; border-radius:6px; text-decoration:none; font-weight:bold; margin-bottom:10px; transition:0.3s;' onmouseover='this.style.transform=\"translateY(-2px)\"; this.style.boxShadow=\"0 5px 15px rgba(34,211,238,0.4)\"' onmouseout='this.style.transform=\"translateY(0)\"; this.style.boxShadow=\"none\"'><i class='fa-solid fa-arrow-up-right-from-square'></i> Launch UMAR AI</a><br><span style='background:#1e293b; padding:6px 12px; border-radius:6px; font-size:14px; color:var(--accent2); border:1px solid #334155; display:inline-block;'><i class='fa-solid fa-key' style='color:#FFC107;'></i> <strong>Username:</strong> umar &nbsp;|&nbsp; <strong>Password:</strong> 9090</span>" 
         },
@@ -429,8 +433,8 @@ footer{
         listContainer.innerHTML = '';
         apiData.forEach((project, index) => {
           const listItem = document.createElement('li');
-          // VIP glow for the first project (UMAR AI)
-          if(index === 0) {
+          // VIP glow for the top 2 projects (ME CHAT & UMAR AI)
+          if(index === 0 || index === 1) {
             listItem.style.background = 'rgba(34, 211, 238, 0.05)';
             listItem.style.padding = '18px';
             listItem.style.borderRadius = '12px';

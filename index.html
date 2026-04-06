@@ -2,458 +2,510 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Muhammad Umar | AI & Data Tycoon</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muhammad Umar | Backend Developer</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&family=Luckiest+Guy&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --bg:#0b0f14;
-  --card:#121826;
-  --accent:#22d3ee;
-  --accent2:#38bdf8;
-  --text:#e5e7eb;
-  --muted:#9ca3af;
-  --border:#1f2937;
-}
-
-*{margin:0;padding:0;box-sizing:border-box}
-
+/* --- General Styles --- */
+*{box-sizing:border-box;margin:0;padding:0; scroll-behavior: smooth;}
 body{
-  font-family: 'Poppins', sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  line-height:1.6;
-  animation:pageFade 0.8s ease-in-out;
+  font-family:'Inter',system-ui,sans-serif;
+  background:#fff;
+  color: #333;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; cursor: pointer; }
+
+/* Global Section Styling */
+.section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 100px 30px;
 }
 
-@keyframes pageFade{
-  from{opacity:0;transform:translateY(8px)}
-  to{opacity:1;transform:translateY(0)}
+/* --- HERO SECTION (Left Aligned Name) --- */
+.hero-frame {
+  height: 100vh;
+  border: 6px solid #ff4fd8;
+  background: linear-gradient(#ffd84a 0%, #ffffff 60%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
 }
 
-.container{max-width:1100px;margin:auto;padding:40px 20px}
-
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:60px;
+/* NAV PILL (Dynamic Island) */
+.nav-pill {
+  display: flex;
+  background: #000;
+  padding: 8px;
+  border-radius: 999px;
+  width: max-content;
+  position: fixed; /* Fixed so it floats nicely */
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.logo{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-weight:400;
-  font-size:24px;
-  font-family: 'Luckiest Guy', cursive;
-  letter-spacing: 1.5px;
+.nav-pill.hidden {
+  top: -100px;
+  opacity: 0;
 }
 
-.logo i{color:var(--accent);font-size:26px}
-
-nav a{
-  color:var(--muted);
-  margin-left:20px;
-  text-decoration:none;
-  font-size:15px;
-  position:relative;
+.nav-pill a {
+  color: #fff;
   font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 999px;
+  transition: 0.3s;
+}
+.nav-pill a:hover, .nav-pill a.active {
+  background: #ffd84a;
+  color: #000;
 }
 
-nav a::after{
-  content:"";
-  position:absolute;
-  left:0;
-  bottom:-4px;
-  width:0;
-  height:2px;
-  background:var(--accent);
-  transition:0.3s;
+.hero-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 60px;
 }
 
-nav a:hover::after{width:100%}
-nav a:hover{color:var(--accent)}
-
-.hero{
-  display:grid;
-  grid-template-columns:1.2fr 1fr;
-  gap:40px;
-  margin-bottom:80px;
+.hero-tagline {
+  font-size: 1.2rem;
+  font-weight: 500;
+  opacity: 0.8;
+  margin-bottom: 10px;
 }
 
-.hero-card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:30px;
-  animation:heroSlide 0.9s ease forwards;
+/* Name Container (Left Aligned like the image) */
+.name-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
-
-@keyframes heroSlide{
-  from{opacity:0;transform:translateY(20px)}
-  to{opacity:1;transform:translateY(0)}
+.name-container span {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(60px, 12vw, 150px);
+  line-height: 0.85;
+  letter-spacing: -4px;
 }
+.top-name { color: #fff; }
+.bottom-name { color: #000; }
 
-.hero h1{
-  font-size:42px;
-  margin-bottom:10px;
-  font-family: 'Luckiest Guy', cursive;
-  letter-spacing: 2px;
-}
-.hero h1 span{color:var(--accent)}
-
-.hero p{color:var(--muted);margin-bottom:25px; font-size: 16px;}
-
-.badges span{
-  display:inline-block;
-  background:#0f172a;
-  border:1px solid var(--border);
-  padding:6px 12px;
-  border-radius:20px;
-  font-size:13px;
-  margin:4px;
-  font-weight: 600;
-}
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:15px;
-}
-
-.stat{
-  background:#0f172a;
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:15px;
-  transition:0.3s;
-}
-
-.stat:hover{
-  transform:translateY(-4px);
-  box-shadow:0 10px 25px rgba(34,211,238,0.15);
-}
-
-.stat h3{font-size:18px;color:var(--accent); font-weight: 700;}
-.stat p{font-size:13px;color:var(--muted)}
-
-section{
-  margin-bottom:80px;
-  animation:sectionFade 0.7s ease forwards;
-}
-
-@keyframes sectionFade{
-  from{opacity:0;transform:translateY(12px)}
-  to{opacity:1;transform:translateY(0)}
-}
-
-.section-title{
-  font-size:28px;
-  margin-bottom:25px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-family: 'Luckiest Guy', cursive;
+.role {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-top: 20px;
   letter-spacing: 1px;
 }
 
-.section-title i{color:var(--accent)}
-
-.skills{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:20px;
+/* --- PROJECTS SECTION (20+ Professional Cards) --- */
+.projects-header {
+  margin-bottom: 60px;
+  border-left: 8px solid #ffd84a;
+  padding-left: 20px;
+}
+.projects-header h2 {
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 50px;
+  letter-spacing: 2px;
 }
 
-.skill-card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:20px;
-  transition:0.3s;
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 25px;
 }
 
-.skill-card:hover{
-  transform:translateY(-6px);
-  border-color:var(--accent);
+.card {
+  background: #fff;
+  padding: 35px;
+  border-radius: 24px;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+  transition: all 0.4s ease;
+  display: flex;
+  flex-direction: column;
 }
 
-.skill-card h3{
-  margin-bottom:15px;
-  font-size:18px;
-  color:var(--accent2);
-  font-weight: 700;
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  border-color: #ffd84a;
 }
 
-.skill-card ul{
-  list-style:none;
-  font-size:14px;
-  color:var(--text);
-}
-
-.skill-card li{
-  margin-bottom:10px; 
-  display: flex; 
-  align-items: center; 
-  gap: 10px;
-}
-
-.projects{
-  background:var(--card);
-  border:1px dashed var(--border);
-  border-radius:16px;
-  padding:30px;
-}
-
-.project-list {
-  list-style: none;
-  counter-reset: my-awesome-counter;
-}
-
-.project-list li {
-  counter-increment: my-awesome-counter;
+/* Professional SVG Icon Styling */
+.proj-icon {
+  width: 40px;
+  height: 40px;
   margin-bottom: 20px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid var(--border);
-  animation: heroSlide 0.5s ease forwards; 
+  fill: #000;
+  transition: fill 0.3s;
+}
+.card:hover .proj-icon {
+  fill: #ff4fd8;
 }
 
-.project-list li:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
+.card h3 {
+  font-size: 22px;
+  margin-bottom: 12px;
+  font-weight: 800;
+}
+.card p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #666;
+  flex-grow: 1;
 }
 
-.project-list li::before {
-  content: counter(my-awesome-counter) ". ";
-  color: var(--accent);
-  font-weight: bold;
-  font-size: 20px;
+.card-tech {
+  margin-top: 20px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.tech-tag {
+  background: #f4f4f4;
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #444;
 }
 
-.contact{
-  display:grid;
-  grid-template-columns:1.2fr 1fr;
-  gap:30px;
+/* --- ABOUT SECTION (Centered & Pro Text) --- */
+.about-section {
+  background: #fafafa;
+  text-align: center;
+}
+.about-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 850px;
+  margin: 0 auto;
+}
+.avatar {
+  margin-bottom: 30px;
+}
+.avatar img {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  border: 8px solid #ffd84a;
+  object-fit: cover;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+.about-text h2 {
+  font-size: 40px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+.about-text p {
+  font-size: 17px;
+  line-height: 1.8;
+  color: #555;
+  margin-bottom: 20px;
+  text-align: justify;
 }
 
-form input,form textarea{
-  width:100%;
-  background:#0f172a;
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:12px;
-  color:var(--text);
-  margin-bottom:15px;
-  font-family: 'Poppins', sans-serif;
+.skills-container {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+.skill-tag {
+  background: #000;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
 }
 
-input:focus,textarea:focus{
-  box-shadow:0 0 0 2px rgba(34,211,238,0.25);
-  outline:none;
+/* --- FOOTER (Wordpress Black Style) --- */
+.site-footer {
+  background: #000;
+  color: #fff;
+  padding: 100px 30px 40px;
 }
-
-form button{
-  background:var(--accent);
-  border:none;
-  padding:12px 20px;
-  border-radius:10px;
-  font-weight:700;
+.footer-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 50px;
+}
+.footer-logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 32px;
+  margin-bottom: 15px;
+  display: block;
+}
+.footer-col h4 {
+  font-size: 18px;
+  margin-bottom: 25px;
+  color: #ffd84a;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.contact-link {
+  display: block;
+  margin-bottom: 15px;
   font-size: 16px;
-  font-family: 'Poppins', sans-serif;
-  cursor:pointer;
-  transition:0.3s;
+  opacity: 0.8;
+  transition: 0.3s;
+}
+.contact-link:hover { opacity: 1; color: #ffd84a; }
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 80px auto 0;
+  border-top: 1px solid #222;
+  padding-top: 40px;
+  text-align: center;
+}
+.warning {
+  color: #ff4fd8;
+  font-weight: 800;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.copyright {
+  font-size: 13px;
+  opacity: 0.5;
 }
 
-form button:hover{
-  box-shadow:0 0 15px rgba(34,211,238,0.4);
-  transform: translateY(-2px);
-}
-
-footer{
-  text-align:center;
-  font-size:14px;
-  color:var(--muted);
-  margin-top:40px;
-}
-
-@media(max-width:900px){
-  .hero,.contact{grid-template-columns:1fr}
+@media (max-width: 768px) {
+  .hero-content { padding: 0 20px; }
+  .nav-pill { width: 90%; }
+  .name-container span { font-size: 70px; }
+  .about-text p { text-align: left; }
 }
 </style>
 </head>
 
 <body>
-<div class="container">
 
-<header>
-  <div class="logo">
-    <i class="fa-solid fa-microchip"></i>
-    Muhammad Umar
-  </div>
-  <nav>
-    <a href="#skills">Skills</a>
-    <a href="#projects">Projects</a>
-    <a href="#contact">Contact</a>
+<div class="hero-frame" id="home">
+  <nav class="nav-pill" id="island">
+    <a href="#home" class="active">Hey</a>
+    <a href="#projects">Work</a>
+    <a href="#about">About</a>
+    <a href="#contact">Chat</a>
   </nav>
-</header>
 
-<section class="hero">
-  <div class="hero-card">
-    <h1>AI Developer & <br><span>Data Tycoon</span></h1>
-    <p>
-      I build secure AI SaaS applications, automate workflows, and transform raw data into powerful insights using Python and LLMs.
-    </p>
-
-    <div class="badges">
-      <span>AI Web Apps</span>
-      <span>Python</span>
-      <span>Data Analysis</span>
-      <span>Automation</span>
+  <section class="hero-content">
+    <p class="hero-tagline">Howdy! I build secure, scalable backend systems & AI platforms.</p>
+    <div class="name-container">
+      <span class="top-name">Muhammad</span>
+      <span class="bottom-name">Umar</span>
     </div>
-  </div>
-
-  <div class="stats">
-    <div class="stat"><h3>AI SaaS</h3><p>Llama 3 & Streamlit</p></div>
-    <div class="stat"><h3>Python</h3><p>Data processing & backend</p></div>
-    <div class="stat"><h3>Scraping</h3><p>APIs & web bots</p></div>
-    <div class="stat"><h3>Dashboards</h3><p>Clean visual insights</p></div>
-  </div>
-</section>
-
-<section id="skills">
-  <div class="section-title"><i class="fa-solid fa-database"></i> Core Skills</div>
-
-  <div class="skills">
-    <div class="skill-card">
-      <h3>AI & Backend Dev</h3>
-      <ul>
-        <li><i class="fa-brands fa-python" style="color: #3776AB; font-size: 20px;"></i> Python Core</li>
-        <li><i class="fa-solid fa-brain" style="color: var(--accent2); font-size: 18px;"></i> Llama 3 & Groq API</li>
-        <li><i class="fa-solid fa-rocket" style="color: #FF5722; font-size: 18px;"></i> Streamlit Framework</li>
-        <li><i class="fa-solid fa-lock" style="color: #4CAF50; font-size: 18px;"></i> Security & Auth</li>
-      </ul>
-    </div>
-
-    <div class="skill-card">
-      <h3>Data Analysis</h3>
-      <ul>
-        <li><i class="fa-brands fa-python" style="color: #3776AB; font-size: 20px;"></i> Pandas, NumPy</li>
-        <li><i class="fa-solid fa-broom" style="color: var(--accent); font-size: 18px;"></i> EDA & Data Cleaning</li>
-        <li><i class="fa-solid fa-file-excel" style="color: #107C41; font-size: 20px;"></i> Excel / Spreadsheets</li>
-        <li><i class="fa-solid fa-chart-pie" style="color: #FF9800; font-size: 20px;"></i> Dashboards</li>
-      </ul>
-    </div>
-
-    <div class="skill-card">
-      <h3>Web Scraping</h3>
-      <ul>
-        <li><i class="fa-solid fa-spider" style="color: var(--muted); font-size: 18px;"></i> BeautifulSoup</li>
-        <li><i class="fa-solid fa-robot" style="color: var(--accent2); font-size: 18px;"></i> Selenium Automation</li>
-        <li><i class="fa-solid fa-network-wired" style="color: #4CAF50; font-size: 18px;"></i> API Integration</li>
-        <li><i class="fa-solid fa-gears" style="color: #FFC107; font-size: 18px;"></i> Custom Bots</li>
-      </ul>
-    </div>
-
-  </div>
-</section>
-
-<section id="projects">
-  <div class="section-title"><i class="fa-solid fa-crown"></i> Premium Projects</div>
-  <div class="projects">
-    <ul class="project-list" id="dynamic-project-list">
-      </ul>
-  </div>
-</section>
-
-<section id="contact">
-  <div class="section-title"><i class="fa-solid fa-envelope"></i> Get In Touch</div>
-
-  <div class="contact">
-    <form action="https://formsubmit.co/umarasifmirza439@gmail.com" method="POST">
-      <input type="hidden" name="_subject" value="New Client Message from Portfolio Website!">
-      <input type="hidden" name="_captcha" value="false">
-      
-      <input type="text" name="name" placeholder="Your Name" required>
-      <input type="email" name="email" placeholder="Your Email" required>
-      <textarea name="message" placeholder="How can I help you build AI apps or automate your business?" rows="5" required></textarea>
-      <button type="submit">Send Message <i class="fa-solid fa-paper-plane" style="margin-left: 5px;"></i></button>
-    </form>
-
-    <div style="background: var(--card); padding: 25px; border-radius: 16px; border: 1px solid var(--border);">
-      <p style="margin-bottom: 15px;"><i class="fa-solid fa-envelope" style="color: var(--accent); margin-right: 10px;"></i> <strong>Email:</strong> umarasifmirza439@gmail.com</p>
-      <p style="margin-bottom: 15px;"><i class="fa-solid fa-location-dot" style="color: #FF5722; margin-right: 10px;"></i> <strong>Location:</strong> Rahim Yar Khan, Punjab, Pakistan</p>
-      <p style="margin-bottom: 15px;"><i class="fa-brands fa-github" style="color: #fff; margin-right: 10px;"></i> <strong>GitHub:</strong> github.com/umar7142</p>
-      <p><i class="fa-solid fa-phone" style="color: #4CAF50; margin-right: 10px;"></i> <strong>Phone:</strong> +92 300 0000000</p>
-    </div>
-  </div>
-</section>
-
-<footer>
-  © 2026 Muhammad Umar — All Rights Reserved | Built with Passion
-</footer>
-
+    <p class="role">Backend Developer • Python • FastAPI • AI Systems</p>
+  </section>
 </div>
 
+<main>
+  <section id="projects" class="section">
+    <div class="projects-header">
+      <h2>Selected Work</h2>
+    </div>
+
+    <div class="projects-grid">
+      <div class="card">
+        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H5v-9h10v9z"/></svg>
+        <h3>ME CHAT VIP</h3>
+        <p>Ultra‑lightweight (7KB) secure messaging platform. Optimized for extreme performance.</p>
+        <div class="card-tech"><span class="tech-tag">FastAPI</span><span class="tech-tag">Python</span><span class="tech-tag">Redis</span></div>
+      </div>
+      <div class="card">
+        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>
+        <h3>UMAR AI</h3>
+        <p>Advanced AI SaaS integrated with Llama 3.1. Features PDF extraction and chat memory.</p>
+        <div class="card-tech"><span class="tech-tag">Llama 3.1</span><span class="tech-tag">Django</span><span class="tech-tag">React</span></div>
+      </div>
+      <div class="card">
+        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M10 20h4V4h-4v16zm-6 0h4v-8H4v8zM16 9v11h4V9h-4z"/></svg>
+        <h3>Sales Analytics Dashboard</h3>
+        <p>Interactive dashboard visualizing revenue and order trends from raw CSV data.</p>
+        <div class="card-tech"><span class="tech-tag">Pandas</span><span class="tech-tag">Plotly</span><span class="tech-tag">Python</span></div>
+      </div>
+      <div class="card">
+        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>
+        <h3>Job Scraper Automator</h3>
+        <p>Distributed web scraper using Selenium to bypass bot detection on major job boards.</p>
+        <div class="card-tech"><span class="tech-tag">Selenium</span><span class="tech-tag">BS4</span><span class="tech-tag">Python</span></div>
+      </div>
+      <div class="card">
+        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+        <h3>Data Cleaning Engine</h3>
+        <p>ETL pipeline that handles millions of rows, fixing NaNs and formatting issues automatically.</p>
+        <div class="card-tech"><span class="tech-tag">Pandas</span><span class="tech-tag">Numpy</span><span class="tech-tag">Data-Ops</span></div>
+      </div>
+      <div class="card">
+        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6z"/></svg>
+        <h3>JWT Auth Microservice</h3>
+        <p>Secure authentication layer with role-based access control and token refreshing.</p>
+        <div class="card-tech"><span class="tech-tag">Django REST</span><span class="tech-tag">Security</span></div>
+      </div>
+      <div class="card">
+        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.45l8.15 14.55H3.85L12 5.45z"/></svg>
+        <h3>Crypto Tracker API</h3>
+        <p>Real-time price aggregator with historical data storage for top 100 coins.</p>
+        <div class="card-tech"><span class="tech-tag">FastAPI</span><span class="tech-tag">WebSockets</span></div>
+      </div>
+      <div class="card">
+        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+        <h3>Inventory Manager</h3>
+        <p>Automated stock tracking system with low-stock alerts via Email/Telegram.</p>
+        <div class="card-tech"><span class="tech-tag">Python</span><span class="tech-tag">SQLite</span><span class="tech-tag">SMTP</span></div>
+      </div>
+      <div class="card">
+        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 15.5l-7-7 1.41-1.41L12 15.67l5.59-5.59L19 11.5l-7 7z"/></svg>
+        <h3>Student Management API</h3>
+        <p>Django-based API for handling student records, grades, and attendance metrics.</p>
+        <div class="card-tech"><span class="tech-tag">Django</span><span class="tech-tag">DRF</span><span class="tech-tag">PostgreSQL</span></div>
+      </div>
+      <div class="card">
+        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+        <h3>Password Vault Pro</h3>
+        <p>Locally encrypted password manager using AES-256 encryption standards.</p>
+        <div class="card-tech"><span class="tech-tag">Cryptography</span><span class="tech-tag">Python</span></div>
+      </div>
+      <div class="card">
+        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+        <h3>Real Estate Price Predictor</h3>
+        <p>ML model that predicts house prices based on location and amenities.</p>
+        <div class="card-tech"><span class="tech-tag">Scikit-Learn</span><span class="tech-tag">Python</span></div>
+      </div>
+      <div class="card">
+        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        <h3>URL Shortener Service</h3>
+        <p>FastAPI service that manages shortened URLs with click tracking.</p>
+        <div class="card-tech"><span class="tech-tag">FastAPI</span><span class="tech-tag">SQLAlchemy</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section about-section">
+    <div class="about-content">
+      <div class="avatar">
+        <img src="https://i.ibb.co/xK6HMr7m/Copilot-20260405-004128.png" alt="Umar">
+      </div>
+      <div class="about-text">
+        <h2>The Architect</h2>
+        <p>
+          I am Muhammad Umar, a dedicated backend developer specializing in high-performance Python systems. 
+          My technical journey, which rapidly progressed from self-learning to mastering robust frameworks 
+          like Django at Dev Castle, has deeply shaped my discipline and technical depth. I thrive on building 
+          systems that are not just functional, but highly secure, scalable, and elegantly structured.
+        </p>
+        <p>
+          Beyond standard backend development, I maintain a strong, security-first mindset heavily influenced 
+          by ethical hacking principles. This ensures that the APIs and data pipelines I construct—whether for 
+          complex student management platforms or real-time global chat applications—are resilient against 
+          modern vulnerabilities. Clean architecture and data integrity are at the core of everything I build.
+        </p>
+        <p>
+          I am constantly exploring new technologies and pushing hardware boundaries to optimize performance. 
+          From setting up robust Django REST APIs with dynamic fetch-based front ends to directly managing 
+          server-level configurations, I believe in a hands-on approach to problem-solving. My ultimate goal 
+          is to connect with tech enthusiasts globally and engineer digital solutions that make a tangible impact.
+        </p>
+        
+        <div class="skills-container">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">Django / DRF</span>
+          <span class="skill-tag">FastAPI</span>
+          <span class="skill-tag">C++</span>
+          <span class="skill-tag">Pandas & Numpy</span>
+          <span class="skill-tag">API Development</span>
+          <span class="skill-tag">Ethical Hacking</span>
+          <span class="skill-tag">PostgreSQL</span>
+          <span class="skill-tag">Redis</span>
+          <span class="skill-tag">Git / GitHub</span>
+          <span class="skill-tag">Web Scraping</span>
+          <span class="skill-tag">Linux</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="contact" class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <span class="footer-logo">MUHAMMAD UMAR</span>
+      <p style="opacity:0.6; line-height:1.6">Crafting the digital backbone of modern applications with precision and security.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <a href="#home" class="contact-link">Back to Top</a>
+      <a href="#projects" class="contact-link">Selected Work</a>
+      <a href="#about" class="contact-link">About Me</a>
+    </div>
+    <div class="footer-col">
+      <h4>Get in Touch</h4>
+      <p class="contact-link">📞 +92 344 3098652</p>
+      <p class="contact-link">📧 umarasifmirza439@gmail.com</p>
+      <p class="contact-link">📍 Rahim Yar Khan, Pakistan</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p class="warning">WARNING: UNAUTHORIZED REPLICATION OF CODE OR DESIGN PROHIBITED.</p>
+    <p class="copyright">&copy; 2026 Muhammad Umar • Powered by Backend Engineering</p>
+  </div>
+</footer>
+
 <script>
-  async function loadVIPProjects() {
-    const listContainer = document.getElementById('dynamic-project-list');
-    
-    listContainer.innerHTML = '<li><strong style="color: var(--accent); font-size: 18px;">⏳ Fetching VIP Projects from Server...</strong></li>';
+// Dynamic Island Scroll Logic
+const island = document.getElementById('island');
+let lastScrollY = window.scrollY;
 
-    try {
-      const apiData = [
-        { 
-          Project_Name: "ME CHAT VIP (Global Cloud Messaging App) 🌍📱", 
-          Description: "A next-generation, ultra-lightweight (7KB client) secure messaging platform. Engineered with a Python/FastAPI backend and hosted on a custom Hugging Face cloud server. Verified by Samsung Knox & Google Play Protect, ensuring military-grade security, anti-sleep cron-jobs, and zero-lag real-time global communication.<br><br><a href='https://umar71-mechat-network.hf.space' target='_blank' style='display:inline-block; background:var(--accent2); color:#0b0f14; padding:8px 16px; border-radius:6px; text-decoration:none; font-weight:bold; margin-bottom:10px; transition:0.3s;' onmouseover='this.style.transform=\"translateY(-2px)\"; this.style.boxShadow=\"0 5px 15px rgba(56,189,248,0.4)\"' onmouseout='this.style.transform=\"translateY(0)\"; this.style.boxShadow=\"none\"'><i class='fa-solid fa-server'></i> Access Live Cloud Server</a>" 
-        },
-        { 
-          Project_Name: "UMAR AI (Premium SaaS Web App) 🚀", 
-          Description: "A military-grade, password-protected AI web application powered by the Llama 3.1 engine. Built with Streamlit, it features intelligent PDF invoice data extraction, persistent chat memory, and a custom dark-mode UI. 100% optimized for low-end devices.<br><br><a href='https://umar-ai-bot-01.streamlit.app' target='_blank' style='display:inline-block; background:var(--accent); color:#000; padding:8px 16px; border-radius:6px; text-decoration:none; font-weight:bold; margin-bottom:10px; transition:0.3s;' onmouseover='this.style.transform=\"translateY(-2px)\"; this.style.boxShadow=\"0 5px 15px rgba(34,211,238,0.4)\"' onmouseout='this.style.transform=\"translateY(0)\"; this.style.boxShadow=\"none\"'><i class='fa-solid fa-arrow-up-right-from-square'></i> Launch UMAR AI</a><br><span style='background:#1e293b; padding:6px 12px; border-radius:6px; font-size:14px; color:var(--accent2); border:1px solid #334155; display:inline-block;'><i class='fa-solid fa-key' style='color:#FFC107;'></i> <strong>Username:</strong> umar &nbsp;|&nbsp; <strong>Password:</strong> 9090</span>" 
-        },
-        { 
-          Project_Name: "Executive Sales Dashboard (Power BI Style)", 
-          Description: "A fully interactive executive dashboard built using Python, Pandas, and Plotly. It takes raw, messy CSV data, cleans it instantly, and visualizes KPIs like Total Revenue and Orders in a sleek, Microsoft-style theme." 
-        },
-        { 
-          Project_Name: "Real Estate Data Scraper Bot", 
-          Description: "An automated Python bot utilizing BeautifulSoup and Selenium to bypass website restrictions and scrape thousands of property listings. It automatically cleans the extracted data and saves it into a structured Excel file." 
-        },
-        { 
-          Project_Name: "Automated Excel Data Cleaning Script", 
-          Description: "A powerful backend Pandas script created for clients with unstructured data. It automatically removes duplicate rows, fixes missing values (NaNs), corrects formatting errors, and outputs a crystal-clear database ready for analysis." 
-        }
-      ];
-
-      setTimeout(() => {
-        listContainer.innerHTML = '';
-        apiData.forEach((project, index) => {
-          const listItem = document.createElement('li');
-          // VIP glow for the top 2 projects (ME CHAT & UMAR AI)
-          if(index === 0 || index === 1) {
-            listItem.style.background = 'rgba(34, 211, 238, 0.05)';
-            listItem.style.padding = '18px';
-            listItem.style.borderRadius = '12px';
-            listItem.style.border = '1px solid rgba(34, 211, 238, 0.4)';
-          }
-          listItem.innerHTML = `
-            <strong style="color: var(--text); font-size: 20px;">${project.Project_Name}:</strong><br>
-            <span style="color: var(--muted); font-size: 15px; display:block; margin-top:8px;">${project.Description}</span>
-          `;
-          listContainer.appendChild(listItem);
-        });
-      }, 1500);
-
-    } catch (error) {
-      listContainer.innerHTML = '<li><strong style="color: red;">🚨 Connection Error! Failed to load projects.</strong></li>';
-    }
+window.addEventListener('scroll', () => {
+  // Hide pill when scrolling down, show when at top or scrolling up
+  if (window.scrollY > 150) {
+    island.classList.add('hidden');
+  } else {
+    island.classList.remove('hidden');
   }
 
-  window.onload = loadVIPProjects;
+  // Active Link Update
+  const sections = document.querySelectorAll('section, div.hero-frame');
+  let current = "";
+
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop;
+    if (pageYOffset >= sectionTop - 100) {
+      current = section.getAttribute('id');
+    }
+  });
+
+  document.querySelectorAll('.nav-pill a').forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href').includes(current)) {
+      a.classList.add('active');
+    }
+  });
+});
+
+// Click behavior to hide island
+document.querySelectorAll('.nav-pill a').forEach(link => {
+  link.addEventListener('click', () => {
+    setTimeout(() => {
+      island.classList.add('hidden');
+    }, 200);
+  });
+});
 </script>
 
 </body>

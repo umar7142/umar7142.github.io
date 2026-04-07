@@ -374,9 +374,17 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
 /* --- MOBILE RESPONSIVENESS --- */
 @media (max-width: 768px) {
   .hero-frame { border-width: 4px; }
-  .hero-content { padding: 0 25px; }
-  .name-container span { letter-spacing: -2px; }
-  .role { font-size: 1rem; }
+  
+  /* Text ko thora peechay (left) karne ke liye padding 25px se 15px kar di */
+  .hero-content { padding: 0 15px; } 
+  
+  /* Name ko screen ke andar fit karne ke liye font-size adjust kiya */
+  .name-container span { 
+    font-size: clamp(38px, 11vw, 60px); 
+    letter-spacing: -1px; 
+  }
+  
+  .role { font-size: 0.95rem; }
   
   .nav-pill { width: 90%; justify-content: center; padding: 6px; }
   .nav-pill a { padding: 10px 15px; font-size: 14px; }

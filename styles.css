@@ -5,6 +5,7 @@ body{
   background:#fff;
   color: #333;
   overflow-x: hidden; /* Prevents horizontal scroll */
+  overflow-wrap: break-word; /* Global safety for long words */
 }
 a { text-decoration: none; color: inherit; cursor: pointer; }
 
@@ -110,12 +111,15 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  width: 100%;
 }
 .name-container span {
   font-family: 'DM Serif Display', serif;
-  font-size: clamp(50px, 12vw, 150px);
+  /* Auto-responsive clamp: lowers minimum to 32px to fit all mobile screens */
+  font-size: clamp(32px, 12vw, 150px);
   line-height: 0.85;
-  letter-spacing: -4px;
+  letter-spacing: -2px;
+  word-wrap: break-word; /* Forces word break if it exceeds screen width */
 }
 .top-name { 
   color: #fff; 
@@ -251,7 +255,7 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
   margin-bottom: 30px;
 }
 
-/* PICTURE ANIMATIONS (UPDATED HERE) */
+/* PICTURE ANIMATIONS */
 .avatar img {
   width: 250px;
   height: 250px;
@@ -260,21 +264,19 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
   object-fit: cover;
   box-shadow: 0 20px 40px rgba(0,0,0,0.1);
   animation: float 5s ease-in-out infinite; 
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Smooth bounce transition */
-  cursor: pointer; /* Makes it look clickable */
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
 }
 
-/* Hover Effect: Mouse upar aane par */
 .avatar img:hover {
-  transform: scale(1.1) rotate(5deg); /* Thora bara aur ghoome ga */
-  border-color: #ff4fd8; /* Pink border */
-  box-shadow: 0 30px 60px rgba(255, 79, 216, 0.4); /* Glowing pink shadow */
-  animation-play-state: paused; /* Hover par floating rok dega */
+  transform: scale(1.1) rotate(5deg);
+  border-color: #ff4fd8;
+  box-shadow: 0 30px 60px rgba(255, 79, 216, 0.4);
+  animation-play-state: paused;
 }
 
-/* Click Effect: Click karne par */
 .avatar img:active {
-  transform: scale(0.9) rotate(-3deg); /* Dabne wala (press) effect */
+  transform: scale(0.9) rotate(-3deg);
   box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
@@ -375,16 +377,13 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
 @media (max-width: 768px) {
   .hero-frame { border-width: 4px; }
   
-  /* Text ko thora peechay (left) karne ke liye padding 25px se 15px kar di */
+  /* Padding reduced to give text maximum space */
   .hero-content { padding: 0 15px; } 
   
-  /* Name ko screen ke andar fit karne ke liye font-size adjust kiya */
-  .name-container span { 
-    font-size: clamp(38px, 11vw, 60px); 
-    letter-spacing: -1px; 
-  }
+  /* Adjust letter spacing slightly for small screens */
+  .name-container span { letter-spacing: -1px; } 
   
-  .role { font-size: 0.95rem; }
+  .role { font-size: 1rem; }
   
   .nav-pill { width: 90%; justify-content: center; padding: 6px; }
   .nav-pill a { padding: 10px 15px; font-size: 14px; }

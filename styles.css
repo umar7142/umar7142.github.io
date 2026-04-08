@@ -4,8 +4,8 @@ body{
   font-family:'Inter',system-ui,sans-serif;
   background:#fff;
   color: #333;
-  overflow-x: hidden; /* Prevents horizontal scroll */
-  overflow-wrap: break-word; /* Global safety for long words */
+  overflow-x: hidden;
+  overflow-wrap: break-word; 
 }
 a { text-decoration: none; color: inherit; cursor: pointer; }
 
@@ -30,9 +30,11 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
   50% { transform: translateY(-15px); }
   100% { transform: translateY(0px); }
 }
+
+/* YAHAN FIX KIYA HAI: Nav Bar ko center mein lock karne ke liye */
 @keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
+  from { opacity: 0; transform: translateX(-50%) scale(0.9); }
+  to { opacity: 1; transform: translateX(-50%) scale(1); }
 }
 
 /* Facebook Stories Style Like Animation */
@@ -45,12 +47,12 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
 .floating-like {
   position: fixed;
   font-size: 30px;
-  pointer-events: none; /* User can't click the flying emoji */
+  pointer-events: none;
   z-index: 9999;
   animation: flyUpAndFade 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
-/* Scroll Reveal Classes (Handled by JS) */
+/* Scroll Reveal Classes */
 .reveal {
   opacity: 0;
   transform: translateY(50px);
@@ -92,6 +94,7 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
 .nav-pill.hidden {
   top: -100px;
   opacity: 0;
+  transform: translateX(-50%) scale(0.9); /* Hidden state mein bhi center rakhega */
 }
 
 .nav-pill a {
@@ -137,7 +140,7 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
 }
 .top-name { 
   color: #fff; 
-  text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.2); /* Added shadow for better visibility on mobile */
+  text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.2); 
   opacity: 0;
   animation: slideInLeft 0.8s ease-out 0.2s forwards; 
 }
@@ -172,7 +175,7 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 25px;
-  perspective: 1000px; /* Perspective needed for 3D flip */
+  perspective: 1000px;
 }
 
 .card {
@@ -187,7 +190,7 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  transform-style: preserve-3d; /* Required for 3D flip */
+  transform-style: preserve-3d;
 }
 
 .card::before {
@@ -197,7 +200,7 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
   background: linear-gradient(135deg, rgba(255,216,74,0.1) 0%, rgba(255,255,255,0) 100%);
   opacity: 0;
   transition: opacity 0.4s ease;
-  pointer-events: none; /* Let clicks pass through to the card */
+  pointer-events: none;
 }
 
 .card:hover {
@@ -207,7 +210,6 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
 }
 .card:hover::before { opacity: 1; }
 
-/* Flip animation class activated via JS */
 .card.flipped {
   animation: flipCard 0.8s ease-in-out;
 }
@@ -285,7 +287,6 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
   position: relative;
 }
 
-/* PICTURE ANIMATIONS */
 .avatar img {
   width: 250px;
   height: 250px;
@@ -306,8 +307,6 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
   box-shadow: 0 30px 60px rgba(255, 79, 216, 0.4);
   animation-play-state: paused;
 }
-
-/* Active click pop effect triggered by JS */
 .avatar img.clicked {
   transform: scale(0.9) rotate(-3deg) !important;
   box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important;
@@ -408,34 +407,28 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
 
 /* --- MOBILE RESPONSIVENESS --- */
 @media (max-width: 768px) {
-  .hero-frame { 
-    border-width: 4px; 
-    background: linear-gradient(#ffd84a 0%, #ffffff 85%); /* Expanded yellow to fix name blending issue */
-  }
-  
+  .hero-frame { border-width: 4px; }
   .hero-content { padding: 0 20px; } 
-  
   .name-container span { 
-    font-size: clamp(45px, 16vw, 80px); /* Improved auto-scaling for mobile */
+    font-size: clamp(45px, 16vw, 80px); 
     letter-spacing: -2px; 
     line-height: 0.95;
   } 
-  
   .role { font-size: 0.95rem; margin-top: 15px;}
   
+  /* YAHAN BHI FIX KIYA HAI: Mobile par width and alignment */
   .nav-pill { 
-    width: 92%; 
-    max-width: 360px; /* Prevents overflow */
+    width: max-content; 
+    max-width: 90%; 
     justify-content: center; 
-    padding: 6px; 
+    padding: 6px 12px; 
+    /* left: 50% aur transform already apply ho raha hai global se */
   }
   .nav-pill a { padding: 8px 12px; font-size: 13px; }
 
   .section { padding: 70px 20px; }
-  
   .about-text p { text-align: left; }
   .avatar img { width: 200px; height: 200px; }
-  
   .footer-grid { gap: 30px; text-align: center; }
   .contact-link:hover { transform: translateX(0) scale(1.05); }
 }

@@ -15,6 +15,7 @@ body{
   background:#fff;
   color: #333;
   overflow-x: hidden;
+  overflow-wrap: break-word;
 }
 a { text-decoration: none; color: inherit; cursor: pointer; }
 
@@ -49,6 +50,12 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
   animation: flyUpAndFade 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
+/* YAHAN FIX KIYA HAI: Nav Bar Centering Animation */
+@keyframes scaleIn {
+  from { opacity: 0; transform: translateX(-50%) scale(0.9); }
+  to { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
 /* Scroll Reveal Classes */
 .reveal {
   opacity: 0;
@@ -64,7 +71,8 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
 .hero-frame {
   height: 100vh;
   border: 6px solid #ff4fd8;
-  background: linear-gradient(#ffd84a 0%, #ffffff 80%); /* Adjusted for safety */
+  /* Desktop gradient */
+  background: linear-gradient(#ffd84a 0%, #ffffff 80%); 
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -79,11 +87,13 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
   border-radius: 999px;
   position: fixed;
   top: 30px;
-  /* JavaScript ab iski position aur width control karega */
+  left: 50%;
+  transform: translateX(-50%); /* Force pure CSS centering */
   z-index: 1000;
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
   transition: top 0.4s ease, opacity 0.4s ease;
-  opacity: 0; /* JS fade in karega */
+  opacity: 0; 
+  animation: scaleIn 0.8s ease-out forwards;
 }
 
 .nav-pill.hidden {
@@ -116,7 +126,6 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
   font-weight: 500;
   opacity: 0;
   margin-bottom: 10px;
-  /* JS handle karega */
 }
 
 .name-container {
@@ -128,10 +137,9 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
 
 .name-container span {
   font-family: 'DM Serif Display', serif;
-  font-size: clamp(40px, 12vw, 150px); /* Slightly increased minimum */
-  line-height: 0.9; /* Better line height */
+  font-size: clamp(40px, 12vw, 150px);
+  line-height: 0.9; 
   letter-spacing: -2px;
-  /* JS handle karega */
   opacity: 0;
   transform: translateX(-40px);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
@@ -264,9 +272,21 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
 
 /* --- MOBILE RESPONSIVENESS --- */
 @media (max-width: 768px) {
-  .hero-frame { border-width: 4px; }
+  .hero-frame { 
+    border-width: 4px; 
+    /* YAHAN FIX KIYA HAI: Yellow color ko mobile par lamba kar diya taake white text mix na ho */
+    background: linear-gradient(#ffd84a 0%, #ffd84a 70%, #ffffff 100%);
+  }
   .hero-content { padding: 0 20px; } 
   .role { font-size: 0.95rem; margin-top: 15px;}
+  
+  /* YAHAN FIX KIYA HAI: Nav bar perfectly centered on mobile */
+  .nav-pill { 
+    width: 90%; 
+    max-width: 360px;
+    /* CSS transform translateX(-50%) already applied upar, isliye ab left nahi bhagega */
+  }
+  
   .nav-pill a { padding: 8px 12px; font-size: 13px; }
   .section { padding: 70px 20px; }
   .about-text p { text-align: left; }
@@ -450,30 +470,8 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
 </footer>
 
 <script>
-// --- 1. JS Controlled Responsive Nav & Hero Animations ---
+// --- 1. Hero Text Animations ---
 document.addEventListener("DOMContentLoaded", function() {
-    
-    // Safely position Nav Pill
-    const island = document.getElementById('island');
-    function positionNav() {
-        if(window.innerWidth <= 768) {
-            island.style.width = "90%";
-            island.style.maxWidth = "360px";
-        } else {
-            island.style.width = "max-content";
-            island.style.maxWidth = "none";
-        }
-        // Force center via JS instead of CSS transform to avoid conflicts
-        const leftPos = (window.innerWidth - island.offsetWidth) / 2;
-        island.style.left = leftPos + "px";
-        island.style.transform = "none"; 
-    }
-    
-    positionNav();
-    window.addEventListener('resize', positionNav);
-
-    // Initial Hero Animations (Staggered)
-    setTimeout(() => { island.style.opacity = "1"; }, 100);
     setTimeout(() => { document.getElementById('tagline').style.animation = "fadeInUp 0.8s ease-out forwards"; }, 300);
     setTimeout(() => { document.getElementById('name1').classList.add('animate-in'); }, 600);
     setTimeout(() => { document.getElementById('name2').classList.add('animate-in'); }, 800);

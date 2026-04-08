@@ -15,7 +15,6 @@ body{
   background:#fff;
   color: #333;
   overflow-x: hidden;
-  overflow-wrap: break-word; /* Prevents text overflow */
 }
 a { text-decoration: none; color: inherit; cursor: pointer; }
 
@@ -31,21 +30,11 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
   from { opacity: 0; transform: translateY(40px); }
   to { opacity: 1; transform: translateY(0); }
 }
-@keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-40px); }
-  to { opacity: 1; transform: translateX(0); }
-}
 @keyframes float {
   0% { transform: translateY(0px); }
   50% { transform: translateY(-15px); }
   100% { transform: translateY(0px); }
 }
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-/* Facebook Stories Style Like Animation */
 @keyframes flyUpAndFade {
   0% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
   50% { transform: translateY(-70px) scale(1.3) rotate(15deg); }
@@ -75,7 +64,7 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
 .hero-frame {
   height: 100vh;
   border: 6px solid #ff4fd8;
-  background: linear-gradient(#ffd84a 0%, #ffffff 60%);
+  background: linear-gradient(#ffd84a 0%, #ffffff 80%); /* Adjusted for safety */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -88,20 +77,18 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
   background: #000;
   padding: 8px;
   border-radius: 999px;
-  width: max-content;
   position: fixed;
   top: 30px;
-  left: 50%;
-  transform: translateX(-50%);
+  /* JavaScript ab iski position aur width control karega */
   z-index: 1000;
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  animation: scaleIn 0.8s ease-out forwards;
+  transition: top 0.4s ease, opacity 0.4s ease;
+  opacity: 0; /* JS fade in karega */
 }
 
 .nav-pill.hidden {
   top: -100px;
-  opacity: 0;
+  opacity: 0 !important;
 }
 
 .nav-pill a {
@@ -127,9 +114,9 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
 .hero-tagline {
   font-size: 1.2rem;
   font-weight: 500;
-  opacity: 0.8;
+  opacity: 0;
   margin-bottom: 10px;
-  animation: fadeInUp 0.8s ease-out forwards;
+  /* JS handle karega */
 }
 
 .name-container {
@@ -138,23 +125,24 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
   align-items: flex-start;
   width: 100%;
 }
+
 .name-container span {
   font-family: 'DM Serif Display', serif;
-  font-size: clamp(32px, 12vw, 150px);
-  line-height: 0.85;
+  font-size: clamp(40px, 12vw, 150px); /* Slightly increased minimum */
+  line-height: 0.9; /* Better line height */
   letter-spacing: -2px;
-  word-wrap: break-word;
-}
-.top-name { 
-  color: #fff; 
+  /* JS handle karega */
   opacity: 0;
-  animation: slideInLeft 0.8s ease-out 0.2s forwards; 
+  transform: translateX(-40px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
-.bottom-name { 
-  color: #000; 
-  opacity: 0;
-  animation: slideInLeft 0.8s ease-out 0.4s forwards; 
+.name-container span.animate-in {
+    opacity: 1;
+    transform: translateX(0);
 }
+
+.top-name { color: #fff; text-shadow: 1px 2px 4px rgba(0,0,0,0.2); }
+.bottom-name { color: #000; }
 
 .role {
   font-weight: 700;
@@ -162,7 +150,6 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
   margin-top: 20px;
   letter-spacing: 1px;
   opacity: 0;
-  animation: fadeInUp 0.8s ease-out 0.6s forwards;
 }
 
 /* --- PROJECTS SECTION --- */
@@ -216,7 +203,6 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
 }
 .card:hover::before { opacity: 1; }
 
-/* Flip animation class */
 .card.flipped {
   animation: flipCard 0.8s ease-in-out;
 }
@@ -235,195 +221,57 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
   position: relative;
   z-index: 1;
 }
-.card:hover .proj-icon {
-  fill: #ff4fd8;
-  transform: scale(1.1) rotate(5deg);
-}
+.card:hover .proj-icon { fill: #ff4fd8; transform: scale(1.1) rotate(5deg); }
 
-.card h3 {
-  font-size: 22px;
-  margin-bottom: 12px;
-  font-weight: 800;
-  position: relative;
-  z-index: 1;
-}
-.card p {
-  font-size: 15px;
-  line-height: 1.6;
-  color: #666;
-  flex-grow: 1;
-  position: relative;
-  z-index: 1;
-}
+.card h3 { font-size: 22px; margin-bottom: 12px; font-weight: 800; position: relative; z-index: 1; }
+.card p { font-size: 15px; line-height: 1.6; color: #666; flex-grow: 1; position: relative; z-index: 1; }
 
-.card-tech {
-  margin-top: 20px;
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  position: relative;
-  z-index: 1;
-}
-.tech-tag {
-  background: #f4f4f4;
-  padding: 6px 14px;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #444;
-  transition: background 0.3s;
-}
-.card:hover .tech-tag {
-  background: #fff6c7;
-}
+.card-tech { margin-top: 20px; display: flex; gap: 8px; flex-wrap: wrap; position: relative; z-index: 1; }
+.tech-tag { background: #f4f4f4; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; color: #444; transition: background 0.3s; }
+.card:hover .tech-tag { background: #fff6c7; }
 
 /* --- ABOUT SECTION --- */
-.about-section {
-  background: #fafafa;
-  text-align: center;
-}
-.about-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 850px;
-  margin: 0 auto;
-}
-.avatar {
-  margin-bottom: 30px;
-  position: relative;
-}
+.about-section { background: #fafafa; text-align: center; }
+.about-content { display: flex; flex-direction: column; align-items: center; max-width: 850px; margin: 0 auto; }
+.avatar { margin-bottom: 30px; position: relative; }
 
 .avatar img {
-  width: 250px;
-  height: 250px;
-  border-radius: 50%;
-  border: 8px solid #ffd84a;
-  object-fit: cover;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-  animation: float 5s ease-in-out infinite; 
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  cursor: pointer;
-  position: relative;
-  z-index: 10;
+  width: 250px; height: 250px; border-radius: 50%; border: 8px solid #ffd84a; object-fit: cover;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1); animation: float 5s ease-in-out infinite; 
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; position: relative; z-index: 10;
 }
 
-.avatar img:hover {
-  transform: scale(1.05);
-  border-color: #ff4fd8;
-  box-shadow: 0 30px 60px rgba(255, 79, 216, 0.4);
-  animation-play-state: paused;
-}
-.avatar img.clicked {
-  transform: scale(0.9) rotate(-3deg) !important;
-}
+.avatar img:hover { transform: scale(1.05); border-color: #ff4fd8; box-shadow: 0 30px 60px rgba(255, 79, 216, 0.4); animation-play-state: paused; }
+.avatar img.clicked { transform: scale(0.9) rotate(-3deg) !important; box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important; }
 
-.about-text h2 {
-  font-size: clamp(30px, 5vw, 40px);
-  font-weight: 800;
-  margin-bottom: 20px;
-}
-.about-text p {
-  font-size: 17px;
-  line-height: 1.8;
-  color: #555;
-  margin-bottom: 20px;
-  text-align: justify;
-}
+.about-text h2 { font-size: clamp(30px, 5vw, 40px); font-weight: 800; margin-bottom: 20px; }
+.about-text p { font-size: 17px; line-height: 1.8; color: #555; margin-bottom: 20px; text-align: justify; }
 
-.skills-container {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 30px;
-}
-.skill-tag {
-  background: #000;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 14px;
-  transition: all 0.3s ease;
-}
-.skill-tag:hover {
-  transform: translateY(-5px);
-  background: #ffd84a;
-  color: #000;
-  box-shadow: 0 10px 20px rgba(255, 216, 74, 0.4);
-}
+.skills-container { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 30px; }
+.skill-tag { background: #000; color: #fff; padding: 10px 20px; border-radius: 12px; font-weight: 600; font-size: 14px; transition: all 0.3s ease; }
+.skill-tag:hover { transform: translateY(-5px); background: #ffd84a; color: #000; box-shadow: 0 10px 20px rgba(255, 216, 74, 0.4); }
 
 /* --- FOOTER --- */
-.site-footer {
-  background: #000;
-  color: #fff;
-  padding: 100px 30px 40px;
-}
-.footer-grid {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 50px;
-}
-.footer-logo {
-  font-family: 'DM Serif Display', serif;
-  font-size: 32px;
-  margin-bottom: 15px;
-  display: block;
-}
-.footer-col h4 {
-  font-size: 18px;
-  margin-bottom: 25px;
-  color: #ffd84a;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-.contact-link {
-  display: block;
-  margin-bottom: 15px;
-  font-size: 16px;
-  opacity: 0.8;
-  transition: 0.3s;
-}
-.contact-link:hover { 
-  opacity: 1; 
-  color: #ffd84a; 
-  transform: translateX(5px);
-}
-
-.footer-bottom {
-  max-width: 1200px;
-  margin: 80px auto 0;
-  border-top: 1px solid #222;
-  padding-top: 40px;
-  text-align: center;
-}
-.warning {
-  color: #ff4fd8;
-  font-weight: 800;
-  font-size: 14px;
-  margin-bottom: 10px;
-}
-.copyright {
-  font-size: 13px;
-  opacity: 0.5;
-}
+.site-footer { background: #000; color: #fff; padding: 100px 30px 40px; }
+.footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 50px; }
+.footer-logo { font-family: 'DM Serif Display', serif; font-size: 32px; margin-bottom: 15px; display: block; }
+.footer-col h4 { font-size: 18px; margin-bottom: 25px; color: #ffd84a; text-transform: uppercase; letter-spacing: 2px; }
+.contact-link { display: block; margin-bottom: 15px; font-size: 16px; opacity: 0.8; transition: 0.3s; }
+.contact-link:hover { opacity: 1; color: #ffd84a; transform: translateX(5px); }
+.footer-bottom { max-width: 1200px; margin: 80px auto 0; border-top: 1px solid #222; padding-top: 40px; text-align: center; }
+.warning { color: #ff4fd8; font-weight: 800; font-size: 14px; margin-bottom: 10px; }
+.copyright { font-size: 13px; opacity: 0.5; }
 
 /* --- MOBILE RESPONSIVENESS --- */
 @media (max-width: 768px) {
   .hero-frame { border-width: 4px; }
-  .hero-content { padding: 0 15px; } 
-  .name-container span { letter-spacing: -1px; } 
-  .role { font-size: 1rem; }
-  .nav-pill { width: 90%; justify-content: center; padding: 6px; }
-  .nav-pill a { padding: 10px 15px; font-size: 14px; }
+  .hero-content { padding: 0 20px; } 
+  .role { font-size: 0.95rem; margin-top: 15px;}
+  .nav-pill a { padding: 8px 12px; font-size: 13px; }
   .section { padding: 70px 20px; }
   .about-text p { text-align: left; }
   .avatar img { width: 200px; height: 200px; }
   .footer-grid { gap: 30px; text-align: center; }
-  .contact-link:hover { transform: translateX(0) scale(1.05); }
 }
 </style>
 </head>
@@ -439,12 +287,12 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
   </nav>
 
   <section class="hero-content">
-    <p class="hero-tagline">Howdy! I build secure, scalable backend systems & AI platforms.</p>
+    <p class="hero-tagline" id="tagline">Howdy! I build secure, scalable backend systems & AI platforms.</p>
     <div class="name-container">
-      <span class="top-name">Muhammad</span>
-      <span class="bottom-name">Umar</span>
+      <span class="top-name" id="name1">Muhammad</span>
+      <span class="bottom-name" id="name2">Umar</span>
     </div>
-    <p class="role">Backend Developer • Python • FastAPI • AI Systems</p>
+    <p class="role" id="roleText">Backend Developer • Python • FastAPI • AI Systems</p>
   </section>
 </div>
 
@@ -602,7 +450,37 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
 </footer>
 
 <script>
-// --- 1. Scroll Reveal Animation Logic ---
+// --- 1. JS Controlled Responsive Nav & Hero Animations ---
+document.addEventListener("DOMContentLoaded", function() {
+    
+    // Safely position Nav Pill
+    const island = document.getElementById('island');
+    function positionNav() {
+        if(window.innerWidth <= 768) {
+            island.style.width = "90%";
+            island.style.maxWidth = "360px";
+        } else {
+            island.style.width = "max-content";
+            island.style.maxWidth = "none";
+        }
+        // Force center via JS instead of CSS transform to avoid conflicts
+        const leftPos = (window.innerWidth - island.offsetWidth) / 2;
+        island.style.left = leftPos + "px";
+        island.style.transform = "none"; 
+    }
+    
+    positionNav();
+    window.addEventListener('resize', positionNav);
+
+    // Initial Hero Animations (Staggered)
+    setTimeout(() => { island.style.opacity = "1"; }, 100);
+    setTimeout(() => { document.getElementById('tagline').style.animation = "fadeInUp 0.8s ease-out forwards"; }, 300);
+    setTimeout(() => { document.getElementById('name1').classList.add('animate-in'); }, 600);
+    setTimeout(() => { document.getElementById('name2').classList.add('animate-in'); }, 800);
+    setTimeout(() => { document.getElementById('roleText').style.animation = "fadeInUp 0.8s ease-out forwards"; }, 1100);
+});
+
+// --- 2. Scroll Reveal Animation Logic ---
 function reveal() {
   var reveals = document.querySelectorAll(".reveal");
   for (var i = 0; i < reveals.length; i++) {
@@ -617,13 +495,15 @@ function reveal() {
 window.addEventListener("scroll", reveal);
 reveal();
 
-// --- 2. Dynamic Island & Navigation Logic ---
+// --- 3. Dynamic Island & Navigation Logic ---
 const island = document.getElementById('island');
 window.addEventListener('scroll', () => {
   if (window.scrollY > 150) {
-    island.classList.add('hidden');
+    island.style.top = "-100px";
+    island.style.opacity = "0";
   } else {
-    island.classList.remove('hidden');
+    island.style.top = "30px";
+    island.style.opacity = "1";
   }
 
   const sections = document.querySelectorAll('section, div.hero-frame');
@@ -646,12 +526,13 @@ window.addEventListener('scroll', () => {
 document.querySelectorAll('.nav-pill a').forEach(link => {
   link.addEventListener('click', () => {
     setTimeout(() => {
-      island.classList.add('hidden');
+      island.style.top = "-100px";
+      island.style.opacity = "0";
     }, 200);
   });
 });
 
-// --- 3. Card Flip Animation on Click ---
+// --- 4. Card Flip Animation on Click ---
 document.querySelectorAll('.card').forEach(card => {
   card.addEventListener('click', function() {
     if (!this.classList.contains('flipped')) {
@@ -663,7 +544,7 @@ document.querySelectorAll('.card').forEach(card => {
   });
 });
 
-// --- 4. Facebook Story Like Animation on Picture Click ---
+// --- 5. Facebook Story Like Animation on Picture Click ---
 const profilePic = document.getElementById('profile-pic');
 const emojis = ['❤️', '👍', '🔥', '🚀', '😍', '👏'];
 

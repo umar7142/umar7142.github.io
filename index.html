@@ -1,581 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Muhammad Umar | Backend Developer</title>
-
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&family=Luckiest+Guy&display=swap" rel="stylesheet">
-
-<style>
-/* --- General Styles --- */
-*{box-sizing:border-box;margin:0;padding:0; scroll-behavior: smooth;}
-body{
-  font-family:'Inter',system-ui,sans-serif;
-  background:#fff;
-  color: #333;
-  overflow-x: hidden;
-  overflow-wrap: break-word;
-}
-a { text-decoration: none; color: inherit; cursor: pointer; }
-
-/* Global Section Styling */
-.section {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 100px 30px;
-}
-
-/* --- ANIMATIONS (Keyframes) --- */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-15px); }
-  100% { transform: translateY(0px); }
-}
-@keyframes flyUpAndFade {
-  0% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
-  50% { transform: translateY(-70px) scale(1.3) rotate(15deg); }
-  100% { opacity: 0; transform: translateY(-150px) scale(1) rotate(-15deg); }
-}
-
-.floating-like {
-  position: fixed;
-  font-size: 30px;
-  pointer-events: none;
-  z-index: 9999;
-  animation: flyUpAndFade 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-}
-
-/* YAHAN FIX KIYA HAI: Nav Bar Centering Animation */
-@keyframes scaleIn {
-  from { opacity: 0; transform: translateX(-50%) scale(0.9); }
-  to { opacity: 1; transform: translateX(-50%) scale(1); }
-}
-
-/* Scroll Reveal Classes */
-.reveal {
-  opacity: 0;
-  transform: translateY(50px);
-  transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
-}
-.reveal.active {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* --- HERO SECTION --- */
-.hero-frame {
-  height: 100vh;
-  border: 6px solid #ff4fd8;
-  /* Desktop gradient */
-  background: linear-gradient(#ffd84a 0%, #ffffff 80%); 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  position: relative;
-}
-
-/* NAV PILL (Dynamic Island) */
-.nav-pill {
-  display: flex;
-  background: #000;
-  padding: 8px;
-  border-radius: 999px;
-  position: fixed;
-  top: 30px;
-  left: 50%;
-  transform: translateX(-50%); /* Force pure CSS centering */
-  z-index: 1000;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  transition: top 0.4s ease, opacity 0.4s ease;
-  opacity: 0; 
-  animation: scaleIn 0.8s ease-out forwards;
-}
-
-.nav-pill.hidden {
-  top: -100px;
-  opacity: 0 !important;
-}
-
-.nav-pill a {
-  color: #fff;
-  font-weight: 600;
-  padding: 10px 20px;
-  border-radius: 999px;
-  transition: 0.3s;
-  font-size: 15px;
-}
-.nav-pill a:hover, .nav-pill a.active {
-  background: #ffd84a;
-  color: #000;
-}
-
-.hero-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
-  padding: 0 60px;
-}
-
-.hero-tagline {
-  font-size: 1.2rem;
-  font-weight: 500;
-  opacity: 0;
-  margin-bottom: 10px;
-}
-
-.name-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-}
-
-.name-container span {
-  font-family: 'DM Serif Display', serif;
-  font-size: clamp(40px, 12vw, 150px);
-  line-height: 0.9; 
-  letter-spacing: -2px;
-  opacity: 0;
-  transform: translateX(-40px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-.name-container span.animate-in {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.top-name { color: #fff; text-shadow: 1px 2px 4px rgba(0,0,0,0.2); }
-.bottom-name { color: #000; }
-
-.role {
-  font-weight: 700;
-  font-size: 1.1rem;
-  margin-top: 20px;
-  letter-spacing: 1px;
-  opacity: 0;
-}
-
-/* --- PROJECTS SECTION --- */
-.projects-header {
-  margin-bottom: 60px;
-  border-left: 8px solid #ffd84a;
-  padding-left: 20px;
-}
-.projects-header h2 {
-  font-family: 'Luckiest Guy', cursive;
-  font-size: clamp(35px, 6vw, 50px);
-  letter-spacing: 2px;
-}
-
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
-  perspective: 1000px;
-}
-
-.card {
-  background: #fff;
-  padding: 35px;
-  border-radius: 24px;
-  border: 1px solid rgba(0,0,0,0.06);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  transform-style: preserve-3d;
-}
-
-.card::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: linear-gradient(135deg, rgba(255,216,74,0.1) 0%, rgba(255,255,255,0) 100%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-}
-
-.card:hover {
-  transform: translateY(-12px) scale(1.02);
-  box-shadow: 0 25px 50px rgba(0,0,0,0.08);
-  border-color: #ffd84a;
-}
-.card:hover::before { opacity: 1; }
-
-.card.flipped {
-  animation: flipCard 0.8s ease-in-out;
-}
-@keyframes flipCard {
-  0% { transform: rotateY(0deg) scale(1); }
-  50% { transform: rotateY(180deg) scale(1.05); }
-  100% { transform: rotateY(360deg) scale(1); }
-}
-
-.proj-icon {
-  width: 45px;
-  height: 45px;
-  margin-bottom: 20px;
-  fill: #000;
-  transition: transform 0.4s ease, fill 0.3s;
-  position: relative;
-  z-index: 1;
-}
-.card:hover .proj-icon { fill: #ff4fd8; transform: scale(1.1) rotate(5deg); }
-
-.card h3 { font-size: 22px; margin-bottom: 12px; font-weight: 800; position: relative; z-index: 1; }
-.card p { font-size: 15px; line-height: 1.6; color: #666; flex-grow: 1; position: relative; z-index: 1; }
-
-.card-tech { margin-top: 20px; display: flex; gap: 8px; flex-wrap: wrap; position: relative; z-index: 1; }
-.tech-tag { background: #f4f4f4; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; color: #444; transition: background 0.3s; }
-.card:hover .tech-tag { background: #fff6c7; }
-
-/* --- ABOUT SECTION --- */
-.about-section { background: #fafafa; text-align: center; }
-.about-content { display: flex; flex-direction: column; align-items: center; max-width: 850px; margin: 0 auto; }
-.avatar { margin-bottom: 30px; position: relative; }
-
-.avatar img {
-  width: 250px; height: 250px; border-radius: 50%; border: 8px solid #ffd84a; object-fit: cover;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1); animation: float 5s ease-in-out infinite; 
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; position: relative; z-index: 10;
-}
-
-.avatar img:hover { transform: scale(1.05); border-color: #ff4fd8; box-shadow: 0 30px 60px rgba(255, 79, 216, 0.4); animation-play-state: paused; }
-.avatar img.clicked { transform: scale(0.9) rotate(-3deg) !important; box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important; }
-
-.about-text h2 { font-size: clamp(30px, 5vw, 40px); font-weight: 800; margin-bottom: 20px; }
-.about-text p { font-size: 17px; line-height: 1.8; color: #555; margin-bottom: 20px; text-align: justify; }
-
-.skills-container { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 30px; }
-.skill-tag { background: #000; color: #fff; padding: 10px 20px; border-radius: 12px; font-weight: 600; font-size: 14px; transition: all 0.3s ease; }
-.skill-tag:hover { transform: translateY(-5px); background: #ffd84a; color: #000; box-shadow: 0 10px 20px rgba(255, 216, 74, 0.4); }
-
-/* --- FOOTER --- */
-.site-footer { background: #000; color: #fff; padding: 100px 30px 40px; }
-.footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 50px; }
-.footer-logo { font-family: 'DM Serif Display', serif; font-size: 32px; margin-bottom: 15px; display: block; }
-.footer-col h4 { font-size: 18px; margin-bottom: 25px; color: #ffd84a; text-transform: uppercase; letter-spacing: 2px; }
-.contact-link { display: block; margin-bottom: 15px; font-size: 16px; opacity: 0.8; transition: 0.3s; }
-.contact-link:hover { opacity: 1; color: #ffd84a; transform: translateX(5px); }
-.footer-bottom { max-width: 1200px; margin: 80px auto 0; border-top: 1px solid #222; padding-top: 40px; text-align: center; }
-.warning { color: #ff4fd8; font-weight: 800; font-size: 14px; margin-bottom: 10px; }
-.copyright { font-size: 13px; opacity: 0.5; }
-
-/* --- MOBILE RESPONSIVENESS --- */
-@media (max-width: 768px) {
-  .hero-frame { 
-    border-width: 4px; 
-    /* YAHAN FIX KIYA HAI: Yellow color ko mobile par lamba kar diya taake white text mix na ho */
-    background: linear-gradient(#ffd84a 0%, #ffd84a 70%, #ffffff 100%);
-  }
-  .hero-content { padding: 0 20px; } 
-  .role { font-size: 0.95rem; margin-top: 15px;}
-  
-  /* YAHAN FIX KIYA HAI: Nav bar perfectly centered on mobile */
-  .nav-pill { 
-    width: 90%; 
-    max-width: 360px;
-    /* CSS transform translateX(-50%) already applied upar, isliye ab left nahi bhagega */
-  }
-  
-  .nav-pill a { padding: 8px 12px; font-size: 13px; }
-  .section { padding: 70px 20px; }
-  .about-text p { text-align: left; }
-  .avatar img { width: 200px; height: 200px; }
-  .footer-grid { gap: 30px; text-align: center; }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muhammad Umar | Backend Developer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Minimalist Modern Font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .hover-scale { transition: transform 0.4s ease-in-out; }
+        .hover-scale:hover { transform: scale(1.02); }
+    </style>
 </head>
+<body class="bg-[#0a0a0a] text-gray-300 antialiased selection:bg-gray-700 selection:text-white">
 
-<body>
+    <header class="max-w-6xl mx-auto px-6 py-12 flex justify-between items-center border-b border-gray-800">
+        <h1 class="text-2xl font-semibold tracking-widest text-white uppercase">Muhammad Umar</h1>
+        <nav class="hidden md:flex space-x-8 text-sm uppercase tracking-widest">
+            <a href="#work" class="hover:text-white transition">Portfolio</a>
+            <a href="#contact" class="hover:text-white transition">Contact</a>
+        </nav>
+    </header>
 
-<div class="hero-frame" id="home">
-  <nav class="nav-pill" id="island">
-    <a href="#home" class="active">Hey</a>
-    <a href="#projects">Work</a>
-    <a href="#about">About</a>
-    <a href="#contact">Chat</a>
-  </nav>
-
-  <section class="hero-content">
-    <p class="hero-tagline" id="tagline">Howdy! I build secure, scalable backend systems & AI platforms.</p>
-    <div class="name-container">
-      <span class="top-name" id="name1">Muhammad</span>
-      <span class="bottom-name" id="name2">Umar</span>
-    </div>
-    <p class="role" id="roleText">Backend Developer • Python • FastAPI • AI Systems</p>
-  </section>
-</div>
-
-<main>
-  <section id="projects" class="section">
-    <div class="projects-header reveal">
-      <h2>Selected Work</h2>
-    </div>
-
-    <div class="projects-grid">
-      <div class="card reveal">
-        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H5v-9h10v9z"/></svg>
-        <h3>ME CHAT VIP</h3>
-        <p>Ultra‑lightweight (7KB) secure messaging platform. Optimized for extreme performance.</p>
-        <div class="card-tech"><span class="tech-tag">FastAPI</span><span class="tech-tag">Python</span><span class="tech-tag">Redis</span></div>
-      </div>
-      <div class="card reveal">
-        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>
-        <h3>UMAR AI</h3>
-        <p>Advanced AI SaaS integrated with Llama 3.1. Features PDF extraction and chat memory.</p>
-        <div class="card-tech"><span class="tech-tag">Llama 3.1</span><span class="tech-tag">Django</span><span class="tech-tag">React</span></div>
-      </div>
-      <div class="card reveal">
-        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M10 20h4V4h-4v16zm-6 0h4v-8H4v8zM16 9v11h4V9h-4z"/></svg>
-        <h3>Sales Analytics Dashboard</h3>
-        <p>Interactive dashboard visualizing revenue and order trends from raw CSV data.</p>
-        <div class="card-tech"><span class="tech-tag">Pandas</span><span class="tech-tag">Plotly</span><span class="tech-tag">Python</span></div>
-      </div>
-      <div class="card reveal">
-        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>
-        <h3>Job Scraper Automator</h3>
-        <p>Distributed web scraper using Selenium to bypass bot detection on major job boards.</p>
-        <div class="card-tech"><span class="tech-tag">Selenium</span><span class="tech-tag">BS4</span><span class="tech-tag">Python</span></div>
-      </div>
-      <div class="card reveal">
-        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-        <h3>Data Cleaning Engine</h3>
-        <p>ETL pipeline that handles millions of rows, fixing NaNs and formatting issues automatically.</p>
-        <div class="card-tech"><span class="tech-tag">Pandas</span><span class="tech-tag">Numpy</span><span class="tech-tag">Data-Ops</span></div>
-      </div>
-      <div class="card reveal">
-        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6z"/></svg>
-        <h3>JWT Auth Microservice</h3>
-        <p>Secure authentication layer with role-based access control and token refreshing.</p>
-        <div class="card-tech"><span class="tech-tag">Django REST</span><span class="tech-tag">Security</span></div>
-      </div>
-      <div class="card reveal">
-        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.45l8.15 14.55H3.85L12 5.45z"/></svg>
-        <h3>Crypto Tracker API</h3>
-        <p>Real-time price aggregator with historical data storage for top 100 coins.</p>
-        <div class="card-tech"><span class="tech-tag">FastAPI</span><span class="tech-tag">WebSockets</span></div>
-      </div>
-      <div class="card reveal">
-        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
-        <h3>Inventory Manager</h3>
-        <p>Automated stock tracking system with low-stock alerts via Email/Telegram.</p>
-        <div class="card-tech"><span class="tech-tag">Python</span><span class="tech-tag">SQLite</span><span class="tech-tag">SMTP</span></div>
-      </div>
-      <div class="card reveal">
-        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 15.5l-7-7 1.41-1.41L12 15.67l5.59-5.59L19 11.5l-7 7z"/></svg>
-        <h3>Student Management API</h3>
-        <p>Django-based API for handling student records, grades, and attendance metrics.</p>
-        <div class="card-tech"><span class="tech-tag">Django</span><span class="tech-tag">DRF</span><span class="tech-tag">PostgreSQL</span></div>
-      </div>
-      <div class="card reveal">
-        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-        <h3>Password Vault Pro</h3>
-        <p>Locally encrypted password manager using AES-256 encryption standards.</p>
-        <div class="card-tech"><span class="tech-tag">Cryptography</span><span class="tech-tag">Python</span></div>
-      </div>
-      <div class="card reveal">
-        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
-        <h3>Real Estate Price Predictor</h3>
-        <p>ML model that predicts house prices based on location and amenities.</p>
-        <div class="card-tech"><span class="tech-tag">Scikit-Learn</span><span class="tech-tag">Python</span></div>
-      </div>
-      <div class="card reveal">
-        <svg class="proj-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-        <h3>URL Shortener Service</h3>
-        <p>FastAPI service that manages shortened URLs with click tracking.</p>
-        <div class="card-tech"><span class="tech-tag">FastAPI</span><span class="tech-tag">SQLAlchemy</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="about" class="section about-section">
-    <div class="about-content">
-      <div class="avatar reveal">
-        <img id="profile-pic" src="https://i.ibb.co/xK6HMr7m/Copilot-20260405-004128.png" alt="Umar">
-      </div>
-      <div class="about-text reveal">
-        <h2>The Architect</h2>
-        <p>
-          I am Muhammad Umar, a dedicated backend developer specializing in high-performance Python systems. 
-          My technical journey, which rapidly progressed from self-learning to mastering robust frameworks 
-          like Django at Dev Castle, has deeply shaped my discipline and technical depth. I thrive on building 
-          systems that are not just functional, but highly secure, scalable, and elegantly structured.
+    <section class="max-w-6xl mx-auto px-6 py-24">
+        <h2 class="text-4xl md:text-6xl font-light text-white leading-tight mb-6">
+            Building scalable <span class="font-semibold text-gray-400">APIs</span> & <br>
+            real-time <span class="font-semibold text-gray-400">architectures.</span>
+        </h2>
+        <p class="text-lg text-gray-500 max-w-2xl mb-10">
+            I am a Python Backend Developer based in Pakistan. I specialize in FastAPI, Django (DRF), decoupled systems, and AI-integrated endpoints. Ready to help global startups ship fast.
         </p>
-        <p>
-          Beyond standard backend development, I maintain a strong, security-first mindset heavily influenced 
-          by ethical hacking principles. This ensures that the APIs and data pipelines I construct—whether for 
-          complex student management platforms or real-time global chat applications—are resilient against 
-          modern vulnerabilities. Clean architecture and data integrity are at the core of everything I build.
-        </p>
-        <p>
-          I am constantly exploring new technologies and pushing hardware boundaries to optimize performance. 
-          From setting up robust Django REST APIs with dynamic fetch-based front ends to directly managing 
-          server-level configurations, I believe in a hands-on approach to problem-solving. My ultimate goal 
-          is to connect with tech enthusiasts globally and engineer digital solutions that make a tangible impact.
-        </p>
-        
-        <div class="skills-container reveal">
-          <span class="skill-tag">Python</span>
-          <span class="skill-tag">Django / DRF</span>
-          <span class="skill-tag">FastAPI</span>
-          <span class="skill-tag">C++</span>
-          <span class="skill-tag">Pandas & Numpy</span>
-          <span class="skill-tag">API Development</span>
-          <span class="skill-tag">Ethical Hacking</span>
-          <span class="skill-tag">PostgreSQL</span>
-          <span class="skill-tag">Redis</span>
-          <span class="skill-tag">Git / GitHub</span>
-          <span class="skill-tag">Web Scraping</span>
-          <span class="skill-tag">Linux</span>
+        <a href="#contact" class="inline-block px-8 py-3 border border-gray-600 hover:bg-white hover:text-black transition uppercase tracking-wider text-sm font-semibold">
+            Let's Talk
+        </a>
+    </section>
+
+    <section id="work" class="max-w-6xl mx-auto px-6 py-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            
+            <div class="group cursor-pointer">
+                <div class="w-full h-80 bg-[#151515] overflow-hidden flex items-center justify-center border border-gray-800 hover-scale">
+                    <h3 class="text-4xl font-bold text-gray-700 group-hover:text-white transition duration-300">ME-CHAT</h3>
+                </div>
+                <div class="mt-6 flex justify-between items-start">
+                    <div>
+                        <h4 class="text-xl text-white font-medium">Real-time WebSocket Engine</h4>
+                        <p class="text-gray-500 text-sm mt-2">FastAPI • WebSockets • Secure Messaging</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group cursor-pointer">
+                <div class="w-full h-80 bg-[#151515] overflow-hidden flex items-center justify-center border border-gray-800 hover-scale">
+                    <h3 class="text-4xl font-bold text-gray-700 group-hover:text-white transition duration-300">NANOLINK</h3>
+                </div>
+                <div class="mt-6 flex justify-between items-start">
+                    <div>
+                        <h4 class="text-xl text-white font-medium">Decoupled URL Shortener</h4>
+                        <p class="text-gray-500 text-sm mt-2">FastAPI • Hugging Face Cloud • Scalable DB</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group cursor-pointer">
+                <div class="w-full h-80 bg-[#151515] overflow-hidden flex items-center justify-center border border-gray-800 hover-scale">
+                    <h3 class="text-4xl font-bold text-gray-700 group-hover:text-white transition duration-300">STUDENT DB</h3>
+                </div>
+                <div class="mt-6 flex justify-between items-start">
+                    <div>
+                        <h4 class="text-xl text-white font-medium">Secure Auth API</h4>
+                        <p class="text-gray-500 text-sm mt-2">Django REST Framework (DRF) • OTP Verification</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group cursor-pointer">
+                <div class="w-full h-80 bg-[#151515] overflow-hidden flex items-center justify-center border border-gray-800 hover-scale">
+                    <h3 class="text-4xl font-bold text-gray-700 group-hover:text-white transition duration-300">PROPERTY AI</h3>
+                </div>
+                <div class="mt-6 flex justify-between items-start">
+                    <div>
+                        <h4 class="text-xl text-white font-medium">Global Valuation Predictor</h4>
+                        <p class="text-gray-500 text-sm mt-2">FastAPI • Scikit-Learn • Machine Learning</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
-      </div>
-    </div>
-  </section>
-</main>
+    </section>
 
-<footer id="contact" class="site-footer">
-  <div class="footer-grid reveal">
-    <div class="footer-col">
-      <span class="footer-logo">MUHAMMAD UMAR</span>
-      <p style="opacity:0.6; line-height:1.6">Crafting the digital backbone of modern applications with precision and security.</p>
-    </div>
-    <div class="footer-col">
-      <h4>Navigation</h4>
-      <a href="#home" class="contact-link">Back to Top</a>
-      <a href="#projects" class="contact-link">Selected Work</a>
-      <a href="#about" class="contact-link">About Me</a>
-    </div>
-    <div class="footer-col">
-      <h4>Get in Touch</h4>
-      <p class="contact-link">📞 +92 344 3098652</p>
-      <p class="contact-link">📧 umarasifmirza439@gmail.com</p>
-      <p class="contact-link">📍 Rahim Yar Khan, Pakistan</p>
-    </div>
-  </div>
-
-  <div class="footer-bottom">
-    <p class="warning">WARNING: UNAUTHORIZED REPLICATION OF CODE OR DESIGN PROHIBITED.</p>
-    <p class="copyright">&copy; 2026 Muhammad Umar • Powered by Backend Engineering</p>
-  </div>
-</footer>
-
-<script>
-// --- 1. Hero Text Animations ---
-document.addEventListener("DOMContentLoaded", function() {
-    setTimeout(() => { document.getElementById('tagline').style.animation = "fadeInUp 0.8s ease-out forwards"; }, 300);
-    setTimeout(() => { document.getElementById('name1').classList.add('animate-in'); }, 600);
-    setTimeout(() => { document.getElementById('name2').classList.add('animate-in'); }, 800);
-    setTimeout(() => { document.getElementById('roleText').style.animation = "fadeInUp 0.8s ease-out forwards"; }, 1100);
-});
-
-// --- 2. Scroll Reveal Animation Logic ---
-function reveal() {
-  var reveals = document.querySelectorAll(".reveal");
-  for (var i = 0; i < reveals.length; i++) {
-    var windowHeight = window.innerHeight;
-    var elementTop = reveals[i].getBoundingClientRect().top;
-    var elementVisible = 100;
-    if (elementTop < windowHeight - elementVisible) {
-      reveals[i].classList.add("active");
-    }
-  }
-}
-window.addEventListener("scroll", reveal);
-reveal();
-
-// --- 3. Dynamic Island & Navigation Logic ---
-const island = document.getElementById('island');
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 150) {
-    island.style.top = "-100px";
-    island.style.opacity = "0";
-  } else {
-    island.style.top = "30px";
-    island.style.opacity = "1";
-  }
-
-  const sections = document.querySelectorAll('section, div.hero-frame');
-  let current = "";
-  sections.forEach(section => {
-    const sectionTop = section.offsetTop;
-    if (pageYOffset >= sectionTop - 150) {
-      current = section.getAttribute('id');
-    }
-  });
-
-  document.querySelectorAll('.nav-pill a').forEach(a => {
-    a.classList.remove('active');
-    if (a.getAttribute('href').includes(current)) {
-      a.classList.add('active');
-    }
-  });
-});
-
-document.querySelectorAll('.nav-pill a').forEach(link => {
-  link.addEventListener('click', () => {
-    setTimeout(() => {
-      island.style.top = "-100px";
-      island.style.opacity = "0";
-    }, 200);
-  });
-});
-
-// --- 4. Card Flip Animation on Click ---
-document.querySelectorAll('.card').forEach(card => {
-  card.addEventListener('click', function() {
-    if (!this.classList.contains('flipped')) {
-      this.classList.add('flipped');
-      setTimeout(() => {
-        this.classList.remove('flipped');
-      }, 800);
-    }
-  });
-});
-
-// --- 5. Facebook Story Like Animation on Picture Click ---
-const profilePic = document.getElementById('profile-pic');
-const emojis = ['❤️', '👍', '🔥', '🚀', '😍', '👏'];
-
-profilePic.addEventListener('click', function(e) {
-  this.classList.add('clicked');
-  setTimeout(() => this.classList.remove('clicked'), 150);
-
-  const numberOfEmojis = Math.floor(Math.random() * 2) + 2; 
-
-  for(let i = 0; i < numberOfEmojis; i++) {
-    const like = document.createElement('div');
-    like.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-    like.className = 'floating-like';
-    
-    const rect = this.getBoundingClientRect();
-    let x = e.clientX || rect.left + rect.width / 2;
-    let y = e.clientY || rect.top + rect.height / 2;
-    
-    x = x + (Math.random() * 60 - 30);
-    y = y + (Math.random() * 40 - 20);
-
-    like.style.left = x + 'px';
-    like.style.top = y + 'px';
-    like.style.animationDuration = (Math.random() * 0.5 + 0.8) + 's';
-
-    document.body.appendChild(like);
-
-    setTimeout(() => {
-      like.remove();
-    }, 1500);
-  }
-});
-</script>
+    <section id="contact" class="border-t border-gray-800 mt-20">
+        <div class="max-w-6xl mx-auto px-6 py-16 flex flex-col md:flex-row justify-between items-center">
+            <div>
+                <h3 class="text-2xl text-white font-light mb-2">Looking for a remote backend dev?</h3>
+                <p class="text-gray-500">Currently open for internships and junior roles globally.</p>
+            </div>
+            <div class="mt-8 md:mt-0 flex space-x-6">
+                <a href="#" class="text-gray-400 hover:text-white transition uppercase text-sm tracking-widest">LinkedIn</a>
+                <a href="#" class="text-gray-400 hover:text-white transition uppercase text-sm tracking-widest">Wellfound</a>
+                <a href="#" class="text-gray-400 hover:text-white transition uppercase text-sm tracking-widest">GitHub</a>
+            </div>
+        </div>
+    </section>
 
 </body>
 </html>

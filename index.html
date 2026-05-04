@@ -1,108 +1,179 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Muhammad Umar | Backend Developer</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* Minimalist Modern Font */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .hover-scale { transition: transform 0.4s ease-in-out; }
-        .hover-scale:hover { transform: scale(1.02); }
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Custom Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+
+        /* Framer Style Grid Cards */
+        .bento-card {
+            background: #111111;
+            border: 1px solid #222;
+            border-radius: 24px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+
+        .bento-card:hover {
+            transform: translateY(-5px);
+            border-color: #444;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        }
+
+        /* Neon Accent Accents */
+        .neon-text-green { color: #B5FF14; }
+        .neon-bg-orange { background-color: #FF6B35; }
+        
+        /* Floating Nav */
+        .glass-nav {
+            background: rgba(17, 17, 17, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
     </style>
 </head>
-<body class="bg-[#0a0a0a] text-gray-300 antialiased selection:bg-gray-700 selection:text-white">
+<body class="antialiased selection:bg-[#B5FF14] selection:text-black pb-20">
 
-    <header class="max-w-6xl mx-auto px-6 py-12 flex justify-between items-center border-b border-gray-800">
-        <h1 class="text-2xl font-semibold tracking-widest text-white uppercase">Muhammad Umar</h1>
-        <nav class="hidden md:flex space-x-8 text-sm uppercase tracking-widest">
-            <a href="#work" class="hover:text-white transition">Portfolio</a>
-            <a href="#contact" class="hover:text-white transition">Contact</a>
-        </nav>
-    </header>
+    <nav class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 glass-nav rounded-full px-6 py-3 flex items-center gap-6 animate-fade-in">
+        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fa-solid fa-house"></i></a>
+        <a href="#projects" class="text-gray-400 hover:text-white transition"><i class="fa-solid fa-folder-open"></i></a>
+        <a href="#skills" class="text-gray-400 hover:text-white transition"><i class="fa-solid fa-wrench"></i></a>
+        <a href="#contact" class="text-[#B5FF14] hover:text-white transition font-semibold px-2">Hire Me</a>
+    </nav>
 
-    <section class="max-w-6xl mx-auto px-6 py-24">
-        <h2 class="text-4xl md:text-6xl font-light text-white leading-tight mb-6">
-            Building scalable <span class="font-semibold text-gray-400">APIs</span> & <br>
-            real-time <span class="font-semibold text-gray-400">architectures.</span>
-        </h2>
-        <p class="text-lg text-gray-500 max-w-2xl mb-10">
-            I am a Python Backend Developer based in Pakistan. I specialize in FastAPI, Django (DRF), decoupled systems, and AI-integrated endpoints. Ready to help global startups ship fast.
-        </p>
-        <a href="#contact" class="inline-block px-8 py-3 border border-gray-600 hover:bg-white hover:text-black transition uppercase tracking-wider text-sm font-semibold">
-            Let's Talk
-        </a>
-    </section>
-
-    <section id="work" class="max-w-6xl mx-auto px-6 py-16">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 pt-32">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
             
-            <div class="group cursor-pointer">
-                <div class="w-full h-80 bg-[#151515] overflow-hidden flex items-center justify-center border border-gray-800 hover-scale">
-                    <h3 class="text-4xl font-bold text-gray-700 group-hover:text-white transition duration-300">ME-CHAT</h3>
+            <div class="bento-card p-8 lg:col-span-1 animate-fade-in flex flex-col justify-between items-center text-center">
+                <div class="w-48 h-48 rounded-full border-2 border-dashed border-[#B5FF14] p-2 mb-6">
+                    <img src="https://via.placeholder.com/150" alt="Muhammad Umar" class="w-full h-full rounded-full object-cover grayscale hover:grayscale-0 transition duration-500">
                 </div>
-                <div class="mt-6 flex justify-between items-start">
-                    <div>
-                        <h4 class="text-xl text-white font-medium">Real-time WebSocket Engine</h4>
-                        <p class="text-gray-500 text-sm mt-2">FastAPI • WebSockets • Secure Messaging</p>
-                    </div>
-                </div>
+                <h1 class="text-3xl font-bold mb-2">Muhammad Umar</h1>
+                <p class="text-gray-400 text-sm bg-[#1a1a1a] px-4 py-2 rounded-full border border-gray-800">
+                    <i class="fa-solid fa-code text-[#FF6B35] mr-2"></i> Python Backend Developer
+                </p>
             </div>
 
-            <div class="group cursor-pointer">
-                <div class="w-full h-80 bg-[#151515] overflow-hidden flex items-center justify-center border border-gray-800 hover-scale">
-                    <h3 class="text-4xl font-bold text-gray-700 group-hover:text-white transition duration-300">NANOLINK</h3>
-                </div>
-                <div class="mt-6 flex justify-between items-start">
-                    <div>
-                        <h4 class="text-xl text-white font-medium">Decoupled URL Shortener</h4>
-                        <p class="text-gray-500 text-sm mt-2">FastAPI • Hugging Face Cloud • Scalable DB</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="group cursor-pointer">
-                <div class="w-full h-80 bg-[#151515] overflow-hidden flex items-center justify-center border border-gray-800 hover-scale">
-                    <h3 class="text-4xl font-bold text-gray-700 group-hover:text-white transition duration-300">STUDENT DB</h3>
-                </div>
-                <div class="mt-6 flex justify-between items-start">
-                    <div>
-                        <h4 class="text-xl text-white font-medium">Secure Auth API</h4>
-                        <p class="text-gray-500 text-sm mt-2">Django REST Framework (DRF) • OTP Verification</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="group cursor-pointer">
-                <div class="w-full h-80 bg-[#151515] overflow-hidden flex items-center justify-center border border-gray-800 hover-scale">
-                    <h3 class="text-4xl font-bold text-gray-700 group-hover:text-white transition duration-300">PROPERTY AI</h3>
-                </div>
-                <div class="mt-6 flex justify-between items-start">
-                    <div>
-                        <h4 class="text-xl text-white font-medium">Global Valuation Predictor</h4>
-                        <p class="text-gray-500 text-sm mt-2">FastAPI • Scikit-Learn • Machine Learning</p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <section id="contact" class="border-t border-gray-800 mt-20">
-        <div class="max-w-6xl mx-auto px-6 py-16 flex flex-col md:flex-row justify-between items-center">
-            <div>
-                <h3 class="text-2xl text-white font-light mb-2">Looking for a remote backend dev?</h3>
-                <p class="text-gray-500">Currently open for internships and junior roles globally.</p>
-            </div>
-            <div class="mt-8 md:mt-0 flex space-x-6">
-                <a href="#" class="text-gray-400 hover:text-white transition uppercase text-sm tracking-widest">LinkedIn</a>
-                <a href="#" class="text-gray-400 hover:text-white transition uppercase text-sm tracking-widest">Wellfound</a>
-                <a href="#" class="text-gray-400 hover:text-white transition uppercase text-sm tracking-widest">GitHub</a>
+            <div class="bento-card p-10 lg:col-span-2 animate-fade-in delay-100 flex flex-col justify-center">
+                <p class="text-[#B5FF14] uppercase tracking-widest text-sm font-semibold mb-4">System Architect</p>
+                <h2 class="text-4xl md:text-5xl font-bold leading-tight mb-6">
+                    Building robust <span class="text-gray-400">APIs</span> and <br>
+                    real-time <span class="text-gray-400">architectures.</span>
+                </h2>
+                <p class="text-gray-400 text-lg max-w-xl">
+                    I design and deploy scalable backend systems, specializing in decoupled APIs, WebSocket engines, and AI integrations. Ready to ship production-grade code for global startups.
+                </p>
             </div>
         </div>
-    </section>
+
+        <div id="projects" class="mt-20 mb-8">
+            <h3 class="text-2xl font-bold mb-6 flex items-center animate-fade-in delay-200">
+                <i class="fa-solid fa-layer-group text-[#B5FF14] mr-3"></i> Featured Arsenal
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div class="bento-card p-8 animate-fade-in delay-200 group">
+                    <div class="flex justify-between items-start mb-16">
+                        <div class="bg-[#1a1a1a] p-3 rounded-xl border border-gray-800 group-hover:border-[#B5FF14] transition">
+                            <i class="fa-solid fa-comments text-2xl text-white"></i>
+                        </div>
+                        <a href="#" class="text-gray-500 group-hover:text-white transition"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-2">Me-Chat Engine</h4>
+                    <p class="text-gray-400 mb-4">Real-time WebSocket chat architecture with instant active-state tracking.</p>
+                    <div class="flex gap-2">
+                        <span class="text-xs bg-gray-800 px-3 py-1 rounded-full">FastAPI</span>
+                        <span class="text-xs bg-gray-800 px-3 py-1 rounded-full">WebSockets</span>
+                    </div>
+                </div>
+
+                <div class="bento-card p-8 animate-fade-in delay-300 group neon-bg-orange">
+                    <div class="flex justify-between items-start mb-16">
+                        <div class="bg-black bg-opacity-20 p-3 rounded-xl backdrop-blur-sm">
+                            <i class="fa-solid fa-link text-2xl text-white"></i>
+                        </div>
+                        <a href="#" class="text-white opacity-70 group-hover:opacity-100 transition"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-2 text-white">NanoLink</h4>
+                    <p class="text-white opacity-90 mb-4">Decoupled URL Shortener deployed globally on cloud infrastructure.</p>
+                    <div class="flex gap-2">
+                        <span class="text-xs bg-black bg-opacity-30 text-white px-3 py-1 rounded-full">Cloud Deployment</span>
+                        <span class="text-xs bg-black bg-opacity-30 text-white px-3 py-1 rounded-full">API</span>
+                    </div>
+                </div>
+
+                <div class="bento-card p-8 animate-fade-in delay-200 group">
+                    <div class="flex justify-between items-start mb-16">
+                        <div class="bg-[#1a1a1a] p-3 rounded-xl border border-gray-800 group-hover:border-blue-500 transition">
+                            <i class="fa-solid fa-database text-2xl text-white"></i>
+                        </div>
+                        <a href="#" class="text-gray-500 group-hover:text-white transition"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-2">Student Auth API</h4>
+                    <p class="text-gray-400 mb-4">Secure authentication and CRUD operations with OTP verification.</p>
+                    <div class="flex gap-2">
+                        <span class="text-xs bg-gray-800 px-3 py-1 rounded-full">Django</span>
+                        <span class="text-xs bg-gray-800 px-3 py-1 rounded-full">DRF</span>
+                    </div>
+                </div>
+
+                <div class="bento-card p-8 animate-fade-in delay-300 group">
+                    <div class="flex justify-between items-start mb-16">
+                        <div class="bg-[#1a1a1a] p-3 rounded-xl border border-gray-800 group-hover:border-purple-500 transition">
+                            <i class="fa-solid fa-brain text-2xl text-white"></i>
+                        </div>
+                        <a href="#" class="text-gray-500 group-hover:text-white transition"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-2">Global Property AI</h4>
+                    <p class="text-gray-400 mb-4">Machine Learning endpoints for real-estate valuation predictions.</p>
+                    <div class="flex gap-2">
+                        <span class="text-xs bg-gray-800 px-3 py-1 rounded-full">Scikit-Learn</span>
+                        <span class="text-xs bg-gray-800 px-3 py-1 rounded-full">FastAPI</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="contact" class="bento-card p-12 text-center animate-fade-in delay-300 mt-6 relative overflow-hidden">
+            <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-[600px] h-[600px] bg-[#B5FF14] opacity-5 rounded-full blur-[100px] pointer-events-none"></div>
+            
+            <h2 class="text-3xl md:text-5xl font-bold mb-6 relative z-10">Let's build something <br> extraordinary.</h2>
+            <p class="text-gray-400 mb-8 relative z-10">Currently open for remote backend roles globally.</p>
+            <a href="mailto:your-email@example.com" class="inline-block bg-white text-black font-bold px-8 py-4 rounded-full hover:bg-[#B5FF14] hover:scale-105 transition duration-300 relative z-10">
+                <i class="fa-regular fa-envelope mr-2"></i> Start a Conversation
+            </a>
+        </div>
+
+    </main>
 
 </body>
 </html>

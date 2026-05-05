@@ -10,14 +10,12 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
   --navy:#08121f;
-  --navy2:#0d1b2e;
   --blue:#1d4ed8;
   --blue2:#3b82f6;
   --gold:#c9a84c;
   --gold2:#e8c96d;
   --white:#fff;
   --off:#f8fafc;
-  --gray:#64748b;
   --light:#e2e8f0;
   --text:#0f172a;
   --muted:#64748b;
@@ -25,231 +23,263 @@
 html{scroll-behavior:smooth;}
 body{font-family:'Inter',sans-serif;color:var(--text);background:var(--off);overflow-x:hidden;}
 
-/* ── CUSTOM CURSOR ── */
-.cursor{position:fixed;width:12px;height:12px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.1s,width 0.3s,height 0.3s,background 0.3s;mix-blend-mode:difference;}
-.cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform 0.12s,width 0.3s,height 0.3s,opacity 0.3s;opacity:0.5;}
+/* ── CUSTOM CURSOR (desktop only) ── */
+@media(pointer:fine){
+  .cursor{position:fixed;width:12px;height:12px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s;mix-blend-mode:difference;}
+  .cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:0.5;transition:width 0.3s,height 0.3s,opacity 0.3s;}
+}
 
 /* ── LOADER ── */
 #loader{position:fixed;inset:0;background:var(--navy);z-index:10000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem;transition:opacity 0.6s,visibility 0.6s;}
-#loader.gone{opacity:0;visibility:hidden;}
-.loader-logo{font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;color:white;opacity:0;animation:loaderFade 0.8s 0.2s forwards;}
-.loader-bar-wrap{width:200px;height:2px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;}
-.loader-bar{height:100%;background:linear-gradient(90deg,var(--blue2),var(--gold));width:0;animation:loaderBar 1.6s 0.3s ease forwards;}
-@keyframes loaderFade{to{opacity:1}}
-@keyframes loaderBar{to{width:100%}}
+#loader.gone{opacity:0;visibility:hidden;pointer-events:none;}
+.ld-logo{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:900;color:white;opacity:0;animation:ldFade 0.8s 0.2s forwards;}
+.ld-logo em{color:var(--gold);font-style:normal;}
+.ld-bar-wrap{width:180px;height:2px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;}
+.ld-bar{height:100%;background:linear-gradient(90deg,var(--blue2),var(--gold));width:0;animation:ldBar 1.5s 0.3s ease forwards;}
+@keyframes ldFade{to{opacity:1}}
+@keyframes ldBar{to{width:100%}}
 
 /* ── NAV ── */
-nav{position:fixed;top:0;width:100%;z-index:1000;padding:1.1rem 5%;display:flex;align-items:center;justify-content:space-between;background:rgba(8,18,31,0);transition:background 0.4s,backdrop-filter 0.4s,border-bottom 0.4s;}
-nav.scrolled{background:rgba(8,18,31,0.96);backdrop-filter:blur(20px);border-bottom:1px solid rgba(201,168,76,0.15);}
-.nav-logo{font-family:'Playfair Display',serif;font-size:1.45rem;font-weight:700;color:white;text-decoration:none;letter-spacing:-0.5px;}
+nav{position:fixed;top:0;width:100%;z-index:1000;padding:1rem 5%;display:flex;align-items:center;justify-content:space-between;background:transparent;transition:background 0.4s,backdrop-filter 0.4s,box-shadow 0.4s;}
+nav.scrolled{background:rgba(8,18,31,0.97);backdrop-filter:blur(20px);box-shadow:0 1px 0 rgba(201,168,76,0.12);}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:white;text-decoration:none;}
 .nav-logo em{color:var(--gold);font-style:normal;}
-.nav-links{display:flex;gap:2.5rem;list-style:none;}
-.nav-links a{color:rgba(255,255,255,0.65);text-decoration:none;font-size:0.82rem;font-weight:500;letter-spacing:0.05em;transition:color 0.25s;position:relative;}
-.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width 0.3s;}
+
+/* desktop links */
+.nav-links{display:flex;gap:2.2rem;list-style:none;}
+.nav-links a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.82rem;font-weight:500;letter-spacing:0.05em;transition:color 0.2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--gold);transition:width 0.3s;}
 .nav-links a:hover{color:white;}
 .nav-links a:hover::after{width:100%;}
-.nav-btn{background:var(--gold);color:var(--navy);padding:0.55rem 1.4rem;border-radius:4px;font-size:0.8rem;font-weight:700;text-decoration:none;letter-spacing:0.04em;transition:all 0.25s;}
-.nav-btn:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,0.35);}
+.nav-hire{background:var(--gold);color:var(--navy);padding:0.5rem 1.3rem;border-radius:4px;font-size:0.78rem;font-weight:700;text-decoration:none;transition:all 0.25s;white-space:nowrap;}
+.nav-hire:hover{background:var(--gold2);transform:translateY(-2px);}
+
+/* hamburger */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;z-index:1100;}
+.hamburger span{display:block;width:24px;height:2px;background:white;border-radius:2px;transition:all 0.3s;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* mobile drawer */
+.mobile-menu{position:fixed;top:0;right:-100%;width:min(280px,85vw);height:100dvh;background:var(--navy);z-index:1050;padding:5rem 2rem 2rem;display:flex;flex-direction:column;gap:0;transition:right 0.35s cubic-bezier(0.25,1,0.5,1);box-shadow:-8px 0 32px rgba(0,0,0,0.4);}
+.mobile-menu.open{right:0;}
+.mobile-menu a{color:rgba(255,255,255,0.75);text-decoration:none;font-size:1.1rem;font-weight:500;padding:1rem 0;border-bottom:1px solid rgba(255,255,255,0.06);transition:color 0.2s;}
+.mobile-menu a:hover{color:var(--gold);}
+.mobile-menu .mm-hire{margin-top:1.5rem;background:var(--gold);color:var(--navy);text-align:center;border-radius:6px;padding:0.9rem;font-weight:700;border:none;}
+.menu-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1049;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.menu-overlay.open{opacity:1;pointer-events:all;}
 
 /* ── HERO ── */
-.hero{min-height:100vh;position:relative;display:flex;align-items:center;overflow:hidden;background:var(--navy);}
+.hero{min-height:100svh;position:relative;display:flex;align-items:center;overflow:hidden;background:var(--navy);}
 .hero-particles{position:absolute;inset:0;pointer-events:none;}
-.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.035) 1px,transparent 1px);background-size:64px 64px;}
-.hero-glow1{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(29,78,216,0.18) 0%,transparent 70%);top:-100px;right:5%;pointer-events:none;animation:floatGlow 8s ease-in-out infinite;}
-.hero-glow2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,0.1) 0%,transparent 70%);bottom:-50px;left:10%;pointer-events:none;animation:floatGlow 10s 2s ease-in-out infinite reverse;}
-@keyframes floatGlow{0%,100%{transform:translateY(0)}50%{transform:translateY(-30px)}}
-
-/* DEV ILLUSTRATION */
-.hero-illustration{position:absolute;right:0;top:0;height:100%;width:52%;opacity:0.12;}
-.hero-illustration svg{width:100%;height:100%;}
-
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(100deg,rgba(8,18,31,1) 45%,rgba(8,18,31,0.7) 65%,rgba(8,18,31,0.15) 100%);}
-.hero-content{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:9rem 5% 6rem;width:100%;}
-
-.hero-tag{display:inline-flex;align-items:center;gap:0.6rem;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.28);color:var(--gold);font-size:0.7rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;padding:0.45rem 1.1rem;border-radius:3px;margin-bottom:2rem;opacity:0;animation:slideUp 0.7s 1.8s forwards;}
-.htag-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:blink 2.2s infinite;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.03) 1px,transparent 1px);background-size:60px 60px;}
+.hero-glow1{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(29,78,216,0.16) 0%,transparent 70%);top:-80px;right:5%;pointer-events:none;animation:glow 8s ease-in-out infinite;}
+.hero-glow2{position:absolute;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,0.09) 0%,transparent 70%);bottom:-40px;left:8%;pointer-events:none;animation:glow 10s 2s ease-in-out infinite reverse;}
+@keyframes glow{0%,100%{transform:translateY(0)}50%{transform:translateY(-28px)}}
+.hero-illus{position:absolute;right:0;top:0;height:100%;width:50%;opacity:0.11;pointer-events:none;}
+.hero-illus svg{width:100%;height:100%;}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(100deg,rgba(8,18,31,1) 42%,rgba(8,18,31,0.65) 65%,rgba(8,18,31,0.1) 100%);}
+.hero-content{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:8rem 5% 5rem;width:100%;}
+.hero-tag{display:inline-flex;align-items:center;gap:0.6rem;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.28);color:var(--gold);font-size:0.68rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;padding:0.42rem 1rem;border-radius:3px;margin-bottom:1.6rem;opacity:0;animation:up 0.7s 1.8s forwards;}
+.htag-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:blink 2.2s infinite;flex-shrink:0;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
-
-.hero-name{font-family:'Playfair Display',serif;font-size:clamp(3.5rem,7vw,6rem);font-weight:900;color:white;line-height:1.0;letter-spacing:-2px;margin-bottom:0.6rem;opacity:0;animation:slideUp 0.8s 2s forwards;}
+.hero-name{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,8vw,5.8rem);font-weight:900;color:white;line-height:1.02;letter-spacing:-2px;margin-bottom:0.5rem;opacity:0;animation:up 0.8s 2s forwards;}
 .hero-name span{color:var(--gold);}
-.hero-role{font-family:'Playfair Display',serif;font-size:clamp(1rem,2.2vw,1.5rem);font-weight:700;color:rgba(255,255,255,0.42);font-style:italic;margin-bottom:2rem;opacity:0;animation:slideUp 0.7s 2.1s forwards;}
-.hero-desc{max-width:540px;font-size:1rem;color:rgba(255,255,255,0.6);line-height:1.9;margin-bottom:2.8rem;opacity:0;animation:slideUp 0.7s 2.2s forwards;}
-.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;opacity:0;animation:slideUp 0.7s 2.3s forwards;}
-.btn-primary{background:var(--gold);color:var(--navy);padding:0.95rem 2.4rem;border-radius:4px;font-weight:700;font-size:0.87rem;letter-spacing:0.05em;text-decoration:none;transition:all 0.3s;box-shadow:0 4px 24px rgba(201,168,76,0.25);display:inline-flex;align-items:center;gap:0.5rem;}
-.btn-primary:hover{background:var(--gold2);transform:translateY(-3px);box-shadow:0 12px 32px rgba(201,168,76,0.4);}
-.btn-outline{background:transparent;color:rgba(255,255,255,0.8);padding:0.95rem 2.4rem;border-radius:4px;border:1px solid rgba(255,255,255,0.2);font-weight:500;font-size:0.87rem;text-decoration:none;transition:all 0.3s;display:inline-flex;align-items:center;gap:0.5rem;}
-.btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+.hero-role{font-family:'Playfair Display',serif;font-size:clamp(0.95rem,2.5vw,1.45rem);font-weight:700;color:rgba(255,255,255,0.38);font-style:italic;margin-bottom:1.8rem;opacity:0;animation:up 0.7s 2.1s forwards;}
+.hero-desc{max-width:520px;font-size:clamp(0.88rem,2vw,1rem);color:rgba(255,255,255,0.58);line-height:1.9;margin-bottom:2.4rem;opacity:0;animation:up 0.7s 2.2s forwards;}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;opacity:0;animation:up 0.7s 2.3s forwards;}
+.btn-gold{background:var(--gold);color:var(--navy);padding:0.88rem 2rem;border-radius:4px;font-weight:700;font-size:0.85rem;letter-spacing:0.04em;text-decoration:none;transition:all 0.3s;box-shadow:0 4px 20px rgba(201,168,76,0.22);display:inline-flex;align-items:center;gap:0.45rem;white-space:nowrap;}
+.btn-gold:hover{background:var(--gold2);transform:translateY(-3px);box-shadow:0 10px 28px rgba(201,168,76,0.38);}
+.btn-ghost{background:transparent;color:rgba(255,255,255,0.78);padding:0.88rem 2rem;border-radius:4px;border:1px solid rgba(255,255,255,0.18);font-weight:500;font-size:0.85rem;text-decoration:none;transition:all 0.3s;display:inline-flex;align-items:center;gap:0.45rem;white-space:nowrap;}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+.hero-stats{display:flex;gap:2.5rem;flex-wrap:wrap;margin-top:3.5rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.07);opacity:0;animation:up 0.7s 2.4s forwards;}
+.hs-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--gold);line-height:1;}
+.hs-lbl{font-size:0.68rem;color:rgba(255,255,255,0.35);letter-spacing:0.08em;text-transform:uppercase;margin-top:0.25rem;}
+/* floating badges – hidden on small screens */
+.hbadge{position:absolute;background:rgba(255,255,255,0.06);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:0.7rem 1rem;display:flex;align-items:center;gap:0.55rem;pointer-events:none;}
+.hb1{right:6%;top:22%;animation:float 6s ease-in-out infinite;}
+.hb2{right:18%;bottom:28%;animation:float 7s 1.5s ease-in-out infinite;}
+.hb3{right:3%;bottom:18%;animation:float 5s 0.8s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.hb-text{font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.78);}
+.hb-sub{font-size:0.6rem;color:rgba(255,255,255,0.35);}
+@keyframes up{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
 
-.hero-stats{display:flex;gap:3.5rem;margin-top:4.5rem;padding-top:2.5rem;border-top:1px solid rgba(255,255,255,0.08);opacity:0;animation:slideUp 0.7s 2.4s forwards;}
-.hs-num{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;color:var(--gold);line-height:1;}
-.hs-label{font-size:0.72rem;color:rgba(255,255,255,0.38);letter-spacing:0.08em;text-transform:uppercase;margin-top:0.3rem;}
-
-/* floating badges */
-.hero-badge{position:absolute;background:rgba(255,255,255,0.06);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:0.8rem 1.1rem;display:flex;align-items:center;gap:0.6rem;pointer-events:none;}
-.hb1{right:8%;top:22%;animation:floatBadge 6s ease-in-out infinite;}
-.hb2{right:20%;bottom:28%;animation:floatBadge 7s 1.5s ease-in-out infinite;}
-.hb3{right:4%;bottom:20%;animation:floatBadge 5s 0.8s ease-in-out infinite;}
-@keyframes floatBadge{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-.hb-icon{font-size:1.2rem;}
-.hb-text{font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.8);}
-.hb-sub{font-size:0.63rem;color:rgba(255,255,255,0.38);}
-
-@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-
-/* ── SHARED SECTION ── */
-.section{padding:7rem 5%;}
-.container{max-width:1200px;margin:0 auto;}
-.sec-tag{font-size:0.7rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--blue2);margin-bottom:0.6rem;}
-.sec-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,2.9rem);font-weight:700;color:var(--navy);line-height:1.12;margin-bottom:0.8rem;}
-.sec-title em{color:var(--blue);font-style:normal;}
-.sec-line{width:48px;height:3px;background:var(--gold);border-radius:2px;margin-bottom:2.8rem;}
+/* ── SECTIONS ── */
+.sec{padding:5.5rem 5%;}
+.con{max-width:1200px;margin:0 auto;}
+.sec-tag{font-size:0.68rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--blue2);margin-bottom:0.5rem;}
+.sec-h{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;color:var(--navy);line-height:1.12;margin-bottom:0.7rem;}
+.sec-h em{color:var(--blue);font-style:normal;}
+.sec-line{width:44px;height:3px;background:var(--gold);border-radius:2px;margin-bottom:2.4rem;}
 
 /* ── ABOUT ── */
 .about-bg{background:white;}
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
-.about-text p{color:var(--muted);line-height:1.95;font-size:0.95rem;margin-bottom:1.3rem;}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4.5rem;align-items:center;}
+.about-text p{color:var(--muted);line-height:1.95;font-size:0.93rem;margin-bottom:1.2rem;}
 .about-text strong{color:var(--navy);}
-.skill-bars{margin-top:2rem;}
-.sb-item{margin-bottom:1.6rem;}
-.sb-meta{display:flex;justify-content:space-between;margin-bottom:0.55rem;}
-.sb-name{font-size:0.82rem;font-weight:600;color:var(--navy);}
-.sb-pct{font-size:0.78rem;color:var(--muted);}
-.sb-track{height:5px;background:var(--light);border-radius:3px;overflow:hidden;}
-.sb-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--blue2));border-radius:3px;width:0;transition:width 1.2s cubic-bezier(0.25,1,0.5,1);}
-
-.profile-box{background:var(--navy);border-radius:16px;padding:2.5rem;position:relative;overflow:hidden;}
-.profile-box::before{content:'';position:absolute;top:-80px;right:-80px;width:240px;height:240px;border-radius:50%;background:rgba(29,78,216,0.12);}
-.profile-box::after{content:'';position:absolute;bottom:-60px;left:-60px;width:180px;height:180px;border-radius:50%;background:rgba(201,168,76,0.08);}
-.pf-avatar{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--gold));display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:white;margin-bottom:1.4rem;position:relative;z-index:1;}
-.pf-name{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:700;color:white;position:relative;z-index:1;}
-.pf-role{font-size:0.75rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1.8rem;position:relative;z-index:1;}
-.pf-row{display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem;position:relative;z-index:1;}
-.pf-icon-box{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.9rem;}
-.pf-l{font-size:0.65rem;color:rgba(255,255,255,0.35);letter-spacing:0.08em;text-transform:uppercase;}
-.pf-v{font-size:0.82rem;color:rgba(255,255,255,0.82);}
-.pf-sep{border:none;border-top:1px solid rgba(255,255,255,0.07);margin:1.5rem 0;position:relative;z-index:1;}
-.avail-chip{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.22);color:#4ade80;font-size:0.7rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:0.38rem 0.9rem;border-radius:3px;position:relative;z-index:1;}
-.avail-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:blink 2.2s infinite;}
+.sbars{margin-top:1.8rem;}
+.sbi{margin-bottom:1.4rem;}
+.sbi-meta{display:flex;justify-content:space-between;margin-bottom:0.5rem;}
+.sbi-name{font-size:0.8rem;font-weight:600;color:var(--navy);}
+.sbi-pct{font-size:0.76rem;color:var(--muted);}
+.sbi-track{height:5px;background:var(--light);border-radius:3px;overflow:hidden;}
+.sbi-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--blue2));border-radius:3px;width:0;transition:width 1.2s cubic-bezier(0.25,1,0.5,1);}
+.pf-box{background:var(--navy);border-radius:16px;padding:2.2rem;position:relative;overflow:hidden;}
+.pf-box::before{content:'';position:absolute;top:-70px;right:-70px;width:220px;height:220px;border-radius:50%;background:rgba(29,78,216,0.1);}
+.pf-box::after{content:'';position:absolute;bottom:-50px;left:-50px;width:160px;height:160px;border-radius:50%;background:rgba(201,168,76,0.07);}
+.pf-av{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--gold));display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:white;margin-bottom:1.2rem;position:relative;z-index:1;}
+.pf-name{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:white;position:relative;z-index:1;}
+.pf-role{font-size:0.72rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1.6rem;position:relative;z-index:1;}
+.pf-row{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.9rem;position:relative;z-index:1;}
+.pf-ico{width:32px;height:32px;border-radius:7px;background:rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.pf-l{font-size:0.62rem;color:rgba(255,255,255,0.32);letter-spacing:0.08em;text-transform:uppercase;}
+.pf-v{font-size:0.8rem;color:rgba(255,255,255,0.8);}
+.pf-sep{border:none;border-top:1px solid rgba(255,255,255,0.07);margin:1.3rem 0;position:relative;z-index:1;}
+.avail{display:inline-flex;align-items:center;gap:0.45rem;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.22);color:#4ade80;font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:0.36rem 0.85rem;border-radius:3px;position:relative;z-index:1;}
+.avail-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:blink 2.2s infinite;flex-shrink:0;}
 
 /* ── SKILLS ── */
 .skills-bg{background:var(--off);}
-.skills-layout{display:grid;grid-template-columns:1fr 2.2fr;gap:5rem;align-items:start;}
-.skills-intro p{color:var(--muted);line-height:1.9;font-size:0.92rem;margin-bottom:1.3rem;}
-.skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}
-.sk-card{background:white;border:1px solid var(--light);border-radius:12px;padding:1.6rem 1rem;text-align:center;transition:all 0.3s;cursor:default;position:relative;overflow:hidden;}
+.skills-layout{display:grid;grid-template-columns:1fr 2.2fr;gap:4.5rem;align-items:start;}
+.skills-intro p{color:var(--muted);line-height:1.9;font-size:0.9rem;margin-bottom:1.2rem;}
+.sk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.9rem;}
+.sk-card{background:white;border:1px solid var(--light);border-radius:12px;padding:1.4rem 0.8rem;text-align:center;transition:all 0.3s;cursor:default;position:relative;overflow:hidden;}
 .sk-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--gold));transform:scaleX(0);transform-origin:left;transition:transform 0.35s;}
-.sk-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(29,78,216,0.12);border-color:rgba(29,78,216,0.18);}
+.sk-card:hover{transform:translateY(-5px);box-shadow:0 14px 36px rgba(29,78,216,0.1);border-color:rgba(29,78,216,0.16);}
 .sk-card:hover::before{transform:scaleX(1);}
-.sk-logo{display:flex;align-items:center;justify-content:center;height:48px;margin-bottom:0.8rem;}
-.sk-logo svg{width:36px;height:36px;}
-.sk-name{font-size:0.78rem;font-weight:700;color:var(--navy);letter-spacing:0.02em;}
-.sk-level{font-size:0.62rem;color:var(--muted);margin-top:0.2rem;}
+.sk-logo{display:flex;align-items:center;justify-content:center;height:44px;margin-bottom:0.7rem;}
+.sk-logo svg{width:34px;height:34px;}
+.sk-name{font-size:0.74rem;font-weight:700;color:var(--navy);}
+.sk-level{font-size:0.6rem;color:var(--muted);margin-top:0.15rem;}
 
 /* ── PROJECTS ── */
-.projects-bg{background:white;}
-.projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8rem;}
-.proj-card{background:var(--off);border:1px solid var(--light);border-radius:14px;overflow:hidden;transition:all 0.35s;position:relative;}
-.proj-card:hover{transform:translateY(-8px);box-shadow:0 28px 56px rgba(15,23,42,0.13);border-color:rgba(29,78,216,0.2);}
-.proj-thumb{height:190px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.pt-1{background:linear-gradient(135deg,#0c2461,#1e3799);}
-.pt-2{background:linear-gradient(135deg,#006266,#009432);}
-.pt-3{background:linear-gradient(135deg,#1e0a5e,#6c5ce7);}
-.pt-4{background:linear-gradient(135deg,#3d0000,#c0392b);}
-.pt-5{background:linear-gradient(135deg,#003d6b,#0099ff);}
-.pt-6{background:linear-gradient(135deg,#3d2600,#e67e22);}
-.proj-thumb svg{width:72px;height:72px;opacity:0.9;filter:drop-shadow(0 4px 16px rgba(0,0,0,0.4));}
-.proj-badge{position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.22);color:rgba(255,255,255,0.9);font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.28rem 0.65rem;border-radius:3px;}
-.proj-live-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:#4ade80;margin-right:4px;animation:blink 2s infinite;}
-.proj-body{padding:1.6rem;}
-.proj-num{font-size:0.63rem;color:var(--blue2);font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.45rem;}
-.proj-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:0.6rem;line-height:1.3;}
-.proj-desc{font-size:0.79rem;color:var(--muted);line-height:1.78;margin-bottom:1.1rem;}
-.proj-tags{display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:1.1rem;}
-.ptag{background:rgba(29,78,216,0.07);border:1px solid rgba(29,78,216,0.14);color:var(--blue);font-size:0.6rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:0.22rem 0.52rem;border-radius:2px;}
-.proj-footer{display:flex;align-items:center;gap:1rem;}
-.proj-link{display:inline-flex;align-items:center;gap:0.4rem;color:var(--blue);font-size:0.77rem;font-weight:700;text-decoration:none;transition:gap 0.2s,color 0.2s;}
-.proj-link:hover{gap:0.7rem;color:var(--blue2);}
-.proj-link svg{width:14px;height:14px;transition:transform 0.2s;}
-.proj-link:hover svg{transform:translateX(3px);}
-.proj-coming{font-size:0.72rem;color:var(--muted);font-style:italic;}
+.proj-bg{background:white;}
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;}
+.proj-card{background:var(--off);border:1px solid var(--light);border-radius:14px;overflow:hidden;transition:all 0.35s;}
+.proj-card:hover{transform:translateY(-7px);box-shadow:0 24px 52px rgba(15,23,42,0.12);border-color:rgba(29,78,216,0.18);}
+.proj-thumb{height:175px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.pt1{background:linear-gradient(135deg,#0c2461,#1e3799);}
+.pt2{background:linear-gradient(135deg,#006266,#009432);}
+.pt3{background:linear-gradient(135deg,#1e0a5e,#6c5ce7);}
+.pt4{background:linear-gradient(135deg,#3d0000,#c0392b);}
+.pt5{background:linear-gradient(135deg,#003d6b,#0099ff);}
+.pt6{background:linear-gradient(135deg,#3d2600,#e67e22);}
+.proj-thumb svg{width:66px;height:66px;opacity:0.92;filter:drop-shadow(0 4px 14px rgba(0,0,0,0.35));}
+.proj-bdg{position:absolute;top:0.9rem;right:0.9rem;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.9);font-size:0.58rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.26rem 0.6rem;border-radius:3px;display:flex;align-items:center;gap:4px;}
+.live-dot{width:5px;height:5px;border-radius:50%;background:#4ade80;animation:blink 2s infinite;flex-shrink:0;}
+.proj-body{padding:1.4rem;}
+.proj-num{font-size:0.6rem;color:var(--blue2);font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.4rem;}
+.proj-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:0.55rem;line-height:1.3;}
+.proj-desc{font-size:0.78rem;color:var(--muted);line-height:1.75;margin-bottom:1rem;}
+.proj-tags{display:flex;flex-wrap:wrap;gap:0.32rem;margin-bottom:1rem;}
+.ptag{background:rgba(29,78,216,0.07);border:1px solid rgba(29,78,216,0.13);color:var(--blue);font-size:0.58rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:0.2rem 0.48rem;border-radius:2px;}
+.proj-link{display:inline-flex;align-items:center;gap:0.38rem;color:var(--blue);font-size:0.75rem;font-weight:700;text-decoration:none;transition:gap 0.2s,color 0.2s;}
+.proj-link:hover{gap:0.65rem;color:var(--blue2);}
+.proj-link svg{width:13px;height:13px;}
+.proj-soon{font-size:0.72rem;color:var(--muted);font-style:italic;}
 
 /* ── CONTACT ── */
 .contact-bg{background:var(--off);}
-.contact-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:3.5rem;align-items:start;}
-.contact-dark{background:var(--navy);border-radius:16px;padding:2.5rem;}
-.contact-dark h3{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:white;margin-bottom:0.5rem;}
-.contact-dark p{color:rgba(255,255,255,0.48);font-size:0.88rem;line-height:1.85;margin-bottom:2rem;}
-.ci{display:flex;align-items:center;gap:0.9rem;padding:1rem;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);margin-bottom:0.8rem;text-decoration:none;transition:all 0.25s;}
+.contact-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:3rem;align-items:start;}
+.cd-dark{background:var(--navy);border-radius:16px;padding:2.2rem;}
+.cd-dark h3{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:white;margin-bottom:0.45rem;}
+.cd-dark > p{color:rgba(255,255,255,0.45);font-size:0.86rem;line-height:1.85;margin-bottom:1.8rem;}
+.ci{display:flex;align-items:center;gap:0.85rem;padding:0.95rem;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);margin-bottom:0.75rem;text-decoration:none;transition:all 0.25s;}
 .ci:hover{background:rgba(201,168,76,0.09);border-color:rgba(201,168,76,0.2);}
-.ci-ico{width:40px;height:40px;border-radius:9px;background:rgba(201,168,76,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.ci-ico svg{width:18px;height:18px;}
-.ci-lbl{font-size:0.63rem;color:rgba(255,255,255,0.35);letter-spacing:0.09em;text-transform:uppercase;}
-.ci-val{font-size:0.83rem;color:rgba(255,255,255,0.82);}
+.ci-ico{width:38px;height:38px;border-radius:9px;background:rgba(201,168,76,0.13);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ci-ico svg{width:17px;height:17px;}
+.ci-lbl{font-size:0.6rem;color:rgba(255,255,255,0.32);letter-spacing:0.09em;text-transform:uppercase;}
+.ci-val{font-size:0.8rem;color:rgba(255,255,255,0.8);word-break:break-all;}
 
-.form-box{background:white;border-radius:16px;padding:2.5rem;border:1px solid var(--light);}
-.form-box h3{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--navy);margin-bottom:0.35rem;}
-.form-box > p{font-size:0.84rem;color:var(--muted);margin-bottom:2rem;}
-.frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
-.fg{display:flex;flex-direction:column;gap:0.38rem;margin-bottom:1rem;}
-.fg label{font-size:0.68rem;font-weight:700;color:var(--navy);letter-spacing:0.08em;text-transform:uppercase;}
-.fg input,.fg textarea,.fg select{background:var(--off);border:1.5px solid var(--light);border-radius:8px;padding:0.78rem 1rem;color:var(--text);font-family:'Inter',sans-serif;font-size:0.87rem;outline:none;transition:border-color 0.2s,background 0.2s;}
+/* FORM BOX */
+.form-box{background:white;border-radius:16px;padding:2.2rem;border:1px solid var(--light);}
+.form-box h3{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:700;color:var(--navy);margin-bottom:0.3rem;}
+.form-box > p{font-size:0.83rem;color:var(--muted);margin-bottom:1.8rem;line-height:1.7;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;}
+.fg{display:flex;flex-direction:column;gap:0.36rem;margin-bottom:0.95rem;}
+.fg label{font-size:0.67rem;font-weight:700;color:var(--navy);letter-spacing:0.08em;text-transform:uppercase;}
+.fg input,.fg textarea,.fg select{background:var(--off);border:1.5px solid var(--light);border-radius:8px;padding:0.75rem 0.95rem;color:var(--text);font-family:'Inter',sans-serif;font-size:0.86rem;outline:none;transition:border-color 0.2s,background 0.2s;width:100%;}
 .fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--blue);background:white;}
 .fg textarea{min-height:110px;resize:vertical;}
 .fg select{cursor:pointer;}
-.f-submit{width:100%;background:var(--navy);color:white;border:none;border-radius:8px;padding:1rem;font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;transition:all 0.25s;margin-top:0.5rem;display:flex;align-items:center;justify-content:center;gap:0.5rem;}
-.f-submit:hover{background:var(--blue);transform:translateY(-2px);box-shadow:0 8px 24px rgba(29,78,216,0.3);}
-.f-note{font-size:0.7rem;color:var(--muted);text-align:center;margin-top:0.7rem;}
-.f-msg{font-size:0.8rem;text-align:center;padding:0.7rem;border-radius:8px;margin-top:0.8rem;display:none;}
-.f-msg.ok{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;}
-.f-msg.err{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;}
+.f-btn{width:100%;background:var(--navy);color:white;border:none;border-radius:8px;padding:0.95rem;font-family:'Inter',sans-serif;font-size:0.84rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;transition:all 0.25s;display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-top:0.4rem;}
+.f-btn:hover{background:var(--blue);transform:translateY(-2px);box-shadow:0 8px 22px rgba(29,78,216,0.28);}
+.f-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+.f-note{font-size:0.68rem;color:var(--muted);text-align:center;margin-top:0.65rem;}
+/* toast notifications */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9000;display:flex;align-items:center;gap:0.7rem;padding:1rem 1.4rem;border-radius:10px;font-size:0.84rem;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,0.18);opacity:0;transform:translateY(20px);transition:all 0.4s;pointer-events:none;max-width:320px;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.success{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;}
+.toast.error{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;}
+.toast.sending{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;}
+.toast-icon{font-size:1.1rem;flex-shrink:0;}
 
 /* ── FOOTER ── */
-footer{background:var(--navy);padding:3rem 5%;text-align:center;}
-.foot-logo{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:white;margin-bottom:0.4rem;}
-.foot-logo em{color:var(--gold);font-style:normal;}
-.foot-sub{color:rgba(255,255,255,0.3);font-size:0.76rem;letter-spacing:0.07em;margin-bottom:1.5rem;}
-.foot-links{display:flex;justify-content:center;gap:2.2rem;margin-bottom:1.8rem;}
-.foot-links a{color:rgba(255,255,255,0.38);text-decoration:none;font-size:0.76rem;letter-spacing:0.06em;text-transform:uppercase;transition:color 0.2s;}
-.foot-links a:hover{color:var(--gold);}
-.foot-copy{color:rgba(255,255,255,0.22);font-size:0.72rem;}
-.foot-copy span{color:var(--gold);}
+footer{background:var(--navy);padding:2.8rem 5%;text-align:center;}
+.ft-logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:white;margin-bottom:0.4rem;}
+.ft-logo em{color:var(--gold);font-style:normal;}
+.ft-sub{color:rgba(255,255,255,0.28);font-size:0.74rem;letter-spacing:0.07em;margin-bottom:1.4rem;}
+.ft-links{display:flex;justify-content:center;flex-wrap:wrap;gap:1.8rem;margin-bottom:1.6rem;}
+.ft-links a{color:rgba(255,255,255,0.36);text-decoration:none;font-size:0.74rem;letter-spacing:0.06em;text-transform:uppercase;transition:color 0.2s;}
+.ft-links a:hover{color:var(--gold);}
+.ft-copy{color:rgba(255,255,255,0.2);font-size:0.7rem;}
+.ft-copy span{color:var(--gold);}
 
-/* ── REVEAL ANIMATIONS ── */
-.reveal{opacity:0;transform:translateY(36px);transition:opacity 0.75s cubic-bezier(0.25,1,0.5,1),transform 0.75s cubic-bezier(0.25,1,0.5,1);}
-.reveal.visible{opacity:1;transform:translateY(0);}
-.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity 0.75s 0.1s cubic-bezier(0.25,1,0.5,1),transform 0.75s 0.1s cubic-bezier(0.25,1,0.5,1);}
-.reveal-left.visible{opacity:1;transform:translateX(0);}
-.reveal-right{opacity:0;transform:translateX(40px);transition:opacity 0.75s 0.1s cubic-bezier(0.25,1,0.5,1),transform 0.75s 0.1s cubic-bezier(0.25,1,0.5,1);}
-.reveal-right.visible{opacity:1;transform:translateX(0);}
-.stagger > *{opacity:0;transform:translateY(24px);transition:opacity 0.6s cubic-bezier(0.25,1,0.5,1),transform 0.6s cubic-bezier(0.25,1,0.5,1);}
-.stagger.visible > *:nth-child(1){opacity:1;transform:none;transition-delay:0s;}
-.stagger.visible > *:nth-child(2){opacity:1;transform:none;transition-delay:0.08s;}
-.stagger.visible > *:nth-child(3){opacity:1;transform:none;transition-delay:0.16s;}
-.stagger.visible > *:nth-child(4){opacity:1;transform:none;transition-delay:0.24s;}
-.stagger.visible > *:nth-child(5){opacity:1;transform:none;transition-delay:0.32s;}
-.stagger.visible > *:nth-child(6){opacity:1;transform:none;transition-delay:0.4s;}
-.stagger.visible > *:nth-child(7){opacity:1;transform:none;transition-delay:0.48s;}
-.stagger.visible > *:nth-child(8){opacity:1;transform:none;transition-delay:0.56s;}
-.stagger.visible > *:nth-child(9){opacity:1;transform:none;transition-delay:0.64s;}
-.stagger.visible > *:nth-child(10){opacity:1;transform:none;transition-delay:0.72s;}
-.stagger.visible > *:nth-child(11){opacity:1;transform:none;transition-delay:0.8s;}
-.stagger.visible > *:nth-child(12){opacity:1;transform:none;transition-delay:0.88s;}
+/* ── REVEAL ── */
+.rv{opacity:0;transform:translateY(32px);transition:opacity 0.7s cubic-bezier(0.25,1,0.5,1),transform 0.7s cubic-bezier(0.25,1,0.5,1);}
+.rv.vis{opacity:1;transform:translateY(0);}
+.rv-l{opacity:0;transform:translateX(-36px);transition:opacity 0.7s 0.1s cubic-bezier(0.25,1,0.5,1),transform 0.7s 0.1s cubic-bezier(0.25,1,0.5,1);}
+.rv-l.vis{opacity:1;transform:translateX(0);}
+.rv-r{opacity:0;transform:translateX(36px);transition:opacity 0.7s 0.1s cubic-bezier(0.25,1,0.5,1),transform 0.7s 0.1s cubic-bezier(0.25,1,0.5,1);}
+.rv-r.vis{opacity:1;transform:translateX(0);}
+.stg>*{opacity:0;transform:translateY(22px);transition:opacity 0.55s cubic-bezier(0.25,1,0.5,1),transform 0.55s cubic-bezier(0.25,1,0.5,1);}
+.stg.vis>*:nth-child(1){opacity:1;transform:none;transition-delay:0s;}
+.stg.vis>*:nth-child(2){opacity:1;transform:none;transition-delay:.07s;}
+.stg.vis>*:nth-child(3){opacity:1;transform:none;transition-delay:.14s;}
+.stg.vis>*:nth-child(4){opacity:1;transform:none;transition-delay:.21s;}
+.stg.vis>*:nth-child(5){opacity:1;transform:none;transition-delay:.28s;}
+.stg.vis>*:nth-child(6){opacity:1;transform:none;transition-delay:.35s;}
+.stg.vis>*:nth-child(7){opacity:1;transform:none;transition-delay:.42s;}
+.stg.vis>*:nth-child(8){opacity:1;transform:none;transition-delay:.49s;}
+.stg.vis>*:nth-child(9){opacity:1;transform:none;transition-delay:.56s;}
+.stg.vis>*:nth-child(10){opacity:1;transform:none;transition-delay:.63s;}
+.stg.vis>*:nth-child(11){opacity:1;transform:none;transition-delay:.7s;}
+.stg.vis>*:nth-child(12){opacity:1;transform:none;transition-delay:.77s;}
 
-/* ── RESPONSIVE ── */
-@media(max-width:960px){
-  .nav-links{display:none;}
-  .about-grid,.skills-layout,.contact-grid{grid-template-columns:1fr;gap:2.5rem;}
-  .projects-grid{grid-template-columns:1fr 1fr;}
-  .skills-grid{grid-template-columns:repeat(3,1fr);}
+/* ════════════════════════════
+   RESPONSIVE
+════════════════════════════ */
+@media(max-width:1024px){
+  .sk-grid{grid-template-columns:repeat(3,1fr);}
+  .proj-grid{grid-template-columns:repeat(2,1fr);}
+  .skills-layout{grid-template-columns:1fr;gap:2.5rem;}
+}
+@media(max-width:860px){
+  .nav-links,.nav-hire{display:none;}
+  .hamburger{display:flex;}
+  .about-grid{grid-template-columns:1fr;gap:2.2rem;}
+  .contact-grid{grid-template-columns:1fr;gap:2rem;}
+  .hbadge{display:none;}
   .frow{grid-template-columns:1fr;}
-  .hero-badge{display:none;}
+  .hero-illus{width:70%;opacity:0.07;}
 }
 @media(max-width:640px){
-  .projects-grid{grid-template-columns:1fr;}
-  .skills-grid{grid-template-columns:repeat(2,1fr);}
-  .section{padding:4.5rem 5%;}
-  .hero-stats{gap:1.5rem;}
-  .hero-illustration{display:none;}
+  .proj-grid{grid-template-columns:1fr;}
+  .sk-grid{grid-template-columns:repeat(2,1fr);}
+  .sec{padding:4rem 5%;}
+  .hero-content{padding:7rem 5% 4rem;}
+  .hero-stats{gap:1.4rem;}
+  .hs-num{font-size:1.7rem;}
+  .hero-name{letter-spacing:-1px;}
+  .hero-btns{flex-direction:column;}
+  .btn-gold,.btn-ghost{justify-content:center;}
+  .toast{left:1rem;right:1rem;max-width:none;}
+}
+@media(max-width:400px){
+  .sk-grid{grid-template-columns:repeat(2,1fr);}
+  .pf-v{font-size:0.74rem;word-break:break-all;}
 }
 </style>
 </head>
@@ -257,13 +287,28 @@ footer{background:var(--navy);padding:3rem 5%;text-align:center;}
 
 <!-- LOADER -->
 <div id="loader">
-  <div class="loader-logo">M.<em style="color:var(--gold)">U</em></div>
-  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+  <div class="ld-logo">M.<em>U</em></div>
+  <div class="ld-bar-wrap"><div class="ld-bar"></div></div>
 </div>
 
-<!-- CURSOR -->
+<!-- CURSOR (desktop) -->
 <div class="cursor" id="cur"></div>
 <div class="cursor-ring" id="curRing"></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span class="toast-icon" id="toastIcon"></span><span id="toastMsg"></span></div>
+
+<!-- MENU OVERLAY -->
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+<!-- MOBILE DRAWER -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#skills" onclick="closeMenu()">Skills</a>
+  <a href="#projects" onclick="closeMenu()">Projects</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+  <a href="#contact" class="mm-hire" onclick="closeMenu()">Hire Me</a>
+</div>
 
 <!-- NAV -->
 <nav id="nav">
@@ -274,21 +319,22 @@ footer{background:var(--navy);padding:3rem 5%;text-align:center;}
     <li><a href="#projects">Projects</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="#contact" class="nav-btn">Hire Me</a>
+  <a href="#contact" class="nav-hire">Hire Me</a>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
 </nav>
 
-<!-- HERO -->
+<!-- ══════════════ HERO ══════════════ -->
 <section class="hero" id="home">
   <canvas class="hero-particles" id="particles"></canvas>
   <div class="hero-grid"></div>
   <div class="hero-glow1"></div>
   <div class="hero-glow2"></div>
-
-  <div class="hero-illustration">
+  <div class="hero-illus">
     <svg viewBox="0 0 900 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
       <rect x="80" y="120" width="740" height="500" rx="20" fill="none" stroke="white" stroke-width="7"/>
       <rect x="100" y="140" width="700" height="460" rx="10" fill="#0d1b2e"/>
-      <!-- code lines left -->
       <rect x="130" y="175" width="180" height="9" rx="3" fill="#1d4ed8" opacity="0.9"/>
       <rect x="130" y="200" width="290" height="7" rx="3" fill="#c9a84c" opacity="0.75"/>
       <rect x="150" y="222" width="220" height="7" rx="3" fill="#64748b" opacity="0.7"/>
@@ -303,9 +349,6 @@ footer{background:var(--navy);padding:3rem 5%;text-align:center;}
       <rect x="130" y="435" width="120" height="7" rx="3" fill="#c9a84c" opacity="0.75"/>
       <rect x="150" y="457" width="200" height="7" rx="3" fill="#64748b" opacity="0.6"/>
       <rect x="150" y="479" width="160" height="7" rx="3" fill="#3b82f6" opacity="0.7"/>
-      <rect x="130" y="500" width="100" height="7" rx="3" fill="#c9a84c" opacity="0.7"/>
-      <rect x="150" y="522" width="180" height="7" rx="3" fill="#1d4ed8" opacity="0.65"/>
-      <!-- terminal panel -->
       <rect x="470" y="155" width="300" height="200" rx="8" fill="rgba(0,0,0,0.5)"/>
       <circle cx="492" cy="174" r="6" fill="#ff5f57" opacity="0.8"/>
       <circle cx="510" cy="174" r="6" fill="#ffbd2e" opacity="0.8"/>
@@ -315,11 +358,8 @@ footer{background:var(--navy);padding:3rem 5%;text-align:center;}
       <rect x="482" y="229" width="180" height="6" rx="2" fill="#c9a84c" opacity="0.65"/>
       <rect x="482" y="246" width="210" height="6" rx="2" fill="#64748b" opacity="0.65"/>
       <rect x="482" y="263" width="160" height="6" rx="2" fill="#3b82f6" opacity="0.75"/>
-      <rect x="482" y="280" width="240" height="6" rx="2" fill="#64748b" opacity="0.6"/>
       <rect x="482" y="297" width="120" height="6" rx="2" fill="#4ade80" opacity="0.9"/>
       <rect x="482" y="314" width="190" height="6" rx="2" fill="#c9a84c" opacity="0.65"/>
-      <rect x="482" y="331" width="150" height="6" rx="2" fill="#64748b" opacity="0.6"/>
-      <!-- API boxes -->
       <rect x="470" y="380" width="110" height="45" rx="8" fill="none" stroke="#1d4ed8" stroke-width="2" opacity="0.85"/>
       <text x="525" y="408" text-anchor="middle" font-family="monospace" font-size="13" fill="#3b82f6" opacity="0.95">API</text>
       <rect x="620" y="380" width="120" height="45" rx="8" fill="none" stroke="#c9a84c" stroke-width="2" opacity="0.85"/>
@@ -330,9 +370,6 @@ footer{background:var(--navy);padding:3rem 5%;text-align:center;}
       <text x="515" y="481" text-anchor="middle" font-family="monospace" font-size="12" fill="#a78bfa" opacity="0.95">Python</text>
       <rect x="585" y="455" width="90" height="42" rx="8" fill="none" stroke="#10b981" stroke-width="2" opacity="0.85"/>
       <text x="630" y="481" text-anchor="middle" font-family="monospace" font-size="12" fill="#34d399" opacity="0.95">FastAPI</text>
-      <rect x="695" y="455" width="80" height="42" rx="8" fill="none" stroke="#f59e0b" stroke-width="2" opacity="0.85"/>
-      <text x="735" y="481" text-anchor="middle" font-family="monospace" font-size="12" fill="#fcd34d" opacity="0.95">ML</text>
-      <!-- stand + keyboard -->
       <rect x="410" y="620" width="80" height="18" rx="4" fill="none" stroke="white" stroke-width="5"/>
       <rect x="440" y="620" width="20" height="36" rx="2" fill="none" stroke="white" stroke-width="5"/>
       <rect x="240" y="675" width="420" height="68" rx="10" fill="none" stroke="white" stroke-width="5"/>
@@ -340,399 +377,338 @@ footer{background:var(--navy);padding:3rem 5%;text-align:center;}
       <rect x="302" y="692" width="34" height="16" rx="3" fill="white" opacity="0.25"/>
       <rect x="344" y="692" width="34" height="16" rx="3" fill="white" opacity="0.25"/>
       <rect x="386" y="692" width="100" height="16" rx="3" fill="white" opacity="0.25"/>
-      <rect x="494" y="692" width="34" height="16" rx="3" fill="white" opacity="0.25"/>
-      <rect x="536" y="692" width="34" height="16" rx="3" fill="white" opacity="0.25"/>
       <rect x="260" y="716" width="380" height="13" rx="3" fill="white" opacity="0.15"/>
     </svg>
   </div>
   <div class="hero-overlay"></div>
-
   <div class="hero-content">
-    <div class="hero-tag"><span class="htag-dot"></span>Backend Developer &nbsp;·&nbsp; Python &nbsp;&amp;&nbsp; Django</div>
+    <div class="hero-tag"><span class="htag-dot"></span>Backend Developer · Python &amp; Django</div>
     <h1 class="hero-name">Muhammad<br/><span>Umar</span></h1>
     <p class="hero-role">Building the backbone of modern web applications</p>
-    <p class="hero-desc">I'm a backend developer who loves turning complex ideas into fast, reliable software. Whether it's a REST API, an AI-powered service, or a real-time chat app — I build things that just work, and work well.</p>
+    <p class="hero-desc">I'm a backend developer who turns complex ideas into fast, reliable software. REST APIs, AI-powered services, real-time apps — I build things that work and keep working.</p>
     <div class="hero-btns">
-      <a href="#projects" class="btn-primary">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19l-7-7 7-7M2 12h20"/></svg>
-        See My Work
+      <a href="#projects" class="btn-gold">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M9 19l-7-7 7-7M2 12h20"/></svg>See My Work
       </a>
-      <a href="#contact" class="btn-outline">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
-        Let's Talk
+      <a href="#contact" class="btn-ghost">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2z"/><path d="M22 6l-10 7L2 6"/></svg>Let's Talk
       </a>
     </div>
     <div class="hero-stats">
-      <div><div class="hs-num">1+</div><div class="hs-label">Years Experience</div></div>
-      <div><div class="hs-num">6</div><div class="hs-label">Projects Built</div></div>
-      <div><div class="hs-num">10+</div><div class="hs-label">Technologies</div></div>
-      <div><div class="hs-num">3</div><div class="hs-label">AI Deployments</div></div>
+      <div><div class="hs-num">1+</div><div class="hs-lbl">Years Exp.</div></div>
+      <div><div class="hs-num">6</div><div class="hs-lbl">Projects</div></div>
+      <div><div class="hs-num">10+</div><div class="hs-lbl">Technologies</div></div>
+      <div><div class="hs-num">3</div><div class="hs-lbl">AI Deployed</div></div>
     </div>
   </div>
-
-  <!-- Floating badges -->
-  <div class="hero-badge hb1">
-    <span class="hb-icon">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="#3b82f6"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
-    </span>
-    <div><div class="hb-text">FastAPI</div><div class="hb-sub">REST Backend</div></div>
-  </div>
-  <div class="hero-badge hb2">
-    <span class="hb-icon">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="#4ade80"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5" stroke="white" stroke-width="2" fill="none"/></svg>
-    </span>
-    <div><div class="hb-text">Open to Work</div><div class="hb-sub">Remote / Onsite</div></div>
-  </div>
-  <div class="hero-badge hb3">
-    <span class="hb-icon">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="#c9a84c"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-    </span>
-    <div><div class="hb-text">AI Developer</div><div class="hb-sub">HuggingFace</div></div>
-  </div>
+  <!-- floating badges -->
+  <div class="hbadge hb1"><svg width="18" height="18" viewBox="0 0 24 24" fill="#3b82f6"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg><div><div class="hb-text">FastAPI</div><div class="hb-sub">REST Backend</div></div></div>
+  <div class="hbadge hb2"><svg width="18" height="18" viewBox="0 0 24 24" fill="#4ade80"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5" stroke="white" stroke-width="2" fill="none"/></svg><div><div class="hb-text">Open to Work</div><div class="hb-sub">Remote / Onsite</div></div></div>
+  <div class="hbadge hb3"><svg width="18" height="18" viewBox="0 0 24 24" fill="#c9a84c"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><div><div class="hb-text">AI Developer</div><div class="hb-sub">HuggingFace</div></div></div>
 </section>
 
-<!-- ABOUT -->
-<section class="section about-bg" id="about">
-  <div class="container">
+<!-- ══════════════ ABOUT ══════════════ -->
+<section class="sec about-bg" id="about">
+  <div class="con">
     <div class="about-grid">
-      <div class="reveal-left">
+      <div class="rv-l">
         <div class="sec-tag">// About Me</div>
-        <h2 class="sec-title">I build things for<br/><em>the web</em></h2>
+        <h2 class="sec-h">I build things for<br/><em>the web</em></h2>
         <div class="sec-line"></div>
-        <p>Hey, I'm <strong>Muhammad Umar</strong> — a backend developer based in Pakistan. I've spent the past year diving deep into Python, Django, and FastAPI, building everything from AI-powered APIs to real-time web apps.</p>
-        <p>I genuinely enjoy the backend side of things — designing clean data models, making APIs that are a pleasure to work with, and getting services to run fast and reliably in production. I'm still early in my career, but I've already shipped real products that real users interact with.</p>
-        <p>When I'm not coding, I'm experimenting with new ideas or figuring out how to make something I built even better.</p>
-        <div class="skill-bars">
-          <div class="sb-item"><div class="sb-meta"><span class="sb-name">Python & Django</span><span class="sb-pct">90%</span></div><div class="sb-track"><div class="sb-fill" data-w="90"></div></div></div>
-          <div class="sb-item"><div class="sb-meta"><span class="sb-name">REST API Design</span><span class="sb-pct">88%</span></div><div class="sb-track"><div class="sb-fill" data-w="88"></div></div></div>
-          <div class="sb-item"><div class="sb-meta"><span class="sb-name">Pandas & NumPy</span><span class="sb-pct">80%</span></div><div class="sb-track"><div class="sb-fill" data-w="80"></div></div></div>
-          <div class="sb-item"><div class="sb-meta"><span class="sb-name">C / C++</span><span class="sb-pct">75%</span></div><div class="sb-track"><div class="sb-fill" data-w="75"></div></div></div>
+        <p>Hey, I'm <strong>Muhammad Umar</strong> — a backend developer from Pakistan. I've spent the past year building real projects with Python, Django, and FastAPI — not just tutorials, actual things that run in production.</p>
+        <p>I genuinely enjoy backend work. Clean data models, APIs that are a pleasure to use, services that stay fast under load. I'm still early in my career, but I've already shipped apps that real users interact with every day.</p>
+        <p>When I'm not coding, I'm experimenting with new ideas or figuring out how to make something I already built even better.</p>
+        <div class="sbars">
+          <div class="sbi"><div class="sbi-meta"><span class="sbi-name">Python & Django</span><span class="sbi-pct">90%</span></div><div class="sbi-track"><div class="sbi-fill" data-w="90"></div></div></div>
+          <div class="sbi"><div class="sbi-meta"><span class="sbi-name">REST API Design</span><span class="sbi-pct">88%</span></div><div class="sbi-track"><div class="sbi-fill" data-w="88"></div></div></div>
+          <div class="sbi"><div class="sbi-meta"><span class="sbi-name">Pandas & NumPy</span><span class="sbi-pct">80%</span></div><div class="sbi-track"><div class="sbi-fill" data-w="80"></div></div></div>
+          <div class="sbi"><div class="sbi-meta"><span class="sbi-name">C / C++</span><span class="sbi-pct">75%</span></div><div class="sbi-track"><div class="sbi-fill" data-w="75"></div></div></div>
         </div>
       </div>
-      <div class="reveal-right">
-        <div class="profile-box">
-          <div class="pf-avatar">MU</div>
+      <div class="rv-r">
+        <div class="pf-box">
+          <div class="pf-av">MU</div>
           <div class="pf-name">Muhammad Umar</div>
           <div class="pf-role">Backend Developer</div>
-          <div class="pf-row">
-            <div class="pf-icon-box">
-              <svg width="16" height="16" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            </div>
-            <div><div class="pf-l">Location</div><div class="pf-v">Pakistan</div></div>
-          </div>
-          <div class="pf-row">
-            <div class="pf-icon-box">
-              <svg width="16" height="16" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 0111.37 18a19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.9-8.36A2 2 0 013.44 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.91 9.91a16 16 0 006 6l.87-.87a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-            </div>
-            <div><div class="pf-l">Phone</div><div class="pf-v">0344-3098652</div></div>
-          </div>
-          <div class="pf-row">
-            <div class="pf-icon-box">
-              <svg width="16" height="16" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            </div>
-            <div><div class="pf-l">Email</div><div class="pf-v">umarasifmirza439@gmail.com</div></div>
-          </div>
-          <div class="pf-row">
-            <div class="pf-icon-box">
-              <svg width="16" height="16" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-            </div>
-            <div><div class="pf-l">Stack</div><div class="pf-v">Python · Django · FastAPI</div></div>
-          </div>
+          <div class="pf-row"><div class="pf-ico"><svg width="14" height="14" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><div class="pf-l">Location</div><div class="pf-v">Pakistan</div></div></div>
+          <div class="pf-row"><div class="pf-ico"><svg width="14" height="14" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 0111.37 18a19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.9-8.36A2 2 0 013.44 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.91 9.91a16 16 0 006 6l.87-.87a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div><div><div class="pf-l">Phone</div><div class="pf-v">0344-3098652</div></div></div>
+          <div class="pf-row"><div class="pf-ico"><svg width="14" height="14" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><div class="pf-l">Email</div><div class="pf-v">umarasifmirza439@gmail.com</div></div></div>
+          <div class="pf-row"><div class="pf-ico"><svg width="14" height="14" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div><div class="pf-l">Stack</div><div class="pf-v">Python · Django · FastAPI</div></div></div>
           <hr class="pf-sep"/>
-          <div class="avail-chip"><span class="avail-dot"></span>Open to Opportunities</div>
+          <div class="avail"><span class="avail-dot"></span>Open to Opportunities</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SKILLS -->
-<section class="section skills-bg" id="skills">
-  <div class="container">
+<!-- ══════════════ SKILLS ══════════════ -->
+<section class="sec skills-bg" id="skills">
+  <div class="con">
     <div class="skills-layout">
-      <div class="reveal">
+      <div class="rv">
         <div class="sec-tag">// Tech Stack</div>
-        <h2 class="sec-title">Tools I<br/><em>Work With</em></h2>
+        <h2 class="sec-h">Tools I<br/><em>Work With</em></h2>
         <div class="sec-line"></div>
-        <p>These aren't just things I've read about — they're tools I've used on real projects. My main focus is Python and the ecosystem around it, with strong fundamentals in C/C++ giving me a solid base to work from.</p>
-        <p>I'm always picking up new things. Right now I'm deepening my knowledge in machine learning integration and scalable API design.</p>
+        <p>These aren't just things I've read about — they're tools I've used on real projects. My main focus is Python and the ecosystem around it.</p>
+        <p>I'm always picking up new things. Right now I'm going deeper into ML integration and scalable API design.</p>
       </div>
-      <div class="skills-grid stagger">
-        <!-- Python -->
-        <div class="sk-card">
-          <div class="sk-logo"><svg viewBox="0 0 128 128" fill="none"><path d="M63.39 2C37.9 2 39.59 13.18 39.59 13.18l.03 11.58H63.8v3.47H28.07S14 26.52 14 52.22s12.32 24.79 12.32 24.79h7.36V64.68s-.4-12.32 12.14-12.32h20.89s11.74.19 11.74-11.35V16.64S80.37 2 63.39 2zm-11.62 6.71a3.73 3.73 0 11-.01 7.46 3.73 3.73 0 010-7.46z" fill="#387EB8"/><path d="M64.61 126c25.49 0 23.8-11.18 23.8-11.18l-.03-11.58H64.2v-3.47h35.73S114 101.48 114 75.78 101.68 51 101.68 51h-7.36v12.32s.4 12.32-12.14 12.32H61.29S49.55 75.45 49.55 86.99v25.37S47.63 126 64.61 126zm11.62-6.71a3.73 3.73 0 11.01-7.46 3.73 3.73 0 010 7.46z" fill="#FFE052"/></svg></div>
-          <div class="sk-name">Python</div><div class="sk-level">Primary Language</div>
-        </div>
-        <!-- Django -->
-        <div class="sk-card">
-          <div class="sk-logo"><svg viewBox="0 0 128 128"><path d="M59.48 0h19.76v97.39c-10.14 1.92-17.6 2.69-25.68 2.69-24.14 0-36.72-10.91-36.72-31.83 0-20.18 13.34-33.32 34.03-33.32 3.22 0 5.67.26 8.61 1.02V0zm0 53.89a17.26 17.26 0 00-6.69-1.16c-10.01 0-15.8 6.18-15.8 17.01 0 10.65 5.54 16.47 15.68 16.47 2.18 0 3.99-.13 6.81-.52V53.89z" fill="#0C4B33"/><path d="M91.96 34.32H111.72V124.01C111.72 143.98 101.32 151 82.15 151c-9.11 0-16.05-1.53-22.23-4.34l3.07-15.28c4.73 2.3 10.27 4.21 16.83 4.21 10.27 0 12.14-5.16 12.14-13.22V34.32z" fill="#0C4B33"/><circle cx="101.48" cy="12.16" r="11.76" fill="#0C4B33"/></svg></div>
-          <div class="sk-name">Django</div><div class="sk-level">Web Framework</div>
-        </div>
-        <!-- FastAPI -->
-        <div class="sk-card">
-          <div class="sk-logo"><svg viewBox="0 0 128 128"><circle cx="64" cy="64" r="58" fill="#009688"/><path d="M68 24L36 68h30l-6 36 40-52H70z" fill="white"/></svg></div>
-          <div class="sk-name">FastAPI</div><div class="sk-level">API Framework</div>
-        </div>
-        <!-- C++ -->
-        <div class="sk-card">
-          <div class="sk-logo"><svg viewBox="0 0 128 128"><path d="M63.77 0L5.87 32v64l57.9 32 57.9-32V32z" fill="#00599C"/><path d="M63.77 14.39L18.05 40.2v47.6l45.72 25.8 45.72-25.8V40.2z" fill="#004482"/><path d="M63.77 28.78L32.23 46.6v34.8l31.54 17.82 31.54-17.82V46.6z" fill="#00599C"/><text x="45" y="80" font-family="Arial" font-weight="bold" font-size="38" fill="white">C++</text></svg></div>
-          <div class="sk-name">C / C++</div><div class="sk-level">Systems Programming</div>
-        </div>
-        <!-- Pandas -->
-        <div class="sk-card">
-          <div class="sk-logo"><svg viewBox="0 0 128 128"><rect x="42" y="10" width="18" height="48" rx="9" fill="#130754"/><rect x="68" y="10" width="18" height="48" rx="9" fill="#E70488"/><rect x="42" y="70" width="18" height="48" rx="9" fill="#130754"/><rect x="68" y="70" width="18" height="48" rx="9" fill="#E70488"/><rect x="18" y="42" width="92" height="18" rx="9" fill="#130754" opacity="0.7"/></svg></div>
-          <div class="sk-name">Pandas</div><div class="sk-level">Data Analysis</div>
-        </div>
-        <!-- NumPy -->
-        <div class="sk-card">
-          <div class="sk-logo"><svg viewBox="0 0 128 128"><path d="M64 8L8 40v48l56 32 56-32V40z" fill="#4DABCF"/><path d="M64 20L22 44v40l42 24 42-24V44z" fill="#013243"/><text x="36" y="82" font-family="Arial" font-weight="bold" font-size="26" fill="#4DABCF">NumPy</text></svg></div>
-          <div class="sk-name">NumPy</div><div class="sk-level">Numerical Computing</div>
-        </div>
-        <!-- Postman -->
-        <div class="sk-card">
-          <div class="sk-logo"><svg viewBox="0 0 128 128"><circle cx="64" cy="64" r="58" fill="#FF6C37"/><path d="M94 64a30 30 0 11-60 0 30 30 0 0160 0z" fill="white"/><path d="M64 40v24l18 10" stroke="#FF6C37" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="64" cy="64" r="6" fill="#FF6C37"/></svg></div>
-          <div class="sk-name">Postman</div><div class="sk-level">API Testing</div>
-        </div>
-        <!-- Git -->
-        <div class="sk-card">
-          <div class="sk-logo"><svg viewBox="0 0 128 128"><path d="M124.74 57.56L70.44 3.26a11.13 11.13 0 00-15.74 0L42.82 15.14l15.79 15.79a13.21 13.21 0 0116.72 16.87L90.84 63.81a13.22 13.22 0 1115.69 18.7 13.22 13.22 0 01-16.25-12.83 13.35 13.35 0 01.43-3.27L76.6 52.29v34.15a13.22 13.22 0 11-15.71-.28V51.05a13.22 13.22 0 01-7.17-17.36L38.08 18.06 3.26 52.88a11.13 11.13 0 000 15.74l54.3 54.3a11.13 11.13 0 0015.74 0L124.74 73.3a11.13 11.13 0 000-15.74z" fill="#F05032"/></svg></div>
-          <div class="sk-name">Git & GitHub</div><div class="sk-level">Version Control</div>
-        </div>
-        <!-- REST API -->
-        <div class="sk-card">
-          <div class="sk-logo"><svg viewBox="0 0 128 128" fill="none"><rect x="12" y="42" width="104" height="44" rx="8" fill="#1d4ed8"/><text x="20" y="72" font-family="monospace" font-size="22" fill="white" font-weight="bold">REST</text></svg></div>
-          <div class="sk-name">REST APIs</div><div class="sk-level">Design & Build</div>
-        </div>
-        <!-- HuggingFace -->
-        <div class="sk-card">
-          <div class="sk-logo"><svg viewBox="0 0 128 128"><circle cx="64" cy="64" r="58" fill="#FFD21E"/><circle cx="44" cy="52" r="8" fill="#333"/><circle cx="84" cy="52" r="8" fill="#333"/><path d="M40 80 Q64 100 88 80" stroke="#333" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M20 44 Q10 28 24 20" stroke="#FF9900" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M108 44 Q118 28 104 20" stroke="#FF9900" stroke-width="4" fill="none" stroke-linecap="round"/></svg></div>
-          <div class="sk-name">HuggingFace</div><div class="sk-level">AI Deployment</div>
-        </div>
-        <!-- SQL -->
-        <div class="sk-card">
-          <div class="sk-logo"><svg viewBox="0 0 128 128"><ellipse cx="64" cy="38" rx="50" ry="22" fill="#00758F"/><rect x="14" y="38" width="100" height="52" fill="#00758F"/><ellipse cx="64" cy="90" rx="50" ry="22" fill="#F29111"/><text x="34" y="70" font-family="Arial" font-weight="bold" font-size="18" fill="white">MySQL</text></svg></div>
-          <div class="sk-name">SQL / Database</div><div class="sk-level">Data Storage</div>
-        </div>
-        <!-- Docker coming -->
-        <div class="sk-card">
-          <div class="sk-logo"><svg viewBox="0 0 128 128"><path d="M124.8 52.1c-3.5-2.4-11.8-3.4-18.2-2.2-.8-5.4-3.9-10.1-9.5-14.2l-3.2-2.1-2.2 3.1c-2.8 4.2-3.6 11.3-0.3 15.9-1.6.9-4.8 2-9.1 2H6.4c-1.2 8.2.6 18.8 6.8 26 5.8 6.7 14.5 10.1 25.9 10.1 24.6 0 42.9-11.3 51.6-31.9 3.3.1 10.5 0 14.2-6.8.1-.2 1.1-2.1 1.4-3.2l-1.5-.7z" fill="#2391E6"/><path d="M19 52.5H7v11h12zm15 0H22v11h12zm15 0H37v11h12zm15 0H52v11h12zm0-14H52v11h12zm-15 0H37v11h12zm-15 0H22v11h12z" fill="white"/></svg></div>
-          <div class="sk-name">Docker</div><div class="sk-level">Learning</div>
-        </div>
+      <div class="sk-grid stg">
+        <div class="sk-card"><div class="sk-logo"><svg viewBox="0 0 128 128"><path d="M63.39 2C37.9 2 39.59 13.18 39.59 13.18l.03 11.58H63.8v3.47H28.07S14 26.52 14 52.22s12.32 24.79 12.32 24.79h7.36V64.68s-.4-12.32 12.14-12.32h20.89S78.45 52.55 78.45 41V16.64S80.37 2 63.39 2zm-11.62 6.71a3.73 3.73 0 110 7.46 3.73 3.73 0 010-7.46z" fill="#387EB8"/><path d="M64.61 126c25.49 0 23.8-11.18 23.8-11.18l-.03-11.58H64.2v-3.47h35.73S114 101.48 114 75.78 101.68 51 101.68 51h-7.36v12.32s.4 12.32-12.14 12.32H61.29S49.55 75.45 49.55 87v25.37S47.63 126 64.61 126zm11.62-6.71a3.73 3.73 0 110-7.46 3.73 3.73 0 010 7.46z" fill="#FFE052"/></svg></div><div class="sk-name">Python</div><div class="sk-level">Primary Language</div></div>
+        <div class="sk-card"><div class="sk-logo"><svg viewBox="0 0 128 128"><path d="M59.48 0h19.76v97.39c-10.14 1.92-17.6 2.69-25.68 2.69-24.14 0-36.72-10.91-36.72-31.83 0-20.18 13.34-33.32 34.03-33.32 3.22 0 5.67.26 8.61 1.02V0zm0 53.89a17.26 17.26 0 00-6.69-1.16c-10.01 0-15.8 6.18-15.8 17.01 0 10.65 5.54 16.47 15.68 16.47 2.18 0 3.99-.13 6.81-.52V53.89z" fill="#0C4B33"/><path d="M91.96 34.32H111.72V124.01C111.72 143.98 101.32 151 82.15 151c-9.11 0-16.05-1.53-22.23-4.34l3.07-15.28c4.73 2.3 10.27 4.21 16.83 4.21 10.27 0 12.14-5.16 12.14-13.22V34.32z" fill="#0C4B33"/><circle cx="101.48" cy="12.16" r="11.76" fill="#0C4B33"/></svg></div><div class="sk-name">Django</div><div class="sk-level">Web Framework</div></div>
+        <div class="sk-card"><div class="sk-logo"><svg viewBox="0 0 128 128"><circle cx="64" cy="64" r="58" fill="#009688"/><path d="M68 24L36 68h30l-6 36 40-52H70z" fill="white"/></svg></div><div class="sk-name">FastAPI</div><div class="sk-level">API Framework</div></div>
+        <div class="sk-card"><div class="sk-logo"><svg viewBox="0 0 128 128"><path d="M63.77 0L5.87 32v64l57.9 32 57.9-32V32z" fill="#00599C"/><text x="30" y="82" font-family="Arial" font-weight="bold" font-size="34" fill="white">C++</text></svg></div><div class="sk-name">C / C++</div><div class="sk-level">Systems Level</div></div>
+        <div class="sk-card"><div class="sk-logo"><svg viewBox="0 0 128 128"><rect x="42" y="10" width="18" height="48" rx="9" fill="#130754"/><rect x="68" y="10" width="18" height="48" rx="9" fill="#E70488"/><rect x="42" y="70" width="18" height="48" rx="9" fill="#130754"/><rect x="68" y="70" width="18" height="48" rx="9" fill="#E70488"/><rect x="18" y="42" width="92" height="18" rx="9" fill="#130754" opacity="0.7"/></svg></div><div class="sk-name">Pandas</div><div class="sk-level">Data Analysis</div></div>
+        <div class="sk-card"><div class="sk-logo"><svg viewBox="0 0 128 128"><path d="M64 8L8 40v48l56 32 56-32V40z" fill="#4DABCF"/><path d="M64 20L22 44v40l42 24 42-24V44z" fill="#013243"/><text x="32" y="80" font-family="Arial" font-weight="bold" font-size="22" fill="#4DABCF">NumPy</text></svg></div><div class="sk-name">NumPy</div><div class="sk-level">Numerical Data</div></div>
+        <div class="sk-card"><div class="sk-logo"><svg viewBox="0 0 128 128"><circle cx="64" cy="64" r="58" fill="#FF6C37"/><path d="M94 64a30 30 0 11-60 0 30 30 0 0160 0z" fill="white"/><circle cx="64" cy="64" r="6" fill="#FF6C37"/><path d="M64 44v20l14 8" stroke="#FF6C37" stroke-width="4" fill="none" stroke-linecap="round"/></svg></div><div class="sk-name">Postman</div><div class="sk-level">API Testing</div></div>
+        <div class="sk-card"><div class="sk-logo"><svg viewBox="0 0 128 128"><path d="M124.74 57.56L70.44 3.26a11.13 11.13 0 00-15.74 0L42.82 15.14l15.79 15.79a13.21 13.21 0 0116.72 16.87L90.84 63.81a13.22 13.22 0 1115.69 18.7 13.22 13.22 0 01-16.25-12.83 13.35 13.35 0 01.43-3.27L76.6 52.29v34.15a13.22 13.22 0 11-15.71-.28V51.05a13.22 13.22 0 01-7.17-17.36L38.08 18.06 3.26 52.88a11.13 11.13 0 000 15.74l54.3 54.3a11.13 11.13 0 0015.74 0L124.74 73.3a11.13 11.13 0 000-15.74z" fill="#F05032"/></svg></div><div class="sk-name">Git & GitHub</div><div class="sk-level">Version Control</div></div>
+        <div class="sk-card"><div class="sk-logo"><svg viewBox="0 0 128 128" fill="none"><rect x="10" y="44" width="108" height="40" rx="8" fill="#1d4ed8"/><text x="18" y="73" font-family="monospace" font-size="28" fill="white" font-weight="bold">REST</text></svg></div><div class="sk-name">REST APIs</div><div class="sk-level">Design & Build</div></div>
+        <div class="sk-card"><div class="sk-logo"><svg viewBox="0 0 128 128"><circle cx="64" cy="64" r="58" fill="#FFD21E"/><circle cx="44" cy="52" r="8" fill="#333"/><circle cx="84" cy="52" r="8" fill="#333"/><path d="M40 80 Q64 100 88 80" stroke="#333" stroke-width="5" fill="none" stroke-linecap="round"/></svg></div><div class="sk-name">HuggingFace</div><div class="sk-level">AI Deployment</div></div>
+        <div class="sk-card"><div class="sk-logo"><svg viewBox="0 0 128 128"><ellipse cx="64" cy="38" rx="50" ry="22" fill="#00758F"/><rect x="14" y="38" width="100" height="52" fill="#00758F"/><ellipse cx="64" cy="90" rx="50" ry="22" fill="#F29111"/><text x="26" y="70" font-family="Arial" font-weight="bold" font-size="17" fill="white">MySQL</text></svg></div><div class="sk-name">SQL / Database</div><div class="sk-level">Data Storage</div></div>
+        <div class="sk-card"><div class="sk-logo"><svg viewBox="0 0 128 128"><path d="M124.8 52.1c-3.5-2.4-11.8-3.4-18.2-2.2-.8-5.4-3.9-10.1-9.5-14.2l-3.2-2.1-2.2 3.1c-2.8 4.2-3.6 11.3-.3 15.9-1.6.9-4.8 2-9.1 2H6.4c-1.2 8.2.6 18.8 6.8 26 5.8 6.7 14.5 10.1 25.9 10.1 24.6 0 42.9-11.3 51.6-31.9 3.3.1 10.5 0 14.2-6.8.2-.3 1.1-2.1 1.4-3.2l-1.5-.7z" fill="#2391E6"/><path d="M19 52.5H7v11h12zm15 0H22v11h12zm15 0H37v11h12zm15 0H52v11h12zm0-14H52v11h12zm-15 0H37v11h12zm-15 0H22v11h12z" fill="white"/></svg></div><div class="sk-name">Docker</div><div class="sk-level">Learning</div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PROJECTS -->
-<section class="section projects-bg" id="projects">
-  <div class="container">
-    <div class="reveal" style="text-align:center;max-width:560px;margin:0 auto 4rem;">
+<!-- ══════════════ PROJECTS ══════════════ -->
+<section class="sec proj-bg" id="projects">
+  <div class="con">
+    <div class="rv" style="text-align:center;max-width:520px;margin:0 auto 3.5rem;">
       <div class="sec-tag">// My Work</div>
-      <h2 class="sec-title" style="text-align:center;">Things I've<br/><em>Built</em></h2>
+      <h2 class="sec-h" style="text-align:center;">Things I've<br/><em>Built</em></h2>
       <div class="sec-line" style="margin:0 auto;"></div>
-      <p style="color:var(--muted);font-size:0.92rem;line-height:1.8;">Here are some projects I've built and shipped. The first three are live — go ahead, click them. The other three are concepts I'm actively building.</p>
+      <p style="color:var(--muted);font-size:0.9rem;line-height:1.8;">The first three are live — go ahead and click them. The other three are projects I'm actively building.</p>
     </div>
-    <div class="projects-grid stagger">
-
+    <div class="proj-grid stg">
       <!-- 1 -->
       <div class="proj-card">
-        <div class="proj-thumb pt-1">
+        <div class="proj-thumb pt1">
           <svg viewBox="0 0 80 80" fill="none"><rect x="10" y="30" width="60" height="40" rx="6" fill="rgba(255,255,255,0.15)"/><path d="M10 45h60M25 30V20a15 15 0 0130 0v10" stroke="white" stroke-width="4" stroke-linecap="round"/><circle cx="40" cy="53" r="5" fill="white" opacity="0.9"/></svg>
-          <div class="proj-badge"><span class="proj-live-dot"></span>Live</div>
+          <div class="proj-bdg"><span class="live-dot"></span>Live</div>
         </div>
         <div class="proj-body">
           <div class="proj-num">01 — Real Estate · AI</div>
           <h3 class="proj-title">Real Estate AI Estimator</h3>
-          <p class="proj-desc">You give it a property's details — location, size, features — and it tells you what it's worth. It uses a machine learning model under the hood and a FastAPI backend to handle requests. Works for properties worldwide, not just local ones.</p>
-          <div class="proj-tags"><span class="ptag">Python</span><span class="ptag">FastAPI</span><span class="ptag">Machine Learning</span><span class="ptag">HuggingFace</span></div>
-          <div class="proj-footer">
-            <a href="https://huggingface.co/spaces/umar7142/Real-Estate-AI-Estimator" target="_blank" rel="noopener" class="proj-link">Live Demo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
+          <p class="proj-desc">Give it a property's details and it tells you what it's worth — anywhere in the world. ML model under the hood, FastAPI handling the requests.</p>
+          <div class="proj-tags"><span class="ptag">Python</span><span class="ptag">FastAPI</span><span class="ptag">ML</span><span class="ptag">HuggingFace</span></div>
+          <a href="https://huggingface.co/spaces/umar7142/Real-Estate-AI-Estimator" target="_blank" rel="noopener" class="proj-link">Live Demo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
       </div>
-
       <!-- 2 -->
       <div class="proj-card">
-        <div class="proj-thumb pt-2">
-          <svg viewBox="0 0 80 80" fill="none"><path d="M20 40h40M40 20v40" stroke="rgba(255,255,255,0.3)" stroke-width="3"/><rect x="15" y="32" width="20" height="16" rx="4" fill="rgba(255,255,255,0.2)"/><path d="M35 40h10M45 40l6-8M45 40l6 8" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><rect x="51" y="32" width="14" height="16" rx="4" fill="rgba(255,255,255,0.15)"/></svg>
-          <div class="proj-badge"><span class="proj-live-dot"></span>Live</div>
+        <div class="proj-thumb pt2">
+          <svg viewBox="0 0 80 80" fill="none"><path d="M15 40h50M35 25l-20 15 20 15" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><rect x="42" y="32" width="22" height="16" rx="4" fill="rgba(255,255,255,0.25)"/></svg>
+          <div class="proj-bdg"><span class="live-dot"></span>Live</div>
         </div>
         <div class="proj-body">
           <div class="proj-num">02 — Tools · Utility</div>
           <h3 class="proj-title">NanoLink — URL Shortener</h3>
-          <p class="proj-desc">A clean, fast URL shortener. Paste a long link, get a short one back. Simple idea, but it took real work to get the routing, redirection, and error handling right. It's running live and handles real traffic without breaking a sweat.</p>
+          <p class="proj-desc">Paste a long link, get a short one. Simple idea, real work to get the routing and redirection right. Running live, handles real traffic.</p>
           <div class="proj-tags"><span class="ptag">Python</span><span class="ptag">Django</span><span class="ptag">REST API</span></div>
-          <div class="proj-footer">
-            <a href="https://umar7142-nanolink-shortener.hf.space" target="_blank" rel="noopener" class="proj-link">Live Demo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
+          <a href="https://umar7142-nanolink-shortener.hf.space" target="_blank" rel="noopener" class="proj-link">Live Demo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
       </div>
-
       <!-- 3 -->
       <div class="proj-card">
-        <div class="proj-thumb pt-3">
-          <svg viewBox="0 0 80 80" fill="none"><circle cx="27" cy="35" r="12" fill="rgba(255,255,255,0.15)"/><circle cx="53" cy="35" r="12" fill="rgba(255,255,255,0.1)"/><rect x="14" y="52" width="26" height="16" rx="5" fill="rgba(255,255,255,0.2)"/><rect x="40" y="52" width="26" height="16" rx="5" fill="rgba(255,255,255,0.12)"/><path d="M23 35h8M29 31l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div class="proj-badge"><span class="proj-live-dot"></span>Live</div>
+        <div class="proj-thumb pt3">
+          <svg viewBox="0 0 80 80" fill="none"><circle cx="27" cy="34" r="11" fill="rgba(255,255,255,0.18)"/><circle cx="53" cy="34" r="11" fill="rgba(255,255,255,0.1)"/><rect x="14" y="52" width="24" height="14" rx="5" fill="rgba(255,255,255,0.22)"/><rect x="42" y="52" width="24" height="14" rx="5" fill="rgba(255,255,255,0.12)"/><path d="M23 34h8M29 30l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="proj-bdg"><span class="live-dot"></span>Live</div>
         </div>
         <div class="proj-body">
           <div class="proj-num">03 — Social · Real-Time</div>
           <h3 class="proj-title">MeChat — Social Network</h3>
-          <p class="proj-desc">A real-time chat and social networking app I built from scratch. Users can sign up, connect, and message each other live. I handled everything on the backend — authentication, WebSocket connections, message delivery, the whole thing.</p>
-          <div class="proj-tags"><span class="ptag">Python</span><span class="ptag">Django</span><span class="ptag">WebSocket</span><span class="ptag">Real-Time</span></div>
-          <div class="proj-footer">
-            <a href="https://umar71-mechat-network.hf.space" target="_blank" rel="noopener" class="proj-link">Live Demo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          </div>
+          <p class="proj-desc">A real-time chat and social app built from scratch — sign up, connect, message live. I handled auth, WebSockets, message delivery, everything.</p>
+          <div class="proj-tags"><span class="ptag">Python</span><span class="ptag">Django</span><span class="ptag">WebSocket</span></div>
+          <a href="https://umar71-mechat-network.hf.space" target="_blank" rel="noopener" class="proj-link">Live Demo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
       </div>
-
       <!-- 4 -->
       <div class="proj-card">
-        <div class="proj-thumb pt-4">
+        <div class="proj-thumb pt4">
           <svg viewBox="0 0 80 80" fill="none"><rect x="10" y="18" width="60" height="44" rx="6" fill="rgba(255,255,255,0.12)"/><rect x="18" y="26" width="44" height="8" rx="3" fill="rgba(255,255,255,0.3)"/><rect x="18" y="40" width="32" height="6" rx="3" fill="rgba(255,255,255,0.2)"/><rect x="18" y="50" width="38" height="6" rx="3" fill="rgba(255,255,255,0.15)"/></svg>
-          <div class="proj-badge">In Progress</div>
+          <div class="proj-bdg">In Progress</div>
         </div>
         <div class="proj-body">
           <div class="proj-num">04 — Content · CMS</div>
           <h3 class="proj-title">NewsBoard — Blog CMS</h3>
-          <p class="proj-desc">A content management system built with Django where editors can write, schedule, and publish articles. It has a proper admin panel, category management, comment moderation, and a REST API so the frontend can be anything — React, mobile app, whatever.</p>
+          <p class="proj-desc">A Django CMS where editors write, schedule, and publish articles. Proper admin, category management, comment moderation, and a REST API for any frontend.</p>
           <div class="proj-tags"><span class="ptag">Django</span><span class="ptag">DRF</span><span class="ptag">PostgreSQL</span></div>
-          <div class="proj-footer"><span class="proj-coming">Coming soon</span></div>
+          <span class="proj-soon">Coming soon</span>
         </div>
       </div>
-
       <!-- 5 -->
       <div class="proj-card">
-        <div class="proj-thumb pt-5">
+        <div class="proj-thumb pt5">
           <svg viewBox="0 0 80 80" fill="none"><rect x="10" y="50" width="10" height="22" rx="2" fill="rgba(255,255,255,0.5)"/><rect x="25" y="36" width="10" height="36" rx="2" fill="rgba(255,255,255,0.6)"/><rect x="40" y="24" width="10" height="48" rx="2" fill="rgba(255,255,255,0.7)"/><rect x="55" y="42" width="10" height="30" rx="2" fill="rgba(255,255,255,0.55)"/><path d="M15 48L30 34 45 22 60 38" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-          <div class="proj-badge">In Progress</div>
+          <div class="proj-bdg">In Progress</div>
         </div>
         <div class="proj-body">
           <div class="proj-num">05 — Data · Analytics</div>
           <h3 class="proj-title">DataPulse — Analytics API</h3>
-          <p class="proj-desc">Upload a CSV and this tool cleans it, analyses it, and gives you back meaningful stats through a FastAPI endpoint. Built for businesses that have data sitting around but don't have the time or people to make sense of it manually.</p>
+          <p class="proj-desc">Upload a CSV, get back meaningful stats through a FastAPI endpoint. Built for businesses that have data sitting around but no time to make sense of it.</p>
           <div class="proj-tags"><span class="ptag">Python</span><span class="ptag">Pandas</span><span class="ptag">NumPy</span><span class="ptag">FastAPI</span></div>
-          <div class="proj-footer"><span class="proj-coming">Coming soon</span></div>
+          <span class="proj-soon">Coming soon</span>
         </div>
       </div>
-
       <!-- 6 -->
       <div class="proj-card">
-        <div class="proj-thumb pt-6">
-          <svg viewBox="0 0 80 80" fill="none"><rect x="12" y="20" width="56" height="40" rx="6" fill="rgba(255,255,255,0.12)"/><path d="M12 32h56" stroke="rgba(255,255,255,0.4)" stroke-width="2"/><circle cx="22" cy="26" r="3" fill="rgba(255,255,255,0.5)"/><circle cx="32" cy="26" r="3" fill="rgba(255,255,255,0.35)"/><circle cx="42" cy="26" r="3" fill="rgba(255,255,255,0.25)"/><rect x="20" y="42" width="36" height="10" rx="4" fill="rgba(255,255,255,0.2)"/><text x="28" y="51" font-size="8" fill="white" font-family="sans-serif" opacity="0.9">BUY NOW</text></svg>
-          <div class="proj-badge">In Progress</div>
+        <div class="proj-thumb pt6">
+          <svg viewBox="0 0 80 80" fill="none"><rect x="12" y="20" width="56" height="40" rx="6" fill="rgba(255,255,255,0.12)"/><path d="M12 32h56" stroke="rgba(255,255,255,0.4)" stroke-width="2"/><circle cx="22" cy="26" r="3" fill="rgba(255,255,255,0.5)"/><circle cx="32" cy="26" r="3" fill="rgba(255,255,255,0.35)"/><rect x="20" y="42" width="36" height="10" rx="4" fill="rgba(255,255,255,0.22)"/></svg>
+          <div class="proj-bdg">In Progress</div>
         </div>
         <div class="proj-body">
           <div class="proj-num">06 — E-Commerce · Backend</div>
           <h3 class="proj-title">ShopCore — E-Commerce API</h3>
-          <p class="proj-desc">A fully headless e-commerce backend — products, carts, orders, users, JWT authentication, and payment hooks, all exposed as a clean REST API. Any frontend can plug into it. Built with Django REST Framework to be maintainable and easy to extend.</p>
-          <div class="proj-tags"><span class="ptag">Django</span><span class="ptag">DRF</span><span class="ptag">JWT</span><span class="ptag">Python</span></div>
-          <div class="proj-footer"><span class="proj-coming">Coming soon</span></div>
+          <p class="proj-desc">A headless e-commerce backend — products, carts, orders, JWT auth, and payment hooks. Any frontend can plug in. Built with Django REST Framework.</p>
+          <div class="proj-tags"><span class="ptag">Django</span><span class="ptag">DRF</span><span class="ptag">JWT</span></div>
+          <span class="proj-soon">Coming soon</span>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- CONTACT -->
-<section class="section contact-bg" id="contact">
-  <div class="container">
-    <div class="reveal" style="text-align:center;max-width:540px;margin:0 auto 4rem;">
+<!-- ══════════════ CONTACT ══════════════ -->
+<section class="sec contact-bg" id="contact">
+  <div class="con">
+    <div class="rv" style="text-align:center;max-width:500px;margin:0 auto 3.5rem;">
       <div class="sec-tag">// Say Hello</div>
-      <h2 class="sec-title" style="text-align:center;">Let's Build<br/><em>Something</em></h2>
+      <h2 class="sec-h" style="text-align:center;">Let's Build<br/><em>Something</em></h2>
       <div class="sec-line" style="margin:0 auto;"></div>
-      <p style="color:var(--muted);font-size:0.92rem;line-height:1.8;">Got a project idea, a question, or just want to chat about code? Send me a message — I check my inbox every day.</p>
+      <p style="color:var(--muted);font-size:0.9rem;line-height:1.8;">Got a project idea or just want to talk? Send me a message — I check my inbox every day and reply within 24 hours.</p>
     </div>
-    <div class="contact-grid reveal">
-      <div class="contact-dark">
+    <div class="contact-grid rv">
+      <!-- Info side -->
+      <div class="cd-dark">
         <h3>Reach Out Directly</h3>
-        <p>I'm available for freelance projects, full-time backend roles, and collaboration. Don't hesitate to reach out — I reply within 24 hours.</p>
+        <p>Available for freelance projects, full-time backend roles, and collaboration. Don't hesitate — I reply fast.</p>
         <a href="mailto:umarasifmirza439@gmail.com" class="ci">
-          <div class="ci-ico">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
-          </div>
+          <div class="ci-ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg></div>
           <div><div class="ci-lbl">Email</div><div class="ci-val">umarasifmirza439@gmail.com</div></div>
         </a>
         <a href="tel:+923443098652" class="ci">
-          <div class="ci-ico">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 0111.37 18a19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.9-8.36A2 2 0 013.44 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.91 9.91a16 16 0 006 6l.87-.87a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-          </div>
+          <div class="ci-ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 0111.37 18a19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.9-8.36A2 2 0 013.44 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.91 9.91a16 16 0 006 6l.87-.87a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
           <div><div class="ci-lbl">Phone & WhatsApp</div><div class="ci-val">0344-3098652</div></div>
         </a>
         <a href="https://huggingface.co/umar7142" target="_blank" rel="noopener" class="ci">
-          <div class="ci-ico">
-            <svg viewBox="0 0 24 24" fill="var(--gold)"><circle cx="12" cy="12" r="10" fill="#FFD21E"/><circle cx="8.5" cy="10" r="1.5" fill="#333"/><circle cx="15.5" cy="10" r="1.5" fill="#333"/><path d="M8 15 Q12 19 16 15" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
-          </div>
+          <div class="ci-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#FFD21E"/><circle cx="8.5" cy="10" r="1.5" fill="#333"/><circle cx="15.5" cy="10" r="1.5" fill="#333"/><path d="M8 15 Q12 19 16 15" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div>
           <div><div class="ci-lbl">HuggingFace</div><div class="ci-val">huggingface.co/umar7142</div></div>
         </a>
       </div>
 
+      <!-- ═══ REAL CONTACT FORM via FormSubmit ═══ -->
       <div class="form-box">
         <h3>Send a Message</h3>
-        <p>Fill this in and I'll get back to you as soon as I can.</p>
-        <div class="frow">
-          <div class="fg"><label>Your Name</label><input type="text" id="fn" placeholder="Your full name"/></div>
-          <div class="fg"><label>Email Address</label><input type="email" id="fe" placeholder="your@email.com"/></div>
-        </div>
-        <div class="fg"><label>What's this about?</label>
-          <select id="fs">
-            <option value="">Choose a topic...</option>
-            <option>Project Collaboration</option>
-            <option>Freelance Work</option>
-            <option>Job Opportunity</option>
-            <option>API or Django Project</option>
-            <option>General Question</option>
-          </select>
-        </div>
-        <div class="fg"><label>Message</label><textarea id="fm" placeholder="Tell me about your project or what's on your mind..."></textarea></div>
-        <button class="f-submit" onclick="sendMsg()">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          Send Message
-        </button>
-        <p class="f-note">Goes straight to my inbox — no spam filters involved.</p>
-        <div class="f-msg" id="fmsg"></div>
+        <p>Fill this in and it goes straight to my inbox — no bots, no delays.</p>
+
+        <!--
+          FormSubmit.co: first submission activates the email.
+          Muhammad Umar just needs to click the confirmation link
+          that FormSubmit sends to umarasifmirza439@gmail.com.
+        -->
+        <form id="contactForm" action="https://formsubmit.co/umarasifmirza439@gmail.com" method="POST">
+          <!-- FormSubmit config (hidden) -->
+          <input type="hidden" name="_subject" value="New message from your Portfolio Website"/>
+          <input type="hidden" name="_captcha" value="false"/>
+          <input type="hidden" name="_template" value="table"/>
+          <input type="hidden" name="_next" value="about:blank"/>
+
+          <div class="frow">
+            <div class="fg">
+              <label for="fname">Your Name *</label>
+              <input type="text" id="fname" name="name" placeholder="Your full name" required/>
+            </div>
+            <div class="fg">
+              <label for="femail">Email Address *</label>
+              <input type="email" id="femail" name="email" placeholder="your@email.com" required/>
+            </div>
+          </div>
+          <div class="fg">
+            <label for="fpurpose">What's this about? *</label>
+            <select id="fpurpose" name="purpose" required>
+              <option value="">Choose a topic...</option>
+              <option value="Project Collaboration">Project Collaboration</option>
+              <option value="Freelance Work">Freelance Work</option>
+              <option value="Job Opportunity">Job Opportunity</option>
+              <option value="API or Django Project">API or Django Project</option>
+              <option value="General Question">General Question</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label for="fmsg">Message *</label>
+            <textarea id="fmsg" name="message" placeholder="Tell me about your project or what's on your mind..." required></textarea>
+          </div>
+          <button type="submit" class="f-btn" id="submitBtn">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            <span id="btnText">Send Message</span>
+          </button>
+          <p class="f-note">Goes directly to my Gmail. I'll reply within 24 hours. ✓</p>
+        </form>
       </div>
     </div>
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
-  <div class="foot-logo">M.<em>Umar</em></div>
-  <div class="foot-sub">Backend Developer · Python · Django · FastAPI · AI Systems</div>
-  <div class="foot-links">
+  <div class="ft-logo">M.<em>Umar</em></div>
+  <div class="ft-sub">Backend Developer · Python · Django · FastAPI · AI Systems</div>
+  <div class="ft-links">
     <a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#contact">Contact</a>
   </div>
-  <div class="foot-copy">Built by <span>Muhammad Umar</span> &nbsp;·&nbsp; © 2025</div>
+  <div class="ft-copy">Built by <span>Muhammad Umar</span> &nbsp;·&nbsp; © 2025. All rights reserved.</div>
 </footer>
 
 <script>
-// Loader
+/* ── LOADER ── */
 window.addEventListener('load',()=>{
-  setTimeout(()=>{ document.getElementById('loader').classList.add('gone'); },1800);
+  setTimeout(()=>document.getElementById('loader').classList.add('gone'),1800);
 });
 
-// Cursor
-const cur=document.getElementById('cur'),ring=document.getElementById('curRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-(function anim(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
-document.querySelectorAll('a,button,.sk-card,.proj-card').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cur.style.width='20px';cur.style.height='20px';ring.style.width='56px';ring.style.height='56px';ring.style.opacity='0.3';});
-  el.addEventListener('mouseleave',()=>{cur.style.width='12px';cur.style.height='12px';ring.style.width='36px';ring.style.height='36px';ring.style.opacity='0.5';});
-});
+/* ── CURSOR (desktop only) ── */
+const matchFine=window.matchMedia('(pointer:fine)');
+if(matchFine.matches){
+  const cur=document.getElementById('cur'),ring=document.getElementById('curRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+  (function loop(){rx+=(mx-rx)*0.13;ry+=(my-ry)*0.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+  document.querySelectorAll('a,button,.sk-card,.proj-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cur.style.width='20px';cur.style.height='20px';ring.style.width='54px';ring.style.height='54px';ring.style.opacity='0.3';});
+    el.addEventListener('mouseleave',()=>{cur.style.width='12px';cur.style.height='12px';ring.style.width='36px';ring.style.height='36px';ring.style.opacity='0.5';});
+  });
+}
 
-// Nav scroll
+/* ── NAV SCROLL ── */
 window.addEventListener('scroll',()=>{
   document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40);
-});
+},{passive:true});
 
-// Particle canvas
+/* ── HAMBURGER MENU ── */
+function toggleMenu(){
+  const hb=document.getElementById('hamburger');
+  const mm=document.getElementById('mobileMenu');
+  const ov=document.getElementById('menuOverlay');
+  hb.classList.toggle('open');
+  mm.classList.toggle('open');
+  ov.classList.toggle('open');
+  document.body.style.overflow=mm.classList.contains('open')?'hidden':'';
+}
+function closeMenu(){
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('menuOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+/* ── PARTICLES ── */
 const canvas=document.getElementById('particles');
 const ctx=canvas.getContext('2d');
-canvas.width=window.innerWidth;canvas.height=window.innerHeight;
-window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
-const dots=Array.from({length:70},()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.5+0.5,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,a:Math.random()*0.4+0.1}));
-function drawParticles(){
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+resize();
+window.addEventListener('resize',resize,{passive:true});
+const dots=Array.from({length:55},()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.4+0.4,vx:(Math.random()-0.5)*0.28,vy:(Math.random()-0.5)*0.28,a:Math.random()*0.35+0.08}));
+function drawP(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   dots.forEach(d=>{
     d.x+=d.vx;d.y+=d.vy;
@@ -741,55 +717,62 @@ function drawParticles(){
     ctx.beginPath();ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
     ctx.fillStyle=`rgba(201,168,76,${d.a})`;ctx.fill();
   });
-  // connect close dots
-  for(let i=0;i<dots.length;i++){
-    for(let j=i+1;j<dots.length;j++){
-      const dx=dots[i].x-dots[j].x,dy=dots[i].y-dots[j].y,dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<120){
-        ctx.beginPath();ctx.moveTo(dots[i].x,dots[i].y);ctx.lineTo(dots[j].x,dots[j].y);
-        ctx.strokeStyle=`rgba(201,168,76,${0.06*(1-dist/120)})`;ctx.lineWidth=0.8;ctx.stroke();
-      }
-    }
+  for(let i=0;i<dots.length;i++)for(let j=i+1;j<dots.length;j++){
+    const dx=dots[i].x-dots[j].x,dy=dots[i].y-dots[j].y,dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist<110){ctx.beginPath();ctx.moveTo(dots[i].x,dots[i].y);ctx.lineTo(dots[j].x,dots[j].y);ctx.strokeStyle=`rgba(201,168,76,${0.055*(1-dist/110)})`;ctx.lineWidth=0.7;ctx.stroke();}
   }
-  requestAnimationFrame(drawParticles);
+  requestAnimationFrame(drawP);
 }
-drawParticles();
+drawP();
 
-// Scroll reveal
+/* ── SCROLL REVEAL ── */
 const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});
 },{threshold:0.1});
-document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.stagger').forEach(el=>obs.observe(el));
+document.querySelectorAll('.rv,.rv-l,.rv-r,.stg').forEach(el=>obs.observe(el));
 
-// Skill bars
+/* ── SKILL BARS ── */
 const barObs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.querySelectorAll('.sb-fill').forEach(b=>{
-        b.style.width=b.dataset.w+'%';
-      });
-    }
+    if(e.isIntersecting)e.target.querySelectorAll('.sbi-fill').forEach(b=>{b.style.width=b.dataset.w+'%';});
   });
 },{threshold:0.3});
-document.querySelectorAll('.skill-bars').forEach(el=>barObs.observe(el));
+document.querySelectorAll('.sbars').forEach(el=>barObs.observe(el));
 
-// Contact form
-function sendMsg(){
-  const n=document.getElementById('fn').value.trim();
-  const e=document.getElementById('fe').value.trim();
-  const s=document.getElementById('fs').value;
-  const m=document.getElementById('fm').value.trim();
-  const msg=document.getElementById('fmsg');
-  if(!n||!e||!s||!m){
-    msg.textContent='Please fill in all fields before sending.';
-    msg.className='f-msg err';msg.style.display='block';return;
-  }
-  const body=`Name: ${n}%0AEmail: ${e}%0ASubject: ${s}%0A%0A${m}`;
-  window.location.href=`mailto:umarasifmirza439@gmail.com?subject=${encodeURIComponent(s)}&body=${body}`;
-  msg.textContent='✓ Opening your email client — thanks for reaching out!';
-  msg.className='f-msg ok';msg.style.display='block';
-  setTimeout(()=>msg.style.display='none',5000);
+/* ── TOAST ── */
+function showToast(msg,type,icon){
+  const t=document.getElementById('toast');
+  document.getElementById('toastMsg').textContent=msg;
+  document.getElementById('toastIcon').textContent=icon;
+  t.className='toast '+type+' show';
+  clearTimeout(t._tid);
+  t._tid=setTimeout(()=>t.classList.remove('show'),5000);
 }
+
+/* ── CONTACT FORM ── */
+document.getElementById('contactForm').addEventListener('submit',async function(e){
+  e.preventDefault();
+  const btn=document.getElementById('submitBtn');
+  const txt=document.getElementById('btnText');
+  btn.disabled=true;
+  txt.textContent='Sending...';
+  showToast('Sending your message…','sending','📤');
+  try{
+    const fd=new FormData(this);
+    const res=await fetch(this.action,{method:'POST',body:fd,headers:{Accept:'application/json'}});
+    if(res.ok||res.status===200||res.redirected){
+      showToast('Message sent! I\'ll reply within 24 hours. 🎉','success','✅');
+      this.reset();
+    } else {
+      throw new Error('Server error');
+    }
+  }catch(err){
+    showToast('Oops! Something went wrong. Email me directly at umarasifmirza439@gmail.com','error','❌');
+  } finally {
+    btn.disabled=false;
+    txt.textContent='Send Message';
+  }
+});
 </script>
 </body>
 </html>
